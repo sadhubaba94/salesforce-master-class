@@ -1,0 +1,1294 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SF Interview Prep – Company Questions & Topic Guide</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=JetBrains+Mono:wght@400;600&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,400&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #f4f7ff;
+  --surface: #ffffff;
+  --surface2: #edf0fa;
+  --border: #d5dced;
+  --text: #0d1b3e;
+  --muted: #4a587a;
+  --c1: #1e40af; /* blue – primary */
+  --c2: #7c3aed; /* purple */
+  --c3: #d97706; /* amber */
+  --c4: #059669; /* green */
+  --c5: #dc2626; /* red */
+  --c6: #db2777; /* pink */
+  --c7: #0891b2; /* teal */
+  --c8: #4f46e5; /* indigo */
+  --font-head: 'Syne', sans-serif;
+  --font-body: 'DM Sans', sans-serif;
+  --font-code: 'JetBrains Mono', monospace;
+  --radius: 14px;
+}
+*,*::before,*::after { box-sizing:border-box; margin:0; padding:0; }
+html { scroll-behavior:smooth; }
+body { font-family:var(--font-body); background:var(--bg); color:var(--text); line-height:1.7; overflow-x:hidden; }
+
+body::before {
+  content:''; position:fixed; inset:0; z-index:-1; pointer-events:none;
+  background:
+    radial-gradient(ellipse 70% 50% at 5% 0%, rgba(30,64,175,.06) 0%, transparent 60%),
+    radial-gradient(ellipse 60% 40% at 95% 100%, rgba(124,58,237,.05) 0%, transparent 60%),
+    var(--bg);
+}
+
+/* ── HERO ── */
+#hero {
+  background: linear-gradient(135deg, #1e3a8a 0%, #4c1d95 55%, #0e7490 100%);
+  color: #fff; padding: 5rem 2rem 4rem; text-align:center; position:relative; overflow:hidden;
+}
+#hero::after {
+  content:''; position:absolute; inset:0;
+  background: radial-gradient(ellipse 60% 80% at 50% 120%, rgba(255,255,255,.07) 0%, transparent 70%);
+}
+.hero-eyebrow {
+  display:inline-flex; align-items:center; gap:.5rem;
+  background:rgba(255,255,255,.15); border:1px solid rgba(255,255,255,.25);
+  padding:.35rem 1rem; border-radius:999px; font-size:.78rem;
+  font-family:var(--font-head); letter-spacing:.1em; text-transform:uppercase;
+  margin-bottom:1.5rem; position:relative; z-index:1;
+}
+#hero h1 { font-family:var(--font-head); font-size:clamp(2.2rem,6vw,4.5rem); font-weight:800; line-height:1.05; position:relative; z-index:1; }
+#hero h1 span { color:#7dd3fc; }
+#hero p { max-width:580px; margin:1rem auto 0; color:rgba(255,255,255,.8); font-size:1.05rem; position:relative; z-index:1; }
+.back-btn {
+  display:inline-flex; align-items:center; gap:.5rem; margin-bottom:1.5rem;
+  background:rgba(255,255,255,.15); border:1px solid rgba(255,255,255,.3);
+  color:#fff; text-decoration:none; padding:.5rem 1.1rem; border-radius:10px;
+  font-family:var(--font-head); font-size:.82rem; font-weight:600; transition:.2s;
+  position:relative; z-index:1;
+}
+.back-btn:hover { background:rgba(255,255,255,.25); }
+
+/* stats strip */
+.stats-strip {
+  display:flex; flex-wrap:wrap; justify-content:center; gap:1.5rem;
+  padding:1.5rem; background:rgba(255,255,255,.1); border-top:1px solid rgba(255,255,255,.15);
+  position:relative; z-index:1;
+}
+.stat-item { text-align:center; }
+.stat-num { font-family:var(--font-head); font-size:2rem; font-weight:800; }
+.stat-lbl { font-size:.75rem; opacity:.75; text-transform:uppercase; letter-spacing:.08em; }
+
+/* ── NAV ── */
+#topnav {
+  position:sticky; top:0; z-index:100;
+  background:rgba(244,247,255,.92); backdrop-filter:blur(20px);
+  border-bottom:1px solid var(--border); padding:0 1.5rem;
+  display:flex; align-items:center; gap:1.5rem; overflow-x:auto; scrollbar-width:none;
+}
+#topnav::-webkit-scrollbar { display:none; }
+.nav-logo { font-family:var(--font-head); font-size:.95rem; font-weight:800; color:var(--c1); white-space:nowrap; padding:.8rem 0; text-decoration:none; }
+.nav-links { display:flex; gap:.15rem; }
+.nav-links a {
+  font-size:.76rem; font-family:var(--font-head); font-weight:600; padding:.45rem .8rem;
+  border-radius:6px; white-space:nowrap; color:var(--muted); text-decoration:none; transition:.2s;
+}
+.nav-links a:hover { color:var(--text); background:rgba(30,64,175,.07); }
+#progress { position:fixed; top:0; left:0; height:3px; background:linear-gradient(90deg,var(--c1),var(--c2),var(--c7)); z-index:200; }
+
+/* ── MAIN ── */
+main { max-width:1100px; margin:0 auto; padding:3rem 1.5rem 8rem; }
+
+/* ── SECTION HEADER ── */
+.sec-header { display:flex; align-items:center; gap:1rem; margin-bottom:2rem; padding-bottom:1.2rem; border-bottom:2px solid var(--border); }
+.sec-icon { width:50px; height:50px; border-radius:14px; display:flex; align-items:center; justify-content:center; font-size:1.4rem; flex-shrink:0; }
+.sec-title { font-family:var(--font-head); font-size:2rem; font-weight:800; line-height:1.1; }
+.sec-sub { color:var(--muted); font-size:.9rem; margin-top:.25rem; }
+section { padding:4rem 0 2.5rem; border-bottom:1px solid rgba(0,0,0,.06); opacity:0; transform:translateY(24px); transition:.55s; }
+section.visible { opacity:1; transform:none; }
+
+/* ── COMPANY CARDS ── */
+.company-grid { display:grid; grid-template-columns:repeat(auto-fit, minmax(320px, 1fr)); gap:1.2rem; }
+.company-card {
+  background:var(--surface); border:1px solid var(--border); border-radius:var(--radius);
+  overflow:hidden; transition:.2s; cursor:pointer;
+}
+.company-card:hover { border-color:rgba(30,64,175,.3); box-shadow:0 6px 24px rgba(30,64,175,.1); transform:translateY(-2px); }
+.company-header {
+  display:flex; align-items:center; gap:.9rem; padding:1.2rem 1.4rem;
+  border-bottom:1px solid var(--border);
+}
+.company-logo {
+  width:44px; height:44px; border-radius:12px;
+  display:flex; align-items:center; justify-content:center; font-size:1.3rem;
+  flex-shrink:0; font-family:var(--font-head); font-weight:800; font-size:1rem;
+}
+.company-name { font-family:var(--font-head); font-weight:700; font-size:1.05rem; }
+.company-meta { color:var(--muted); font-size:.78rem; margin-top:.1rem; }
+.company-body { padding:1rem 1.4rem 1.2rem; }
+.round-badge {
+  display:inline-block; padding:.2rem .7rem; border-radius:6px; font-size:.72rem;
+  font-family:var(--font-head); font-weight:700; margin-bottom:.7rem;
+  text-transform:uppercase; letter-spacing:.06em;
+}
+.q-list { list-style:none; padding:0; }
+.q-list li {
+  padding:.35rem 0 .35rem 1.3rem; position:relative; font-size:.86rem; color:var(--muted);
+  border-bottom:1px solid rgba(0,0,0,.04);
+}
+.q-list li:last-child { border-bottom:none; }
+.q-list li::before { content:'Q'; position:absolute; left:0; font-family:var(--font-head); font-size:.65rem; font-weight:700; color:var(--c1); top:.5rem; }
+
+/* ── TOPIC FREQUENCY ── */
+.topic-heatmap { display:grid; grid-template-columns:repeat(auto-fit, minmax(240px,1fr)); gap:.8rem; }
+.topic-item {
+  background:var(--surface); border:1px solid var(--border); border-radius:12px;
+  padding:1rem 1.2rem; display:flex; align-items:center; gap:.9rem; transition:.2s;
+}
+.topic-item:hover { transform:translateY(-2px); box-shadow:0 4px 16px rgba(0,0,0,.08); }
+.topic-bar-container { flex:1; }
+.topic-name { font-family:var(--font-head); font-weight:700; font-size:.88rem; margin-bottom:.35rem; }
+.topic-track { background:rgba(0,0,0,.07); border-radius:999px; height:7px; overflow:hidden; }
+.topic-fill { height:100%; border-radius:999px; }
+.topic-pct { font-family:var(--font-head); font-size:.78rem; font-weight:700; white-space:nowrap; }
+.topic-icon { font-size:1.5rem; flex-shrink:0; }
+
+/* ── PREP TOPICS ── */
+.prep-grid { display:grid; grid-template-columns:repeat(auto-fit, minmax(300px,1fr)); gap:1rem; }
+.prep-card {
+  background:var(--surface); border:1px solid var(--border); border-radius:var(--radius); padding:1.3rem 1.5rem;
+  border-top:4px solid; transition:.2s;
+}
+.prep-card:hover { box-shadow:0 4px 20px rgba(0,0,0,.08); transform:translateY(-2px); }
+.prep-card h3 { font-family:var(--font-head); font-weight:800; font-size:1rem; margin-bottom:.6rem; }
+.prep-q-list { list-style:none; padding:0; }
+.prep-q-list li { padding:.3rem 0 .3rem 1.2rem; position:relative; font-size:.84rem; color:var(--muted); }
+.prep-q-list li::before { content:'▸'; position:absolute; left:0; font-size:.7rem; top:.5rem; }
+.difficulty-badge {
+  display:inline-block; font-size:.65rem; font-family:var(--font-head); font-weight:700;
+  padding:.15rem .6rem; border-radius:4px; margin-left:.4rem; vertical-align:middle;
+  text-transform:uppercase; letter-spacing:.05em;
+}
+.easy { background:#dcfce7; color:#166534; }
+.medium { background:#fef3c7; color:#92400e; }
+.hard { background:#fee2e2; color:#991b1b; }
+
+/* ── SCENARIO TABLE ── */
+.scenario-block { background:var(--surface); border:1px solid var(--border); border-radius:var(--radius); overflow:hidden; margin:.8rem 0; }
+.scenario-header { padding:1rem 1.3rem; display:flex; align-items:center; gap:.8rem; border-bottom:1px solid var(--border); cursor:pointer; }
+.scenario-header:hover { background:rgba(30,64,175,.03); }
+.scenario-header::after { content:'＋'; margin-left:auto; color:var(--muted); font-size:1.1rem; flex-shrink:0; }
+.scenario-block.open .scenario-header::after { content:'－'; }
+.scenario-body { display:none; padding:1rem 1.3rem; background:var(--surface2); }
+.scenario-block.open .scenario-body { display:block; }
+.sc-q { font-family:var(--font-head); font-weight:700; font-size:.92rem; }
+.sc-company { font-size:.72rem; font-family:var(--font-head); font-weight:700; padding:.2rem .6rem; border-radius:6px; }
+.sc-a { color:var(--muted); font-size:.86rem; line-height:1.65; margin-top:.5rem; }
+.sc-a code { background:rgba(30,64,175,.08); color:var(--c1); padding:.1em .35em; border-radius:4px; font-family:var(--font-code); font-size:.82em; }
+
+/* ── SHARING TABLE ── */
+.table-wrap { overflow-x:auto; border-radius:var(--radius); border:1px solid var(--border); margin:.8rem 0; }
+table { width:100%; border-collapse:collapse; font-size:.86rem; }
+thead tr { background:var(--surface2); }
+th { font-family:var(--font-head); font-weight:700; padding:.9rem 1.1rem; text-align:left; color:var(--muted); font-size:.73rem; text-transform:uppercase; letter-spacing:.06em; white-space:nowrap; }
+td { padding:.85rem 1.1rem; border-top:1px solid var(--border); vertical-align:top; color:var(--muted); font-size:.86rem; }
+tr:hover td { background:rgba(30,64,175,.02); }
+.tag { display:inline-block; font-size:.7rem; padding:.18em .6em; border-radius:999px; font-weight:600; font-family:var(--font-head); }
+.tag-yes { background:rgba(5,150,105,.12); color:#065f46; border:1px solid rgba(5,150,105,.25); }
+.tag-no  { background:rgba(220,38,38,.1); color:#991b1b; border:1px solid rgba(220,38,38,.2); }
+.tag-maybe { background:rgba(217,119,6,.1); color:#92400e; border:1px solid rgba(217,119,6,.2); }
+
+/* ── COMPANY COLOR MAP ── */
+.co-deloitte { background:linear-gradient(135deg,#86efac,#22d3ee); color:#065f46; }
+.co-airindia { background:linear-gradient(135deg,#fca5a5,#f97316); color:#7f1d1d; }
+.co-veeva { background:linear-gradient(135px,#c4b5fd,#a78bfa); color:#3b0764; }
+.co-hcl { background:linear-gradient(135deg,#93c5fd,#3b82f6); color:#1e3a8a; }
+.co-lti { background:linear-gradient(135deg,#fde68a,#f59e0b); color:#78350f; }
+.co-jeevan { background:linear-gradient(135deg,#d9f99d,#84cc16); color:#365314; }
+.co-salesforce { background:linear-gradient(135deg,#67e8f9,#0891b2); color:#0c4a6e; }
+.co-notmentioned { background:linear-gradient(135deg,#e2e8f0,#cbd5e1); color:#334155; }
+
+/* ── ROUNDS BADGE COLORS ── */
+.round-tech { background:#eff6ff; color:#1e40af; border:1px solid #bfdbfe; }
+.round-man  { background:#fdf4ff; color:#7e22ce; border:1px solid #e9d5ff; }
+.round-opb  { background:#fff7ed; color:#c2410c; border:1px solid #fed7aa; }
+
+/* ── CHECKLIST ── */
+.checklist { list-style:none; padding:0; }
+.checklist li { display:flex; gap:.7rem; padding:.4rem 0; font-size:.88rem; color:var(--muted); }
+.checklist li::before { content:'☐'; font-size:1rem; flex-shrink:0; color:var(--c1); }
+.checklist li.done::before { content:'☑'; }
+
+/* ── INFO BOX ── */
+.infobox { border-left:4px solid; border-radius:0 10px 10px 0; padding:1rem 1.2rem; margin:.8rem 0; }
+.infobox.blue { background:#eff6ff; border-color:var(--c1); }
+.infobox.green { background:#f0fdf4; border-color:var(--c4); }
+.infobox.amber { background:#fffbeb; border-color:var(--c3); }
+.infobox.red { background:#fef2f2; border-color:var(--c5); }
+.infobox.purple { background:#faf5ff; border-color:var(--c2); }
+.infobox strong { display:block; font-family:var(--font-head); margin-bottom:.4rem; font-size:.9rem; }
+
+/* ── FILTER CHIPS ── */
+.filter-row { display:flex; flex-wrap:wrap; gap:.5rem; margin-bottom:1.5rem; }
+.filter-chip {
+  padding:.35rem .9rem; border-radius:999px; font-size:.78rem;
+  font-family:var(--font-head); font-weight:700; border:2px solid; cursor:pointer;
+  transition:.15s; text-decoration:none;
+}
+.filter-chip.active { color:#fff; }
+.fc-all { color:var(--c1); border-color:var(--c1); }
+.fc-all.active { background:var(--c1); }
+.fc-deloitte { color:#059669; border-color:#059669; }
+.fc-deloitte.active { background:#059669; }
+.fc-airindia { color:#dc2626; border-color:#dc2626; }
+.fc-airindia.active { background:#dc2626; }
+.fc-veeva { color:#7c3aed; border-color:#7c3aed; }
+.fc-veeva.active { background:#7c3aed; }
+.fc-hcl { color:#1d4ed8; border-color:#1d4ed8; }
+.fc-hcl.active { background:#1d4ed8; }
+.fc-lti { color:#b45309; border-color:#b45309; }
+.fc-lti.active { background:#b45309; }
+
+/* ── MISC ── */
+ul.fancy { list-style:none; padding:0; }
+ul.fancy li { padding:.35rem 0 .35rem 1.4rem; position:relative; color:var(--muted); font-size:.88rem; }
+ul.fancy li::before { content:'▸'; position:absolute; left:0; color:var(--c1); }
+code { font-family:var(--font-code); font-size:.84em; background:rgba(30,64,175,.08); color:var(--c1); padding:.1em .35em; border-radius:4px; }
+.highlight { background:linear-gradient(120deg,rgba(254,215,170,.6) 0%,rgba(254,215,170,.2) 100%); border-radius:4px; padding:.05em .2em; }
+
+@media(max-width:768px){ main{padding:2rem 1rem 6rem;} .sec-title{font-size:1.6rem;} }
+
+#btt { position:fixed; bottom:2rem; right:2rem; z-index:100; width:42px; height:42px; border-radius:50%; background:#1e40af; color:#fff; font-size:1.1rem; display:flex; align-items:center; justify-content:center; cursor:pointer; text-decoration:none; opacity:0; pointer-events:none; transition:.2s; box-shadow:0 4px 16px rgba(30,64,175,.3); }
+#btt.show { opacity:1; pointer-events:all; }
+#btt:hover { background:#1d4ed8; }
+</style>
+</head>
+<body>
+<div id="progress"></div>
+<a id="btt" href="#hero" title="Top">↑</a>
+
+<!-- ═══ HERO ═══ -->
+<div id="hero">
+  <a class="back-btn" href="Salesforce_Development_Guide.html">← Back to Dev Guide</a>
+  <div class="hero-eyebrow">📋 Interview Intelligence</div>
+  <h1>Real Questions from<br><span>Real Companies</span></h1>
+  <p>Curated from actual Salesforce developer interviews at Deloitte, Air India, Veeva CRM, HCL, LTI, Jeevan Technologies &amp; more — with topic-wise prep guide.</p>
+  <div class="stats-strip">
+    <div class="stat-item"><div class="stat-num" style="color:#7dd3fc">8+</div><div class="stat-lbl">Companies</div></div>
+    <div class="stat-item"><div class="stat-num" style="color:#86efac">200+</div><div class="stat-lbl">Real Questions</div></div>
+    <div class="stat-item"><div class="stat-num" style="color:#fde68a">15+</div><div class="stat-lbl">Topics Covered</div></div>
+    <div class="stat-item"><div class="stat-num" style="color:#f9a8d4">3</div><div class="stat-lbl">Experience Levels</div></div>
+  </div>
+</div>
+
+<!-- ═══ NAV ═══ -->
+<nav id="topnav">
+  <a class="nav-logo" href="#hero">🎯 SF Interview</a>
+  <div class="nav-links">
+    <a href="#companies">By Company</a>
+    <a href="#frequency">Topic Frequency</a>
+    <a href="#security">Security Q's</a>
+    <a href="#apex-qs">Apex Q's</a>
+    <a href="#lwc-qs">LWC Q's</a>
+    <a href="#flow-qs">Flow Q's</a>
+    <a href="#async-qs">Async Apex</a>
+    <a href="#integration-qs">Integration</a>
+    <a href="#scenarios">Scenario Q's</a>
+    <a href="#prepguide">Prep Guide</a>
+  </div>
+</nav>
+
+<main>
+
+<!-- ═══ 1. BY COMPANY ═══ -->
+<section id="companies">
+  <div class="sec-header">
+    <div class="sec-icon" style="background:#eff6ff;color:var(--c1)">🏢</div>
+    <div>
+      <div class="sec-title">Questions by Company</div>
+      <div class="sec-sub">Real interview experiences shared by candidates — rounds, topics, and actual questions asked</div>
+    </div>
+  </div>
+
+  <div class="infobox blue"><strong>📌 How to use this section</strong>Click any company card to explore their questions. Use these to calibrate what topics to prioritize based on who you're interviewing with.</div>
+
+  <div class="company-grid">
+
+    <!-- DELOITTE -->
+    <div class="company-card">
+      <div class="company-header">
+        <div class="company-logo co-deloitte">DL</div>
+        <div>
+          <div class="company-name">Deloitte</div>
+          <div class="company-meta">Multiple rounds · 2–3 years exp · Most frequently appearing</div>
+        </div>
+      </div>
+      <div class="company-body">
+        <span class="round-badge round-tech">Technical Round</span>
+        <ul class="q-list">
+          <li>Diff between custom setting and custom metadata — how used in project</li>
+          <li>Can we call API through batch class? What changes needed?</li>
+          <li>Write trigger to update Account custom field for specific profiles only</li>
+          <li>Security model in Salesforce — brief explanation</li>
+          <li>2 users, same profile + role — one sees 10 records, other sees 100. Why?</li>
+          <li>All async methods — when and why to use each</li>
+          <li>Can we call Queueable from Queueable? (Answer: yes, up to 50)</li>
+          <li>Roll-up trigger: Account → related object with Amount field</li>
+          <li>How to reuse LWC functions in different LWC components? (Using Slots)</li>
+          <li>Get recordId in LWC — how?</li>
+          <li>Diff between lightning-record-form and lightning-record-edit-form</li>
+          <li>Flow to Apex — passing data with @InvocableMethod rules</li>
+          <li>Test.startTest() / Test.stopTest() — purpose and usage</li>
+          <li>How to write test class for future method</li>
+          <li>Two methods used specifically for Batch Apex test class</li>
+          <li>How to call a child component's method from parent</li>
+          <li>Relationship in SOQL — custom vs standard objects</li>
+        </ul>
+        <span class="round-badge round-man" style="margin-top:.8rem">Techno-Managerial Round</span>
+        <ul class="q-list">
+          <li>Different types of Relationships in Salesforce</li>
+          <li>Lookup vs Master-Detail differences</li>
+          <li>How security works — OWD, Profiles, Roles</li>
+          <li>Mixed DML error — what it is and how to handle</li>
+          <li>Recursion in triggers — how to handle</li>
+          <li>Sync vs Async processes — when to use which</li>
+          <li>How Batch works — start, execute, finish</li>
+          <li>Can you call batch from another batch?</li>
+          <li>Parent → child data in LWC (and child → parent)</li>
+          <li>Third-party JavaScript in LWC — how to import?</li>
+          <li>Types of Flows and actions in Record-Triggered Flow</li>
+          <li>How to create list view button</li>
+          <li>REST vs SOAP differences</li>
+          <li>Email → Case creation → check existing Contact and link or create new</li>
+        </ul>
+        <span class="round-badge round-opb" style="margin-top:.8rem">Scenario Round (Design)</span>
+        <ul class="q-list">
+          <li>Service Center search UI + Google Maps integration — full design approach</li>
+          <li>Email → Case (In-Progress, Medium, Queue) — flow vs trigger approach</li>
+          <li>Too many SOQL — when does it happen in the trigger you wrote?</li>
+          <li>Display 200 FAQs with live search (no page reload)</li>
+          <li>Batch on User, update related Account and Opportunity — write code</li>
+          <li>Trigger with Apex sharing to share record with user</li>
+          <li>10 users, same profile/PS/role — hide field from some users (hint: FLS restriction + PS)</li>
+          <li>Heap size issue and CPU time limit error — how to solve?</li>
+          <li>Consolidate 3 Process Builders into 1 Flow</li>
+          <li>Flow: Send 2 emails conditionally (state/country null checks)</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- AIR INDIA -->
+    <div class="company-card">
+      <div class="company-header">
+        <div class="company-logo co-airindia">AI</div>
+        <div>
+          <div class="company-name">Air India</div>
+          <div class="company-meta">Tech Round 1 — Declarative + Apex focus</div>
+        </div>
+      </div>
+      <div class="company-body">
+        <span class="round-badge round-tech">Tech Round 1</span>
+        <ul class="q-list">
+          <li>Difference between Custom Setting and Custom Metadata — real project usage</li>
+          <li>Can we call API through Batch class? What changes? (Database.AllowsCallouts)</li>
+          <li>Write a trigger to update Account custom field when Account is created for specific profiles only</li>
+        </ul>
+        <div class="infobox amber" style="margin-top:.8rem"><strong>📌 Insight</strong>Air India focused heavily on practical knowledge — "how have you used it in your project?" framing. Be ready with real examples.</div>
+      </div>
+    </div>
+
+    <!-- VEEVA CRM -->
+    <div class="company-card">
+      <div class="company-header">
+        <div class="company-logo co-veeva">VV</div>
+        <div>
+          <div class="company-name">Veeva CRM</div>
+          <div class="company-meta">Performance + Security focus</div>
+        </div>
+      </div>
+      <div class="company-body">
+        <span class="round-badge round-tech">Technical</span>
+        <ul class="q-list">
+          <li>What are Skinny Tables? Have you used in your project?</li>
+          <li>Have you used <code>stripInaccessible()</code>?</li>
+          <li>Have you used <code>WITH SECURITY_ENFORCED</code> keyword?</li>
+          <li>Bulkification in triggers — explain approach</li>
+          <li>How to increase classic application performance?</li>
+        </ul>
+        <div class="infobox purple" style="margin-top:.8rem"><strong>📌 Insight</strong>Veeva focuses on advanced performance and security topics. Know SOQL security enforcement patterns and query optimization.</div>
+      </div>
+    </div>
+
+    <!-- HCL -->
+    <div class="company-card">
+      <div class="company-header">
+        <div class="company-logo co-hcl">HCL</div>
+        <div>
+          <div class="company-name">HCL Technologies</div>
+          <div class="company-meta">Admin + Developer hybrid round</div>
+        </div>
+      </div>
+      <div class="company-body">
+        <span class="round-badge round-tech">T1 Round</span>
+        <ul class="q-list">
+          <li>Difference between Sales Cloud and Service Cloud</li>
+          <li>Scenario: When to suggest Page Layout vs Record Type to client</li>
+          <li>Why can't we do it with Profiles and Roles alone?</li>
+          <li>Different Lookup relationship types</li>
+          <li>How many Lookup (40) and Master-Detail (2) relationships per object?</li>
+          <li>Account with 2 MD + 1 Lookup — how to count lookup records on Account?</li>
+          <li>Advantage of Workflow/Process Builder vs Flows</li>
+          <li>Different types of exceptions in Apex</li>
+          <li>What does 101 and 151 error codes mean? (SOQL / DML governor limits)</li>
+          <li>Governor limits in Salesforce — key ones</li>
+          <li>How many triggers can we write on an object? (1 best practice, multiple possible)</li>
+          <li>Why design 1 trigger per object?</li>
+          <li>How many ways can we make a field required?</li>
+          <li>Difference between managed and unmanaged packages</li>
+          <li>One advantage of using a managed package</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- LTI -->
+    <div class="company-card">
+      <div class="company-header">
+        <div class="company-logo co-lti">LTI</div>
+        <div>
+          <div class="company-name">LTI (Larsen &amp; Toubro Infotech)</div>
+          <div class="company-meta">Architecture + Design focus</div>
+        </div>
+      </div>
+      <div class="company-body">
+        <span class="round-badge round-tech">Technical</span>
+        <ul class="q-list">
+          <li>Amazon app scenario: Items, Add Items, Cart objects — what relationships? Junction object? Calculate total cart cost. Delete cascade behavior?</li>
+          <li>Import Account, Opportunity, Contact from one org to another via Excel — what tool? How to avoid errors? Explain detail.</li>
+        </ul>
+        <div class="infobox green" style="margin-top:.8rem"><strong>📌 Insight</strong>LTI tests data architecture thinking. For the Amazon question: Items→Cart (M-D or Junction), calculate total via Roll-Up, cascade delete depends on relationship type.</div>
+      </div>
+    </div>
+
+    <!-- JEEVAN TECHNOLOGIES -->
+    <div class="company-card">
+      <div class="company-header">
+        <div class="company-logo co-jeevan">JT</div>
+        <div>
+          <div class="company-name">Jeevan Technologies</div>
+          <div class="company-meta">General Salesforce developer round</div>
+        </div>
+      </div>
+      <div class="company-body">
+        <span class="round-badge round-tech">Technical</span>
+        <ul class="q-list">
+          <li>Standard Salesforce developer questions (profiles, roles, security)</li>
+          <li>Apex and trigger concepts</li>
+          <li>LWC and integration basics</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- SALESFORCE (Company) -->
+    <div class="company-card">
+      <div class="company-header">
+        <div class="company-logo co-salesforce">SF</div>
+        <div>
+          <div class="company-name">Salesforce Inc.</div>
+          <div class="company-meta">Technical Consultant role</div>
+        </div>
+      </div>
+      <div class="company-body">
+        <span class="round-badge round-tech">Technical Consultant</span>
+        <ul class="q-list">
+          <li>Write an LWC to search Account records, display with checkboxes</li>
+          <li>For selected Accounts, show related Opportunities AND Cases</li>
+          <li>Subject/Name in list should route to record detail page via NavigationMixin</li>
+          <li>Full working component with wire + imperative + event handling</li>
+        </ul>
+        <div class="infobox blue" style="margin-top:.8rem"><strong>📌 Insight</strong>Salesforce themselves focus on real working code. Know the full lifecycle — SOQL → Wire/Imperative → datatable → navigation.</div>
+      </div>
+    </div>
+
+    <!-- GENERAL / NOT MENTIONED -->
+    <div class="company-card">
+      <div class="company-header">
+        <div class="company-logo co-notmentioned">🌐</div>
+        <div>
+          <div class="company-name">General / Unknown Company</div>
+          <div class="company-meta">Frequently asked across multiple interviews</div>
+        </div>
+      </div>
+      <div class="company-body">
+        <ul class="q-list">
+          <li>Why we need Profiles and how Permission Sets help</li>
+          <li>User A sees B's record but B can't see A's — possible reasons</li>
+          <li>DML Limit Exception on UI — possible causes</li>
+          <li>Latest Salesforce releases — what's new?</li>
+          <li>With/Without sharing keywords — behavior when calling across classes</li>
+          <li>Trigger: create N contacts based on Account field value</li>
+          <li>Best practices in test classes — testing private classes</li>
+          <li>How to test class with external callouts</li>
+          <li>Dynamic Forms — difference from Record Types</li>
+          <li>Mixed DML Exception — what and how to handle</li>
+          <li>Can we call future inside a future? What exception?</li>
+          <li>LWC special over Aura — detailed comparison</li>
+          <li>Lifecycle hooks with examples</li>
+          <li>Types of LWC component communication</li>
+          <li>Imperative Apex call — why not in constructor?</li>
+          <li>Limitations of LMS</li>
+          <li>Portal LWC + lightning-record-edit-form — bidirectional sync</li>
+        </ul>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ═══ 2. TOPIC FREQUENCY ═══ -->
+<section id="frequency">
+  <div class="sec-header">
+    <div class="sec-icon" style="background:#f0fdf4;color:var(--c4)">📊</div>
+    <div>
+      <div class="sec-title">Topic Frequency Analysis</div>
+      <div class="sec-sub">Based on all company interviews — topics sorted by how often they appear</div>
+    </div>
+  </div>
+
+  <div class="infobox green"><strong>🎯 Focus your prep here</strong>The topics below are ranked by frequency of appearance across all company interviews. Topics appearing in 70%+ of interviews are <span class="highlight">must-know</span>.</div>
+
+  <div class="topic-heatmap">
+    <div class="topic-item">
+      <div class="topic-icon">🔒</div>
+      <div class="topic-bar-container">
+        <div class="topic-name">Security & Sharing (OWD, Profiles, Roles)</div>
+        <div class="topic-track"><div class="topic-fill" style="width:96%;background:linear-gradient(90deg,#1e40af,#3b82f6)"></div></div>
+      </div>
+      <div class="topic-pct" style="color:#1e40af">96%</div>
+    </div>
+    <div class="topic-item">
+      <div class="topic-icon">⚡</div>
+      <div class="topic-bar-container">
+        <div class="topic-name">Apex Triggers (Bulkify, Handler Pattern)</div>
+        <div class="topic-track"><div class="topic-fill" style="width:92%;background:linear-gradient(90deg,#7c3aed,#a78bfa)"></div></div>
+      </div>
+      <div class="topic-pct" style="color:#7c3aed">92%</div>
+    </div>
+    <div class="topic-item">
+      <div class="topic-icon">🌊</div>
+      <div class="topic-bar-container">
+        <div class="topic-name">Async Apex (Future, Batch, Queueable)</div>
+        <div class="topic-track"><div class="topic-fill" style="width:88%;background:linear-gradient(90deg,#0891b2,#67e8f9)"></div></div>
+      </div>
+      <div class="topic-pct" style="color:#0891b2">88%</div>
+    </div>
+    <div class="topic-item">
+      <div class="topic-icon">🌩️</div>
+      <div class="topic-bar-container">
+        <div class="topic-name">LWC (Lifecycle, Communication, Wire)</div>
+        <div class="topic-track"><div class="topic-fill" style="width:85%;background:linear-gradient(90deg,#d97706,#fbbf24)"></div></div>
+      </div>
+      <div class="topic-pct" style="color:#d97706">85%</div>
+    </div>
+    <div class="topic-item">
+      <div class="topic-icon">⚙️</div>
+      <div class="topic-bar-container">
+        <div class="topic-name">Governor Limits (SOQL, DML, CPU)</div>
+        <div class="topic-track"><div class="topic-fill" style="width:82%;background:linear-gradient(90deg,#dc2626,#f87171)"></div></div>
+      </div>
+      <div class="topic-pct" style="color:#dc2626">82%</div>
+    </div>
+    <div class="topic-item">
+      <div class="topic-icon">🔌</div>
+      <div class="topic-bar-container">
+        <div class="topic-name">Integration (REST, SOAP, OAuth)</div>
+        <div class="topic-track"><div class="topic-fill" style="width:78%;background:linear-gradient(90deg,#059669,#34d399)"></div></div>
+      </div>
+      <div class="topic-pct" style="color:#059669">78%</div>
+    </div>
+    <div class="topic-item">
+      <div class="topic-icon">🔀</div>
+      <div class="topic-bar-container">
+        <div class="topic-name">Salesforce Flow (Types, Subflow, Apex Action)</div>
+        <div class="topic-track"><div class="topic-fill" style="width:73%;background:linear-gradient(90deg,#db2777,#f9a8d4)"></div></div>
+      </div>
+      <div class="topic-pct" style="color:#db2777">73%</div>
+    </div>
+    <div class="topic-item">
+      <div class="topic-icon">🔍</div>
+      <div class="topic-bar-container">
+        <div class="topic-name">SOQL / SOSL (Relationships, Optimization)</div>
+        <div class="topic-track"><div class="topic-fill" style="width:68%;background:linear-gradient(90deg,#4f46e5,#818cf8)"></div></div>
+      </div>
+      <div class="topic-pct" style="color:#4f46e5">68%</div>
+    </div>
+    <div class="topic-item">
+      <div class="topic-icon">🏗️</div>
+      <div class="topic-bar-container">
+        <div class="topic-name">Data Modeling (Relationships, Objects)</div>
+        <div class="topic-track"><div class="topic-fill" style="width:60%;background:linear-gradient(90deg,#0891b2,#38bdf8)"></div></div>
+      </div>
+      <div class="topic-pct" style="color:#0891b2">60%</div>
+    </div>
+    <div class="topic-item">
+      <div class="topic-icon">🧪</div>
+      <div class="topic-bar-container">
+        <div class="topic-name">Test Classes (Best Practices, Mocking)</div>
+        <div class="topic-track"><div class="topic-fill" style="width:56%;background:linear-gradient(90deg,#7c3aed,#c4b5fd)"></div></div>
+      </div>
+      <div class="topic-pct" style="color:#7c3aed">56%</div>
+    </div>
+    <div class="topic-item">
+      <div class="topic-icon">📊</div>
+      <div class="topic-bar-container">
+        <div class="topic-name">Reports &amp; Dashboards</div>
+        <div class="topic-track"><div class="topic-fill" style="width:40%;background:linear-gradient(90deg,#d97706,#fde68a)"></div></div>
+      </div>
+      <div class="topic-pct" style="color:#d97706">40%</div>
+    </div>
+    <div class="topic-item">
+      <div class="topic-icon">🌐</div>
+      <div class="topic-bar-container">
+        <div class="topic-name">Experience Cloud / Community</div>
+        <div class="topic-track"><div class="topic-fill" style="width:30%;background:linear-gradient(90deg,#059669,#6ee7b7)"></div></div>
+      </div>
+      <div class="topic-pct" style="color:#059669">30%</div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ 3. SECURITY Q's ═══ -->
+<section id="security">
+  <div class="sec-header">
+    <div class="sec-icon" style="background:#eff6ff;color:var(--c1)">🔒</div>
+    <div>
+      <div class="sec-title">Security &amp; Sharing Questions</div>
+      <div class="sec-sub">Most asked topic across ALL companies — know every layer</div>
+    </div>
+  </div>
+
+  <div class="infobox red"><strong>🔥 Most Frequent Interview Topic</strong>Nearly every interview includes security scenario questions. The classic format: "User A can see X records but User B can't — same profile, same role. Why?"</div>
+
+  <div class="scenario-block">
+    <div class="scenario-header">
+      <span class="sc-company" style="background:#eff6ff;color:#1e40af">Deloitte · Techno-Managerial</span>
+      <div class="sc-q" style="margin-left:.5rem">User A can share case with colleague — how? Always share specific type? Complex logic?</div>
+    </div>
+    <div class="scenario-body">
+      <div class="sc-a">
+        <strong style="font-family:var(--font-head)">Ad-hoc sharing:</strong> Manual Sharing (Share button on record) — gives read-only or read/write.<br>
+        <strong style="font-family:var(--font-head)">Always share specific type:</strong> Criteria-based Sharing Rule — "Share all Cases of Type=X with Role Y".<br>
+        <strong style="font-family:var(--font-head)">Complex logic:</strong> Apex Managed Sharing — programmatic sharing using the <code>__Share</code> object with custom Sharing Reasons.
+      </div>
+    </div>
+  </div>
+
+  <div class="scenario-block">
+    <div class="scenario-header">
+      <span class="sc-company" style="background:#eff6ff;color:#1e40af">Deloitte · Technical</span>
+      <div class="sc-q" style="margin-left:.5rem">Same profile + role, one user sees 10 records, other sees 100. Why?</div>
+    </div>
+    <div class="scenario-body">
+      <div class="sc-a">
+        Possible reasons (pick any that apply): <br>
+        • Different record <strong>ownership</strong> (OWD = Private, owner sees own records) <br>
+        • <strong>Manual Sharing</strong> was applied to one user <br>
+        • <strong>Criteria/Owner-based Sharing Rule</strong> applies to one <br>
+        • One user has <strong>View All / Modify All</strong> via Permission Set <br>
+        • <strong>Restriction Rules</strong> applied to one user <br>
+        • <strong>Account Team / Opportunity Team</strong> membership <br>
+        • Higher <strong>Role Hierarchy</strong> position (but they said same role, so unlikely)
+      </div>
+    </div>
+  </div>
+
+  <div class="scenario-block">
+    <div class="scenario-header">
+      <span class="sc-company" style="background:#eff6ff;color:#1e40af">General</span>
+      <div class="sc-q" style="margin-left:.5rem">Ownership changed on Account (OWD=Private). Which of 5 persons still has access?</div>
+    </div>
+    <div class="scenario-body">
+      <div class="sc-a">
+        After ownership change: <br>
+        • <strong>Person 1 (old owner):</strong> ❌ Loses access (OWD=Private, no longer owner) <br>
+        • <strong>Person 2 (manager of old owner):</strong> ❌ Unless also manager of new owner <br>
+        • <strong>Person 3 (criteria-based sharing):</strong> ✅ May keep if criteria still true <br>
+        • <strong>Person 4 (manual sharing):</strong> ❌ Manual sharing is deleted on ownership change <br>
+        • <strong>Person 5 (Apex sharing):</strong> ✅ May keep if Apex sharing reason still meets criteria
+      </div>
+    </div>
+  </div>
+
+  <h3 style="font-family:var(--font-head);margin:2rem 0 1rem">Security Layers — Quick Reference</h3>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>Layer</th><th>Controls</th><th>Restricts Access?</th><th>Expands Access?</th></tr></thead>
+      <tbody>
+        <tr><td><strong>Org-Wide Defaults (OWD)</strong></td><td>Baseline record visibility</td><td><span class="tag tag-yes">✅ Yes</span></td><td><span class="tag tag-no">❌ No</span></td></tr>
+        <tr><td><strong>Role Hierarchy</strong></td><td>Managers see subordinate records</td><td><span class="tag tag-no">❌ No</span></td><td><span class="tag tag-yes">✅ Yes (upward)</span></td></tr>
+        <tr><td><strong>Sharing Rules</strong></td><td>Criteria/Owner based group access</td><td><span class="tag tag-no">❌ No</span></td><td><span class="tag tag-yes">✅ Yes</span></td></tr>
+        <tr><td><strong>Manual Sharing</strong></td><td>Record-by-record sharing</td><td><span class="tag tag-no">❌ No</span></td><td><span class="tag tag-yes">✅ Yes</span></td></tr>
+        <tr><td><strong>Apex Managed Sharing</strong></td><td>Programmatic sharing via __Share</td><td><span class="tag tag-no">❌ No</span></td><td><span class="tag tag-yes">✅ Yes</span></td></tr>
+        <tr><td><strong>Profile (CRUD/FLS)</strong></td><td>Object/field level access</td><td><span class="tag tag-yes">✅ Yes</span></td><td><span class="tag tag-no">❌ No</span></td></tr>
+        <tr><td><strong>Permission Sets</strong></td><td>Additional permissions only</td><td><span class="tag tag-no">❌ No</span></td><td><span class="tag tag-yes">✅ Yes only</span></td></tr>
+        <tr><td><strong>Restriction Rules</strong></td><td>Further restrict from OWD</td><td><span class="tag tag-yes">✅ Yes</span></td><td><span class="tag tag-no">❌ No</span></td></tr>
+        <tr><td><strong>With/Without Sharing</strong></td><td>Apex record visibility context</td><td><span class="tag tag-maybe">Context dependent</span></td><td><span class="tag tag-maybe">Context dependent</span></td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h3 style="font-family:var(--font-head);margin:2rem 0 .8rem">More Interview Scenarios</h3>
+  <div class="scenario-block">
+    <div class="scenario-header">
+      <span class="sc-company" style="background:#eff6ff;color:#1e40af">General</span>
+      <div class="sc-q" style="margin-left:.5rem">1000 users, all with CRUD at profile level. Want to give one user Read-Only only. How?</div>
+    </div>
+    <div class="scenario-body">
+      <div class="sc-a">
+        <strong>Important correction from mock interview sheet:</strong> Permission Sets only ADD permissions — they can't negate profile-level access. To restrict one user:<br>
+        • Create a new Profile with Read-only access on that object<br>
+        • Assign only that user to the new profile<br>
+        • Or use <strong>Restriction Rules</strong> (available from Winter '22) to limit record visibility further
+      </div>
+    </div>
+  </div>
+  <div class="scenario-block">
+    <div class="scenario-header">
+      <span class="sc-company" style="background:#eff6ff;color:#1e40af">General</span>
+      <div class="sc-q" style="margin-left:.5rem">Two users, same profile, both can READ Contact. A can't see B's records and B can't see A's. Cause?</div>
+    </div>
+    <div class="scenario-body">
+      <div class="sc-a">OWD is Private. They own different records. Since OWD = Private and there's no sharing rule/manual sharing between them, each only sees their own records. They are on the same role level, so role hierarchy doesn't grant access either.</div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ 4. APEX Q's ═══ -->
+<section id="apex-qs">
+  <div class="sec-header">
+    <div class="sec-icon" style="background:#faf5ff;color:var(--c2)">⬡</div>
+    <div>
+      <div class="sec-title">Apex Interview Questions</div>
+      <div class="sec-sub">Access modifiers, sharing, constructors, test classes — frequently tested</div>
+    </div>
+  </div>
+
+  <h3 style="font-family:var(--font-head);margin:0 0 1rem">Quick-Fire Apex Q&amp;A</h3>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>#</th><th>Question</th><th>Answer</th></tr></thead>
+      <tbody>
+        <tr><td>1</td><td>Can we use access modifiers with Triggers?</td><td><span class="tag tag-no">No</span></td></tr>
+        <tr><td>2</td><td>Can we use access modifiers with Interfaces?</td><td><span class="tag tag-yes">Yes</span></td></tr>
+        <tr><td>3</td><td>Default access modifier for an interface?</td><td>Public (others not available)</td></tr>
+        <tr><td>4</td><td>Can <code>protected</code> be used with apex class?</td><td><span class="tag tag-no">No</span></td></tr>
+        <tr><td>5</td><td>Default access modifier for apex class?</td><td>Private (if not specified)</td></tr>
+        <tr><td>6</td><td>Can outer class have private access modifier?</td><td>Only for test classes</td></tr>
+        <tr><td>7</td><td>Can inner method be global if outer class is public?</td><td><span class="tag tag-no">No</span></td></tr>
+        <tr><td>8</td><td>Can constructors be private in Apex?</td><td><span class="tag tag-yes">Yes</span> (Singleton pattern)</td></tr>
+        <tr><td>9</td><td>Can a constructor return a value?</td><td><span class="tag tag-no">No</span></td></tr>
+        <tr><td>10</td><td>Can a class have multiple constructors?</td><td><span class="tag tag-yes">Yes</span> — constructor overloading</td></tr>
+        <tr><td>11</td><td>With sharing class calls Without sharing — which runs?</td><td>Without sharing (invoked method wins)</td></tr>
+        <tr><td>12</td><td>Without sharing calls With sharing — which runs?</td><td>With sharing (invoked method wins)</td></tr>
+        <tr><td>13</td><td>Default sharing mode if not declared?</td><td>Without sharing</td></tr>
+        <tr><td>14</td><td>Can we use with/without sharing in triggers?</td><td><span class="tag tag-no">No</span></td></tr>
+        <tr><td>15</td><td>What is Inherited Sharing?</td><td>Class inherits calling class's sharing context</td></tr>
+        <tr><td>16</td><td>Can future method be non-static?</td><td><span class="tag tag-no">No</span></td></tr>
+        <tr><td>17</td><td>Why can't future methods return anything?</td><td>They are void — run in future context with no callback</td></tr>
+        <tr><td>18</td><td>Can we pass sObject to future method?</td><td><span class="tag tag-no">No</span> — only primitives</td></tr>
+        <tr><td>19</td><td>Can we call future from future?</td><td><span class="tag tag-no">No</span></td></tr>
+        <tr><td>20</td><td>What is Mixed DML Error?</td><td>DML on setup + non-setup objects in same transaction</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h3 style="font-family:var(--font-head);margin:2rem 0 .8rem">Complex Scenario: Batch Failure Handling</h3>
+  <div class="scenario-block">
+    <div class="scenario-header">
+      <span class="sc-company" style="background:#faf5ff;color:#7c3aed">Deloitte</span>
+      <div class="sc-q" style="margin-left:.5rem">4000 records in batch, 3000 processed, 1000 failed. How to resolve and track?</div>
+    </div>
+    <div class="scenario-body">
+      <div class="sc-a">
+        Use <code>Database.insert(records, false)</code> (partial processing) instead of <code>insert records</code>. This returns a <code>Database.SaveResult[]</code> where you can check each result's <code>isSuccess()</code>. Log failed records to a custom object (e.g., <code>Batch_Error_Log__c</code>). In the <code>finish()</code> method, query the error log and send a summary email with counts.
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ 5. LWC Q's ═══ -->
+<section id="lwc-qs">
+  <div class="sec-header">
+    <div class="sec-icon" style="background:#fffbeb;color:var(--c3)">🌩️</div>
+    <div>
+      <div class="sec-title">LWC Interview Questions</div>
+      <div class="sec-sub">Lifecycle, decorators, communication patterns, wire vs imperative</div>
+    </div>
+  </div>
+
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>#</th><th>Question</th><th>Key Answer</th></tr></thead>
+      <tbody>
+        <tr><td>1</td><td>Types of decorators in LWC?</td><td><code>@api</code>, <code>@track</code>, <code>@wire</code></td></tr>
+        <tr><td>2</td><td><code>@api</code> vs <code>@track</code>?</td><td>@api = public reactive; @track = private reactive (deprecated for primitives)</td></tr>
+        <tr><td>3</td><td>Can I use multiple decorators on one property?</td><td><span class="tag tag-no">No</span> — only one decorator per property</td></tr>
+        <tr><td>4</td><td>How to display toast in LWC?</td><td>Import <code>ShowToastEvent</code> from <code>lightning/platformShowToastEvent</code>, dispatch it</td></tr>
+        <tr><td>5</td><td>How to call external service from LWC?</td><td>Using <code>fetch()</code> directly, or via Apex callout</td></tr>
+        <tr><td>6</td><td>How to get current user ID without Apex?</td><td><code>@salesforce/user/Id</code> scoped module</td></tr>
+        <tr><td>7</td><td>Can we perform DML inside <code>@wire</code>?</td><td><span class="tag tag-no">No</span> — DML limit for cacheable=true is 0</td></tr>
+        <tr><td>8</td><td>How many times does wire method execute?</td><td>Every time a configured reactive parameter changes</td></tr>
+        <tr><td>9</td><td><code>render()</code> — what is it?</td><td>Protected method to conditionally render a template (returns HTML template)</td></tr>
+        <tr><td>10</td><td>Can we deploy component with empty CSS file?</td><td><span class="tag tag-no">No</span> — throws error on deploy</td></tr>
+        <tr><td>11</td><td>How to call batch class from LWC?</td><td>Cannot call directly — use <code>@AuraEnabled</code> Apex method as intermediary</td></tr>
+        <tr><td>12</td><td>Difference: <code>stopPropagation()</code> vs <code>preventDefault()</code>?</td><td>stopPropagation = stops event bubbling; preventDefault = stops default browser behavior</td></tr>
+        <tr><td>13</td><td>Why extend <code>LightningElement</code>?</td><td>Inherits lifecycle hooks, DOM APIs, and LWC framework methods</td></tr>
+        <tr><td>14</td><td>How to get element by ID in LWC?</td><td>Never use <code>id</code> — use <code>data-id</code> and <code>this.template.querySelector('[data-id="x"]')</code></td></tr>
+        <tr><td>15</td><td>force:createRecord equivalent in LWC?</td><td>No direct equivalent — use LDS <code>createRecord</code> or imperative Apex</td></tr>
+        <tr><td>16</td><td>get picklist values without Apex?</td><td><code>getPicklistValues</code> wire adapter from <code>lightning/uiObjectInfoApi</code></td></tr>
+        <tr><td>17</td><td>LMS vs Pub/Sub pattern?</td><td>LMS is Salesforce-native, cross-framework; Pub/Sub is custom JS pattern within LWC only</td></tr>
+        <tr><td>18</td><td>What is <code>cacheable=true</code>?</td><td>Marks method read-only, enables browser-side caching, cannot perform DML</td></tr>
+        <tr><td>19</td><td>What is <code>refreshApex()</code>?</td><td>Refreshes data from a <code>@wire</code> call after DML — must store wire result reference</td></tr>
+        <tr><td>20</td><td>What is callback hell?</td><td>Nested callbacks making code unreadable — solve with Promises/async-await</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h3 style="font-family:var(--font-head);margin:2rem 0 .8rem">Lifecycle Hooks — Which Hook for What?</h3>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>Task</th><th>Correct Hook</th><th>Why</th></tr></thead>
+      <tbody>
+        <tr><td>Fetch server data (imperative Apex)</td><td><code>connectedCallback()</code></td><td>Component is in DOM, Apex can be called</td></tr>
+        <tr><td>DOM manipulation / 3rd party JS init</td><td><code>renderedCallback()</code></td><td>DOM has rendered, elements exist</td></tr>
+        <tr><td>Subscribe to LMS</td><td><code>connectedCallback()</code></td><td>Component is connected and ready</td></tr>
+        <tr><td>Unsubscribe, clear intervals</td><td><code>disconnectedCallback()</code></td><td>Cleanup before component is removed</td></tr>
+        <tr><td>Handle child errors</td><td><code>errorCallback(error, stack)</code></td><td>Catches errors from child components</td></tr>
+        <tr><td>Initialize non-reactive properties</td><td><code>constructor()</code></td><td>Earliest hook — no DOM access yet</td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<!-- ═══ 6. FLOW Q's ═══ -->
+<section id="flow-qs">
+  <div class="sec-header">
+    <div class="sec-icon" style="background:#fdf4ff;color:var(--c6)">🔀</div>
+    <div>
+      <div class="sec-title">Flow Interview Questions</div>
+      <div class="sec-sub">Types, building blocks, debug, Apex integration, transactions</div>
+    </div>
+  </div>
+
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>#</th><th>Question</th><th>Answer</th></tr></thead>
+      <tbody>
+        <tr><td>1</td><td>Types of Flows in Salesforce?</td><td>Screen Flow, Record-Triggered, Scheduled, Auto-launched, Platform Event-Triggered</td></tr>
+        <tr><td>2</td><td>Key building blocks of Flow?</td><td>Elements (Create/Update/Delete Record, Decision, Loop, Assignment, Screen, Subflow) + Resources (Variables, Constants, Collections)</td></tr>
+        <tr><td>3</td><td>How to call Apex from Flow?</td><td><code>@InvocableMethod</code> annotation — must be static, public/global, one method per class, list parameter/return</td></tr>
+        <tr><td>4</td><td>How to call Flow from within a Flow?</td><td>Subflow element under Elements palette</td></tr>
+        <tr><td>5</td><td>$Record vs $Record__Prior?</td><td>$Record = current state; $Record__Prior = state before update (Record-Triggered only)</td></tr>
+        <tr><td>6</td><td>Can we debug Flow as another user?</td><td>Yes — enable in Process Automation Settings, then Debug → "Run as another user"</td></tr>
+        <tr><td>7</td><td>Schedule frequency in Scheduled Flow?</td><td>Once, Daily, or Weekly</td></tr>
+        <tr><td>8</td><td>Can we pause/resume Screen Flow?</td><td>Yes — user can pause a Screen Flow and resume later</td></tr>
+        <tr><td>9</td><td>Can we set execution order of Record-Triggered Flows?</td><td>Yes — using "Trigger Order" option</td></tr>
+        <tr><td>10</td><td>Two paths in Record-Triggered Flow?</td><td>Success Path and Fault Path</td></tr>
+        <tr><td>11</td><td>What is a Flow Interview?</td><td>A running instance of a Flow</td></tr>
+        <tr><td>12</td><td>Fast Field Update vs Actions &amp; Related Records?</td><td>Fast Field Update (Before Save) — only updates triggering record. Actions &amp; Related Records (After Save) — can update related records, create records, call Apex</td></tr>
+        <tr><td>13</td><td>Limitations of Flow?</td><td>No Map support, can't run on undelete, no break in loops, complex dataset debugging differs, Subflow not available in Before Save</td></tr>
+        <tr><td>14</td><td>What is running user context of Flow?</td><td>The user who launched the Flow. Determines data access in user context. Scheduled Flows run as Automated Process user.</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="scenario-block">
+    <div class="scenario-header">
+      <span class="sc-company" style="background:#fdf4ff;color:#7c3aed">Deloitte · Scenario</span>
+      <div class="sc-q" style="margin-left:.5rem">Flow: Account picklist (open/pending/closed) — capture date each time status changes into payment_date field</div>
+    </div>
+    <div class="scenario-body">
+      <div class="sc-a">
+        Create a Record-Triggered Flow on Account for "when record is updated." Add a Decision element to check if <code>$Record.Type__c</code> has changed (use <code>$Record.Type__c != $Record__Prior.Type__c</code>). On the success path, use an Update Records element to set <code>Payment_Date__c = {!$Flow.CurrentDate}</code>. No separate branches needed per status — just capture the change date regardless of which status it moved to.
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ 7. ASYNC APEX ═══ -->
+<section id="async-qs">
+  <div class="sec-header">
+    <div class="sec-icon" style="background:#faf5ff;color:var(--c2)">⏳</div>
+    <div>
+      <div class="sec-title">Asynchronous Apex Questions</div>
+      <div class="sec-sub">Future, Queueable, Batch, Scheduled — limits, differences, when to use</div>
+    </div>
+  </div>
+
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>Aspect</th><th>Future</th><th>Queueable</th><th>Batch</th><th>Scheduled</th></tr></thead>
+      <tbody>
+        <tr><td>Use Case</td><td>Simple async / callouts</td><td>Complex jobs, chaining</td><td>Large data volumes</td><td>Time-based execution</td></tr>
+        <tr><td>Supports Callouts</td><td><span class="tag tag-yes">Yes</span> (@future callout=true)</td><td><span class="tag tag-yes">Yes</span> (AllowsCallouts)</td><td><span class="tag tag-yes">Yes</span> (execute())</td><td>Via chained Batch/Queueable</td></tr>
+        <tr><td>Supports sObject params</td><td><span class="tag tag-no">No</span></td><td><span class="tag tag-yes">Yes</span></td><td><span class="tag tag-yes">Yes</span></td><td><span class="tag tag-yes">Yes</span></td></tr>
+        <tr><td>Returns Job ID</td><td><span class="tag tag-no">No</span></td><td><span class="tag tag-yes">Yes</span></td><td><span class="tag tag-yes">Yes</span></td><td><span class="tag tag-yes">Yes</span></td></tr>
+        <tr><td>Can be chained</td><td><span class="tag tag-no">No</span></td><td><span class="tag tag-yes">Yes</span> (1 per execution)</td><td><span class="tag tag-no">No</span></td><td>N/A</td></tr>
+        <tr><td>CPU Time</td><td colspan="2" style="text-align:center">60,000ms</td><td>60,000ms</td><td>60,000ms</td></tr>
+        <tr><td>Max concurrent</td><td>50 per transaction</td><td>50 enqueued</td><td>5 active</td><td>100 scheduled</td></tr>
+        <tr><td>Interface</td><td>@future</td><td>Queueable</td><td>Database.Batchable</td><td>Schedulable</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h3 style="font-family:var(--font-head);margin:2rem 0 .8rem">Key Interview Scenarios</h3>
+  <div class="scenario-block">
+    <div class="scenario-header">
+      <span class="sc-company" style="background:#faf5ff;color:#7c3aed">Deloitte (3 Exp)</span>
+      <div class="sc-q" style="margin-left:.5rem">Need to sync 1 million Contact records to external system nightly. What approach?</div>
+    </div>
+    <div class="scenario-body">
+      <div class="sc-a">Use <strong>Batch Apex</strong> with scope of 2000. Implement <code>Database.AllowsCallouts</code> in execute() for HTTP callouts per batch. Schedule using <strong>Scheduled Apex</strong> with a cron expression for off-peak hours (e.g., <code>0 0 2 * * ?</code> for 2 AM daily). Include error handling with partial processing (<code>Database.insert(list, false)</code>) and log failures.</div>
+    </div>
+  </div>
+  <div class="scenario-block">
+    <div class="scenario-header">
+      <span class="sc-company" style="background:#faf5ff;color:#7c3aed">Deloitte (2nd Round)</span>
+      <div class="sc-q" style="margin-left:.5rem">99 SOQL in 1st chunk of Batch — what happens in next chunk?</div>
+    </div>
+    <div class="scenario-body">
+      <div class="sc-a">Each Batch execute() call is a <strong>separate transaction</strong>. The governor limits reset completely for each chunk. So the 2nd chunk starts fresh with 0/100 SOQL used. However, if the 1st chunk consistently uses 99, you're dangerously close to the limit and should optimize your queries (move SOQL outside loops, use Maps).</div>
+    </div>
+  </div>
+  <div class="scenario-block">
+    <div class="scenario-header">
+      <span class="sc-company" style="background:#faf5ff;color:#7c3aed">General</span>
+      <div class="sc-q" style="margin-left:.5rem">Batch class is running on Account (inserting records), trigger fires, trigger has future method. What happens?</div>
+    </div>
+    <div class="scenario-body">
+      <div class="sc-a">The trigger fires during batch execute(). The future method is queued. However — you <strong>cannot call batch from a future method</strong>, but calling a future FROM a batch (via trigger) is allowed. The future method runs asynchronously after the batch chunk completes. Watch for: if the trigger fires 200 times (batch scope), you'd enqueue 200 future calls — which could hit the 50 future calls per transaction limit!</div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ 8. INTEGRATION Q's ═══ -->
+<section id="integration-qs">
+  <div class="sec-header">
+    <div class="sec-icon" style="background:#f0fdf4;color:var(--c4)">🔌</div>
+    <div>
+      <div class="sec-title">Integration Questions</div>
+      <div class="sec-sub">REST, SOAP, OAuth, Named Credentials, callout patterns</div>
+    </div>
+  </div>
+
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>Question</th><th>Key Points</th></tr></thead>
+      <tbody>
+        <tr><td>How to expose Apex as REST API?</td><td><code>@RestResource(urlMapping='/endpoint')</code> + <code>@HttpGet/@HttpPost</code> etc.</td></tr>
+        <tr><td>How to consume external web services?</td><td><code>HttpRequest</code>, <code>HttpResponse</code>, <code>Http</code> classes. Set endpoint, method, headers, body. Send.</td></tr>
+        <tr><td>REST vs SOAP?</td><td>REST: JSON, lightweight, URL-based. SOAP: XML, WSDL contract, POST only, legacy systems.</td></tr>
+        <tr><td>Where to store integration credentials?</td><td>Named Credentials (URL + auth). Custom Metadata (endpoint configs). Never hardcode in Apex.</td></tr>
+        <tr><td>OAuth 2.0 — minimum callouts to send data?</td><td>2 callouts minimum: 1 for access token + 1 for actual API call. 3 if refresh token needed.</td></tr>
+        <tr><td>Callout after DML — possible?</td><td><span class="tag tag-no">No</span> in same transaction. Use @future or Queueable to separate contexts.</td></tr>
+        <tr><td>What is Fire and Forget?</td><td>Send data to external system, don't wait for response. Use Outbound Message or Platform Events.</td></tr>
+        <tr><td>Token expires — how to handle?</td><td>Catch 401 response, re-authenticate (callout to token endpoint), retry original request. Store token in Custom Settings/Cache.</td></tr>
+        <tr><td>Can we use Navigation API for external URL?</td><td>Yes — <code>standard__webPage</code> via NavigationMixin. But for callouts, use HttpRequest.</td></tr>
+        <tr><td>Inbound vs Outbound integration?</td><td>Inbound: External system calls SF API (REST/SOAP). Outbound: SF calls external via callout/Platform Events.</td></tr>
+        <tr><td>How to handle API rate limits?</td><td>Exponential backoff, retry logic, monitor response headers (X-RateLimit headers), cache responses.</td></tr>
+        <tr><td>What is Polling in integration?</td><td>Periodically querying external system for updates. Use Scheduled Apex + Queueable for retry logic.</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="scenario-block">
+    <div class="scenario-header">
+      <span class="sc-company" style="background:#f0fdf4;color:#059669">Veeva CRM Style</span>
+      <div class="sc-q" style="margin-left:.5rem">Given JSON with nested arrays — write Apex inner class structure and deserialize</div>
+    </div>
+    <div class="scenario-body">
+      <div class="sc-a">
+        For complex nested JSON: create wrapper classes mirroring the JSON structure. Use <code>JSON.deserialize(jsonString, OuterClass.class)</code> for typed deserialization. For unknown structure: use <code>JSON.deserializeUntyped(jsonString)</code> returning <code>Map&lt;String, Object&gt;</code> and cast manually. Key rule: match JSON keys exactly to Apex property names (or use <code>@JsonAccess</code> annotation for renaming).
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ 9. SCENARIO Q's ═══ -->
+<section id="scenarios">
+  <div class="sec-header">
+    <div class="sec-icon" style="background:#fff7ed;color:var(--c3)">🎭</div>
+    <div>
+      <div class="sec-title">Scenario-Based Questions</div>
+      <div class="sec-sub">Design + coding scenarios asked in actual interviews — click to see approach</div>
+    </div>
+  </div>
+
+  <div class="infobox amber"><strong>💡 Interview Tip</strong>For scenario questions, always structure your answer: (1) Understand the requirement, (2) State your tool choice and why, (3) Walk through the design, (4) Mention edge cases and limitations.</div>
+
+  <div class="scenario-block">
+    <div class="scenario-header">
+      <span class="sc-company" style="background:#eff6ff;color:#1e40af">Deloitte · Design</span>
+      <div class="sc-q" style="margin-left:.5rem">Build Service Center search UI with Google Maps, real-time filtering, no downtime for new centers</div>
+    </div>
+    <div class="scenario-body">
+      <div class="sc-a">
+        <strong>Data Storage:</strong> Custom Object (Service_Center__c) with Address, Lat/Long fields. Or Custom Metadata if rarely changing.<br>
+        <strong>UI:</strong> LWC Screen on App Page. Top: lightning-input for address search (oninput handler). Below: lightning-datatable or custom cards.<br>
+        <strong>Filtering:</strong> Reactive property → wire Apex method with address parameter. Re-queries on every input change.<br>
+        <strong>Google Maps:</strong> Use loadScript from <code>lightning/platformResourceLoader</code> to load Google Maps JS SDK. Plot pins using coordinates from Service Center records.<br>
+        <strong>No Downtime:</strong> New Service Centers added as records → automatically appear (no deployment needed).
+      </div>
+    </div>
+  </div>
+
+  <div class="scenario-block">
+    <div class="scenario-header">
+      <span class="sc-company" style="background:#eff6ff;color:#1e40af">Deloitte · Scenario</span>
+      <div class="sc-q" style="margin-left:.5rem">Email arrives in Salesforce → create Case (In-Progress, Medium) → assign to queue → check if Contact with same email exists → link or create</div>
+    </div>
+    <div class="scenario-body">
+      <div class="sc-a">
+        <strong>Option 1 (Flow):</strong> Email-to-Case → Record-Triggered Flow on Case (after insert). Get email from Case.Email__c. SOQL Contact by email. Decision: found → update ContactId on case. Not found → Create Records (new Contact) + update Case.ContactId.<br>
+        <strong>Option 2 (Apex Trigger):</strong> After-insert trigger on Case. Map&lt;String,Contact&gt; keyed by email. One SOQL outside loop for all emails. DML only if new contact needed. Link case to contact.
+      </div>
+    </div>
+  </div>
+
+  <div class="scenario-block">
+    <div class="scenario-header">
+      <span class="sc-company" style="background:#dcfce7;color:#166534">LTI · Architecture</span>
+      <div class="sc-q" style="margin-left:.5rem">Amazon app: Items, Add Items, Cart objects. What relationships? Junction object? Calculate total? Delete behavior?</div>
+    </div>
+    <div class="scenario-body">
+      <div class="sc-a">
+        <strong>Relationships:</strong> Cart (master) → Cart_Items__c (detail, M-D). Item__c is independent (acts as product catalog). Cart_Item__c has lookup to Item__c (to get price/name).<br>
+        <strong>Junction Object:</strong> Cart_Item__c serves as the junction between Cart and Items (many carts can have same item).<br>
+        <strong>Total Calculation:</strong> Roll-Up Summary on Cart: SUM(Cart_Item__c.Price__c) where Status='Active'.<br>
+        <strong>Delete behavior:</strong> Deleting a Cart_Item record (M-D child) does NOT delete Item__c (it's a lookup). Items remain in catalog. The cart total auto-updates via Roll-Up.
+      </div>
+    </div>
+  </div>
+
+  <div class="scenario-block">
+    <div class="scenario-header">
+      <span class="sc-company" style="background:#fef3c7;color:#92400e">General · Data Migration</span>
+      <div class="sc-q" style="margin-left:.5rem">Import Account, Opportunity, Contact from Excel (old org) to new org. What tool? How to avoid errors?</div>
+    </div>
+    <div class="scenario-body">
+      <div class="sc-a">
+        <strong>Tool:</strong> Data Loader (for large volumes, full control) or Salesforce Import Wizard (simpler, limited).<br>
+        <strong>Order:</strong> 1. Import Accounts first → get new IDs. 2. Map old Account IDs to new IDs. 3. Import Contacts with AccountId mapped to new IDs. 4. Import Opportunities with AccountId + Contact Role.<br>
+        <strong>External IDs:</strong> Create an External_ID__c field on each object. Store old org IDs. Use Upsert with External ID to prevent duplicates.<br>
+        <strong>Error avoidance:</strong> Run in sandbox first. Use partial processing. Check required fields, picklist values, field lengths, and relationship mappings before bulk import.
+      </div>
+    </div>
+  </div>
+
+  <div class="scenario-block">
+    <div class="scenario-header">
+      <span class="sc-company" style="background:#eff6ff;color:#1e40af">Deloitte · Coding</span>
+      <div class="sc-q" style="margin-left:.5rem">Write Batch on User to update related Account and Opportunity</div>
+    </div>
+    <div class="scenario-body">
+      <div class="sc-a">
+        <code>global class UserAccountBatch implements Database.Batchable&lt;SObject&gt; {</code><br>
+        &nbsp;&nbsp;<code>global Database.QueryLocator start(Database.BatchableContext bc) {</code><br>
+        &nbsp;&nbsp;&nbsp;&nbsp;<code>return Database.getQueryLocator([SELECT Id, AccountId FROM User WHERE IsActive=true]);</code><br>
+        &nbsp;&nbsp;<code>}</code><br>
+        &nbsp;&nbsp;<code>global void execute(Database.BatchableContext bc, List&lt;User&gt; users) {</code><br>
+        &nbsp;&nbsp;&nbsp;&nbsp;<code>Set&lt;Id&gt; accIds = new Set&lt;Id&gt;(); for(User u:users) accIds.add(u.AccountId);</code><br>
+        &nbsp;&nbsp;&nbsp;&nbsp;<code>List&lt;Account&gt; accs = [SELECT Id FROM Account WHERE Id IN :accIds];</code><br>
+        &nbsp;&nbsp;&nbsp;&nbsp;<code>// update accounts and related opportunities</code><br>
+        &nbsp;&nbsp;&nbsp;&nbsp;<code>update accs;</code><br>
+        &nbsp;&nbsp;<code>}</code><br>
+        &nbsp;&nbsp;<code>global void finish(Database.BatchableContext bc) { /* send email */ }</code><br>
+        <code>}</code>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ 10. PREP GUIDE ═══ -->
+<section id="prepguide">
+  <div class="sec-header">
+    <div class="sec-icon" style="background:#f0fdf4;color:var(--c4)">📚</div>
+    <div>
+      <div class="sec-title">Topic-by-Topic Prep Guide</div>
+      <div class="sec-sub">What to study, key questions to master, and difficulty level — from interview data</div>
+    </div>
+  </div>
+
+  <div class="prep-grid">
+    <div class="prep-card" style="border-top-color:var(--c1)">
+      <h3>🔒 Security &amp; Sharing <span class="difficulty-badge hard">Must Know</span></h3>
+      <ul class="prep-q-list">
+        <li>OWD → Role Hierarchy → Sharing Rules → Manual Sharing → Apex Sharing (order matters)</li>
+        <li>What happens to sharing when record owner changes?</li>
+        <li>with sharing / without sharing / inherited sharing — all behaviors</li>
+        <li>Restriction Rules vs Sharing Rules</li>
+        <li>Permission Sets can only ADD, never remove profile permissions</li>
+        <li>FLS vs Record-level vs Object-level security</li>
+        <li>stripInaccessible() and WITH SECURITY_ENFORCED</li>
+      </ul>
+    </div>
+    <div class="prep-card" style="border-top-color:var(--c2)">
+      <h3>⚡ Apex Triggers <span class="difficulty-badge hard">Must Know</span></h3>
+      <ul class="prep-q-list">
+        <li>Trigger context variables (Trigger.new, old, newMap, oldMap)</li>
+        <li>Before vs After — when to use each</li>
+        <li>Bulkification — always process collections</li>
+        <li>Prevent recursion with static boolean flag</li>
+        <li>One trigger per object + handler class pattern</li>
+        <li>Order of Execution — where triggers fit</li>
+        <li>Mixed DML error — what causes it, how to fix</li>
+      </ul>
+    </div>
+    <div class="prep-card" style="border-top-color:var(--c7)">
+      <h3>⏳ Async Apex <span class="difficulty-badge hard">Must Know</span></h3>
+      <ul class="prep-q-list">
+        <li>Future: primitives only, no chaining, no sObjects, void return</li>
+        <li>Queueable: sObjects, chaining, job ID, preferred over Future</li>
+        <li>Batch: start/execute/finish, 200 scope, partial processing</li>
+        <li>Scheduled: Schedulable interface, cron expressions, 100 max</li>
+        <li>Can X call Y? (matrix of allowed async-to-async calls)</li>
+        <li>Governor limits: async vs sync differences</li>
+      </ul>
+    </div>
+    <div class="prep-card" style="border-top-color:var(--c3)">
+      <h3>🌩️ LWC <span class="difficulty-badge medium">Important</span></h3>
+      <ul class="prep-q-list">
+        <li>@api, @track, @wire — purpose and constraints</li>
+        <li>Lifecycle hooks — which hook for which task</li>
+        <li>Parent→Child (@api), Child→Parent (CustomEvent), LMS (unrelated)</li>
+        <li>Wire vs Imperative — when to use which</li>
+        <li>refreshApex() pattern after DML</li>
+        <li>NavigationMixin — record, object, web page types</li>
+        <li>LDS (getRecord, createRecord) without Apex</li>
+      </ul>
+    </div>
+    <div class="prep-card" style="border-top-color:var(--c5)">
+      <h3>⛔ Governor Limits <span class="difficulty-badge hard">Must Know</span></h3>
+      <ul class="prep-q-list">
+        <li>SOQL: 100 sync / 200 async per transaction</li>
+        <li>DML: 150 statements / 10,000 rows</li>
+        <li>CPU: 10,000ms sync / 60,000ms async</li>
+        <li>Heap: 6MB sync / 12MB async</li>
+        <li>SOQL in loop — how to fix with Maps/Sets</li>
+        <li>Limits API: getLimitDmlStatements(), getQueryRows()</li>
+        <li>Test.startTest() resets governor limits</li>
+      </ul>
+    </div>
+    <div class="prep-card" style="border-top-color:var(--c4)">
+      <h3>🔌 Integration <span class="difficulty-badge medium">Important</span></h3>
+      <ul class="prep-q-list">
+        <li>REST vs SOAP — format, use case, tooling</li>
+        <li>OAuth 2.0 flows — Authorization Code, JWT Bearer, Client Credentials</li>
+        <li>Named Credentials — why and how to use</li>
+        <li>@RestResource, @HttpGet/Post/Put/Patch/Delete</li>
+        <li>Callout limits and DML restriction</li>
+        <li>JSON.serialize / deserialize — typed vs untyped</li>
+        <li>Platform Events for event-driven integration</li>
+      </ul>
+    </div>
+    <div class="prep-card" style="border-top-color:var(--c6)">
+      <h3>🔀 Salesforce Flow <span class="difficulty-badge medium">Important</span></h3>
+      <ul class="prep-q-list">
+        <li>5 types of Flow — when to use each</li>
+        <li>@InvocableMethod rules (one per class, list params, static)</li>
+        <li>$Record vs $Record__Prior in Record-Triggered</li>
+        <li>Before Save (Fast Field Update) vs After Save</li>
+        <li>Subflows, Fault Paths, Loop limitations</li>
+        <li>Flow vs Process Builder vs Workflow — why migrate to Flow</li>
+        <li>Schedule Triggered Flow — once/daily/weekly</li>
+      </ul>
+    </div>
+    <div class="prep-card" style="border-top-color:var(--c8)">
+      <h3>🔍 SOQL / SOSL <span class="difficulty-badge easy">Foundational</span></h3>
+      <ul class="prep-q-list">
+        <li>Parent-to-child subquery vs child-to-parent traversal syntax</li>
+        <li>SOQL in loop — anti-pattern and fix</li>
+        <li>Indexed fields for performance (Id, Name, CreatedDate, External IDs)</li>
+        <li>SOSL — when to use (multi-object text search)</li>
+        <li>Governor limit: 50,000 rows retrieved per transaction</li>
+        <li>WITH SECURITY_ENFORCED vs stripInaccessible()</li>
+      </ul>
+    </div>
+    <div class="prep-card" style="border-top-color:var(--c3)">
+      <h3>🧪 Test Classes <span class="difficulty-badge medium">Important</span></h3>
+      <ul class="prep-q-list">
+        <li>75% code coverage minimum for deployment</li>
+        <li>Test.startTest() / Test.stopTest() — purpose (resets limits + runs async)</li>
+        <li>Test.setMock() for callouts (HttpCalloutMock)</li>
+        <li>Batch test: Database.executeBatch() between start/stopTest</li>
+        <li>@TestSetup — shared test data, runs once per class</li>
+        <li>SeeAllData=true — why to avoid</li>
+        <li>Test private methods via @TestVisible</li>
+      </ul>
+    </div>
+    <div class="prep-card" style="border-top-color:var(--c1)">
+      <h3>📊 Reports &amp; Dashboards <span class="difficulty-badge easy">Admin Focus</span></h3>
+      <ul class="prep-q-list">
+        <li>4 report types: Tabular, Summary, Matrix, Joined</li>
+        <li>Joined Report: max 5 blocks, no bucket fields</li>
+        <li>Dashboard components: 20 max per page</li>
+        <li>Dynamic Dashboard — per-user data view</li>
+        <li>Bucket fields — group data without formula field</li>
+        <li>Subscribe to report with conditions</li>
+        <li>Allow Reports checkbox — required for custom objects</li>
+      </ul>
+    </div>
+  </div>
+
+  <h3 style="font-family:var(--font-head);margin:2.5rem 0 1rem">📋 Interview Day Checklist</h3>
+  <div style="background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:1.5rem">
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:1.5rem">
+      <div>
+        <div style="font-family:var(--font-head);font-weight:700;margin-bottom:.8rem;color:var(--c1)">Before the Interview</div>
+        <ul class="checklist">
+          <li>Review OWD + Sharing scenario matrix</li>
+          <li>Revise async apex limits table</li>
+          <li>Practice writing trigger with handler pattern</li>
+          <li>Review LWC lifecycle hooks order</li>
+          <li>Know your project integrations by heart</li>
+          <li>Prepare 2-3 real scenarios from your project</li>
+          <li>Know the difference between Wire and Imperative</li>
+        </ul>
+      </div>
+      <div>
+        <div style="font-family:var(--font-head);font-weight:700;margin-bottom:.8rem;color:var(--c4)">During the Interview</div>
+        <ul class="checklist">
+          <li>Think aloud — explain your reasoning</li>
+          <li>For security: state OWD first, then expand</li>
+          <li>For scenarios: ask clarifying questions first</li>
+          <li>Mention alternatives even if not chosen</li>
+          <li>Relate answers to your project experience</li>
+          <li>If unsure: say "I would verify this, but I believe..."</li>
+          <li>Note corrections — interviewers often teach</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <div class="infobox blue" style="margin-top:1.5rem">
+    <strong>🔗 Back to Full Reference Guide</strong>
+    Head back to the <a href="Salesforce_Development_Guide.html" style="color:var(--c1);font-weight:600">Salesforce Development Guide</a> for complete topic coverage with code examples, comparison tables, and Q&amp;A for all 17 topics.
+  </div>
+</section>
+
+</main>
+
+<footer style="background:var(--surface2);border-top:1px solid var(--border);padding:2rem;text-align:center;color:var(--muted);font-size:.83rem">
+  <div style="font-family:var(--font-head);font-weight:800;color:var(--text);margin-bottom:.4rem">Salesforce Interview Intelligence</div>
+  <p>Curated from real company interviews — Deloitte, Air India, Veeva CRM, HCL, LTI, Jeevan Technologies, Salesforce Inc. &amp; more.</p>
+</footer>
+
+<script>
+window.addEventListener('scroll', () => {
+  const s = document.documentElement, h = s.scrollHeight - s.clientHeight;
+  document.getElementById('progress').style.width = (s.scrollTop/h*100)+'%';
+  const btt = document.getElementById('btt');
+  s.scrollTop > 400 ? btt.classList.add('show') : btt.classList.remove('show');
+});
+const obs = new IntersectionObserver(e => e.forEach(x => x.isIntersecting && x.target.classList.add('visible')), {threshold:.04});
+document.querySelectorAll('section').forEach(s => obs.observe(s));
+document.querySelectorAll('.scenario-header').forEach(h => h.addEventListener('click', () => h.parentElement.classList.toggle('open')));
+</script>
+</body>
+</html>

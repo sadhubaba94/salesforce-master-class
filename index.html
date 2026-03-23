@@ -1,0 +1,2060 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Salesforce Development Guide – Complete Reference</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=JetBrains+Mono:wght@400;600&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,400&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #f5f7fc;
+  --surface: #ffffff;
+  --surface2: #eef1f8;
+  --border: #d8dff0;
+  --text: #0f172a;
+  --muted: #4b5a75;
+  --c1: #00d4ff; /* cyan – declarative/config */
+  --c2: #7c3aed; /* purple – Apex/code */
+  --c3: #f59e0b; /* amber – LWC */
+  --c4: #10b981; /* green – Integration */
+  --c5: #ef4444; /* red – limits/warnings */
+  --c6: #ec4899; /* pink – advanced */
+  --c7: #06b6d4; /* teal – SOQL */
+  --c8: #8b5cf6; /* violet */
+  --font-head: 'Syne', sans-serif;
+  --font-body: 'DM Sans', sans-serif;
+  --font-code: 'JetBrains Mono', monospace;
+  --radius: 12px;
+  --glow1: 0 0 40px rgba(0,212,255,0.12);
+  --glow2: 0 0 40px rgba(124,58,237,0.12);
+}
+*,*::before,*::after { box-sizing:border-box; margin:0; padding:0; }
+html { scroll-behavior:smooth; }
+body {
+  font-family: var(--font-body);
+  background: var(--bg);
+  color: var(--text);
+  line-height:1.7;
+  overflow-x: hidden;
+}
+
+/* ── BACKGROUND NOISE ─────────────────────────── */
+body::before {
+  content:'';
+  position:fixed; inset:0; z-index:-1; pointer-events:none;
+  background: 
+    radial-gradient(ellipse 80% 50% at 10% 0%, rgba(0,123,255,0.04) 0%, transparent 60%),
+    radial-gradient(ellipse 60% 40% at 90% 100%, rgba(124,58,237,0.04) 0%, transparent 60%),
+    var(--bg);
+}
+
+/* ── HERO ─────────────────────────────────────── */
+#hero {
+  min-height:100vh; display:flex; flex-direction:column; justify-content:center;
+  align-items:center; text-align:center; padding:4rem 2rem; position:relative;
+  overflow:hidden;
+}
+#hero::before {
+  content:'';
+  position:absolute; inset:0; z-index:0;
+  background: radial-gradient(circle 600px at 50% 50%, rgba(0,100,255,0.05) 0%, transparent 70%);
+  animation: pulse 6s ease-in-out infinite;
+}
+@keyframes pulse { 0%,100%{transform:scale(1)} 50%{transform:scale(1.1)} }
+.hero-badge {
+  display:inline-flex; align-items:center; gap:.5rem;
+  background: rgba(0,212,255,0.1); border:1px solid rgba(0,212,255,0.3);
+  padding:.4rem 1.2rem; border-radius:999px; font-size:.8rem; color:var(--c1);
+  letter-spacing:.1em; text-transform:uppercase; font-family:var(--font-head);
+  margin-bottom:1.5rem; position:relative; z-index:1;
+  animation: fadeUp .6s ease both;
+}
+#hero h1 {
+  font-family: var(--font-head); font-size:clamp(2.8rem,8vw,6rem);
+  font-weight:800; line-height:1.05; position:relative; z-index:1;
+  animation: fadeUp .6s .15s ease both;
+}
+.grad { background: linear-gradient(135deg, var(--c1) 0%, var(--c2) 50%, var(--c3) 100%); -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text; }
+#hero p {
+  max-width:600px; color:var(--muted); font-size:1.15rem; margin-top:1rem;
+  position:relative; z-index:1; animation: fadeUp .6s .3s ease both;
+}
+.hero-chips {
+  display:flex; flex-wrap:wrap; gap:.6rem; justify-content:center; margin-top:2rem;
+  position:relative; z-index:1; animation: fadeUp .6s .45s ease both;
+}
+.chip {
+  padding:.35rem .9rem; border-radius:999px; font-size:.78rem;
+  font-family:var(--font-head); font-weight:600; letter-spacing:.04em;
+  border:1px solid; cursor:pointer; transition: all .2s;
+  text-decoration:none; display:inline-block;
+}
+.chip:hover { transform:translateY(-2px); box-shadow: 0 6px 20px rgba(0,0,0,.3); }
+.chip-1 { color:var(--c1); border-color:rgba(0,212,255,.35); background:rgba(0,100,200,.08); }
+.chip-2 { color:var(--c2); border-color:rgba(124,58,237,.35); background:rgba(124,58,237,.08); }
+.chip-3 { color:var(--c3); border-color:rgba(245,158,11,.35); background:rgba(245,158,11,.08); }
+.chip-4 { color:var(--c4); border-color:rgba(16,185,129,.35); background:rgba(16,185,129,.08); }
+.chip-5 { color:var(--c5); border-color:rgba(239,68,68,.35); background:rgba(239,68,68,.08); }
+.chip-6 { color:var(--c6); border-color:rgba(236,72,153,.35); background:rgba(236,72,153,.08); }
+.chip-7 { color:var(--c7); border-color:rgba(6,182,212,.35); background:rgba(6,182,212,.08); }
+@keyframes fadeUp { from{opacity:0;transform:translateY(20px)} to{opacity:1;transform:translateY(0)} }
+.scroll-hint {
+  position:absolute; bottom:2rem; left:50%; transform:translateX(-50%);
+  color:var(--muted); font-size:.8rem; display:flex; flex-direction:column; align-items:center; gap:.4rem;
+  animation: bounce 2s ease infinite;
+}
+.scroll-hint svg { width:20px; opacity:.5; }
+@keyframes bounce { 0%,100%{transform:translateX(-50%) translateY(0)} 50%{transform:translateX(-50%) translateY(6px)} }
+
+/* ── NAV ──────────────────────────────────────── */
+#topnav {
+  position:sticky; top:0; z-index:100;
+  background: rgba(10,14,26,.85); backdrop-filter:blur(20px);
+  border-bottom:1px solid var(--border);
+  padding:0 2rem; display:flex; align-items:center; gap:2rem;
+  overflow-x:auto; scrollbar-width:none;
+}
+#topnav::-webkit-scrollbar { display:none; }
+.nav-logo {
+  font-family:var(--font-head); font-size:1rem; font-weight:800;
+  color:var(--c1); white-space:nowrap; padding:.8rem 0;
+  text-decoration:none;
+}
+.nav-links { display:flex; gap:.2rem; align-items:center; }
+.nav-links a {
+  font-size:.78rem; font-family:var(--font-head); font-weight:600;
+  padding:.5rem .8rem; border-radius:6px; white-space:nowrap;
+  color:var(--muted); text-decoration:none; transition:all .2s;
+  letter-spacing:.03em;
+}
+.nav-links a:hover { color:var(--text); background:rgba(0,100,200,.07); }
+
+/* ── MAIN LAYOUT ──────────────────────────────── */
+main { max-width:1100px; margin:0 auto; padding:4rem 2rem 8rem; }
+
+/* ── SECTION HEADER ───────────────────────────── */
+.sec-header {
+  display:flex; align-items:center; gap:1rem; margin-bottom:2.5rem;
+  padding-bottom:1.5rem; border-bottom:1px solid var(--border);
+}
+.sec-icon {
+  width:52px; height:52px; border-radius:14px;
+  display:flex; align-items:center; justify-content:center; font-size:1.4rem;
+  flex-shrink:0;
+}
+.sec-title { font-family:var(--font-head); font-size:2.2rem; font-weight:800; line-height:1.1; }
+.sec-sub { color:var(--muted); font-size:.95rem; margin-top:.3rem; }
+
+/* ── SECTION ──────────────────────────────────── */
+section {
+  padding:5rem 0 3rem;
+  border-bottom:1px solid rgba(255,255,255,.04);
+  opacity:0; transform:translateY(30px);
+  transition: opacity .6s ease, transform .6s ease;
+}
+section.visible { opacity:1; transform:translateY(0); }
+
+/* ── CARDS ────────────────────────────────────── */
+.cards { display:grid; gap:1rem; }
+.cards-2 { grid-template-columns: repeat(auto-fit, minmax(300px,1fr)); }
+.cards-3 { grid-template-columns: repeat(auto-fit, minmax(240px,1fr)); }
+.cards-4 { grid-template-columns: repeat(auto-fit, minmax(200px,1fr)); }
+.card {
+  background: var(--surface); border:1px solid var(--border);
+  border-radius: var(--radius); padding:1.5rem;
+  transition:border-color .2s, transform .2s, box-shadow .2s;
+}
+.card:hover {
+  border-color:rgba(0,0,0,.15); transform:translateY(-3px);
+  box-shadow:0 8px 30px rgba(0,0,0,.3);
+}
+.card-icon { font-size:2rem; margin-bottom:.8rem; }
+.card h3 { font-family:var(--font-head); font-size:1.05rem; font-weight:700; margin-bottom:.5rem; }
+.card p { color:var(--muted); font-size:.9rem; line-height:1.6; }
+.card-accent { border-top:3px solid; }
+
+/* ── HIGHLIGHT BOX ────────────────────────────── */
+.hbox {
+  border-radius:var(--radius); padding:1.5rem 1.8rem;
+  border-left:4px solid; margin:1.5rem 0;
+  position:relative;
+}
+.hbox.info  { background:rgba(0,123,255,.05); border-color:var(--c1); }
+.hbox.warn  { background:rgba(239,68,68,.05); border-color:var(--c5); }
+.hbox.good  { background:rgba(16,185,129,.05); border-color:var(--c4); }
+.hbox.purple{ background:rgba(124,58,237,.05); border-color:var(--c2); }
+.hbox.amber { background:rgba(245,158,11,.05); border-color:var(--c3); }
+.hbox strong { display:block; font-family:var(--font-head); margin-bottom:.5rem; }
+
+/* ── CODE ─────────────────────────────────────── */
+.code-block {
+  background:#f0f4ff; border:1px solid #c8d5f0; border-radius:10px;
+  padding:1.2rem 1.5rem; overflow-x:auto; margin:1rem 0;
+  font-family:var(--font-code); font-size:.82rem; line-height:1.7;
+  color:#1e3a5f; position:relative;
+}
+.code-block .cb-label {
+  position:absolute; top:.6rem; right:.8rem;
+  font-size:.68rem; color:#7b8faf; font-family:var(--font-head);
+  text-transform:uppercase; letter-spacing:.08em;
+}
+code { font-family:var(--font-code); font-size:.84em; color:var(--c1); background:rgba(0,100,200,.08); padding:.1em .35em; border-radius:4px; }
+
+/* ── TABLE ────────────────────────────────────── */
+.table-wrap { overflow-x:auto; margin:1.5rem 0; border-radius:var(--radius); border:1px solid var(--border); }
+table { width:100%; border-collapse:collapse; font-size:.88rem; }
+thead tr { background:#eef1f8; }
+th { font-family:var(--font-head); font-weight:700; padding:1rem 1.2rem; text-align:left; color:var(--muted); font-size:.78rem; text-transform:uppercase; letter-spacing:.06em; white-space:nowrap; }
+td { padding:.9rem 1.2rem; border-top:1px solid var(--border); vertical-align:top; }
+tr:hover td { background:rgba(0,100,200,.02); }
+.tag { display:inline-block; font-size:.72rem; padding:.2em .7em; border-radius:999px; font-weight:600; }
+.tag-yes { background:rgba(16,185,129,.15); color:#34d399; border:1px solid rgba(16,185,129,.3); }
+.tag-no  { background:rgba(239,68,68,.15); color:#f87171; border:1px solid rgba(239,68,68,.3); }
+.tag-warn{ background:rgba(245,158,11,.15); color:#fbbf24; border:1px solid rgba(245,158,11,.3); }
+
+/* ── LIST ─────────────────────────────────────── */
+ul.fancy, ol.fancy { padding-left:0; list-style:none; }
+ul.fancy li, ol.fancy li { padding:.4rem 0 .4rem 1.6rem; position:relative; color:var(--text); font-size:.93rem; }
+ul.fancy li::before { content:'▸'; position:absolute; left:0; }
+ol.fancy { counter-reset:steps; }
+ol.fancy li { counter-increment:steps; }
+ol.fancy li::before { content:counter(steps); position:absolute; left:0; font-family:var(--font-head); font-size:.75rem; font-weight:700; top:.45rem; width:1.1rem; text-align:center; }
+
+/* ── BADGE ROW ────────────────────────────────── */
+.badge-row { display:flex; flex-wrap:wrap; gap:.5rem; margin:.8rem 0; }
+.badge { display:inline-flex; align-items:center; gap:.4rem; padding:.3rem .8rem; border-radius:8px; font-size:.8rem; font-family:var(--font-head); font-weight:600; border:1px solid; }
+
+/* ── COMPARE VISUAL ───────────────────────────── */
+.vs-grid {
+  display:grid; grid-template-columns:1fr auto 1fr; gap:1rem; align-items:start;
+  margin:1.5rem 0;
+}
+.vs-side { background:var(--surface); border-radius:var(--radius); padding:1.5rem; border:1px solid var(--border); }
+.vs-side h3 { font-family:var(--font-head); font-size:1.1rem; margin-bottom:1rem; padding-bottom:.6rem; border-bottom:1px solid var(--border); }
+.vs-div { display:flex; align-items:center; justify-content:center; font-family:var(--font-head); font-weight:800; font-size:1.5rem; color:var(--muted); padding-top:3rem; }
+@media(max-width:640px){ .vs-grid{grid-template-columns:1fr;} .vs-div{display:none;} }
+
+/* ── LIMIT BAR ────────────────────────────────── */
+.limit-bar-group { display:flex; flex-direction:column; gap:.8rem; margin:1rem 0; }
+.limit-item { display:grid; grid-template-columns:200px 1fr 80px; align-items:center; gap:.8rem; }
+.limit-label { font-size:.85rem; color:var(--muted); }
+.limit-bar-bg { background:rgba(0,0,0,.08); border-radius:999px; height:8px; overflow:hidden; }
+.limit-bar-fill { height:100%; border-radius:999px; }
+.limit-val { font-size:.8rem; font-family:var(--font-code); color:var(--text); text-align:right; }
+@media(max-width:600px){ .limit-item{grid-template-columns:1fr;gap:.3rem;} }
+
+/* ── FLOW DIAGRAM ─────────────────────────────── */
+.flow-chain { display:flex; flex-wrap:wrap; align-items:center; gap:.4rem; margin:1rem 0; }
+.flow-node { background:#eef1f8; border:1px solid var(--border); border-radius:8px; padding:.5rem 1rem; font-size:.82rem; font-family:var(--font-head); font-weight:600; }
+.flow-arrow { color:var(--muted); font-size:1rem; }
+
+/* ── ACCORDION / Q&A ──────────────────────────── */
+.qa-list { display:flex; flex-direction:column; gap:.6rem; }
+.qa-item {
+  background:var(--surface); border:1px solid var(--border); border-radius:var(--radius);
+  overflow:hidden;
+}
+.qa-q {
+  padding:1rem 1.2rem; font-family:var(--font-head); font-weight:600; font-size:.92rem;
+  cursor:pointer; display:flex; justify-content:space-between; align-items:center;
+  user-select:none;
+}
+.qa-q:hover { background:rgba(0,100,200,.03); }
+.qa-q::after { content:'＋'; font-size:1.1rem; color:var(--muted); flex-shrink:0; }
+.qa-item.open .qa-q::after { content:'－'; }
+.qa-a { display:none; padding:0 1.2rem 1.2rem; color:var(--muted); font-size:.88rem; line-height:1.7; border-top:1px solid var(--border); padding-top:1rem; }
+.qa-item.open .qa-a { display:block; }
+
+/* ── HOOK TIMELINE ────────────────────────────── */
+.lifecycle-steps { display:flex; flex-direction:column; gap:0; position:relative; padding-left:2rem; }
+.lifecycle-steps::before { content:''; position:absolute; left:.75rem; top:1.5rem; bottom:.5rem; width:2px; background:var(--border); }
+.lc-step { position:relative; padding-bottom:1.8rem; }
+.lc-step:last-child { padding-bottom:0; }
+.lc-dot { position:absolute; left:-1.75rem; top:.3rem; width:14px; height:14px; border-radius:50%; border:2px solid; z-index:1; background:#f5f7fc; }
+.lc-step h4 { font-family:var(--font-head); font-weight:700; font-size:.95rem; margin-bottom:.3rem; }
+.lc-step p  { color:var(--muted); font-size:.85rem; }
+
+/* ── SCENARIO CARD ────────────────────────────── */
+.scenario { background:var(--surface); border:1px solid var(--border); border-radius:var(--radius); padding:1.2rem 1.5rem; margin:.8rem 0; }
+.scenario .sq { font-family:var(--font-head); font-weight:700; font-size:.95rem; margin-bottom:.5rem; }
+.scenario .sa { color:var(--muted); font-size:.88rem; line-height:1.6; }
+.correct { color:#34d399; }
+.incorrect { color:#f87171; }
+
+/* ── PILL NAV (topic anchor) ──────────────────── */
+.topic-tag {
+  display:inline-block; font-size:.7rem; font-family:var(--font-head); font-weight:700;
+  padding:.2rem .7rem; border-radius:4px; letter-spacing:.06em; text-transform:uppercase;
+  margin-bottom:1rem;
+}
+
+/* ── RESPONSIVE ───────────────────────────────── */
+@media(max-width:768px){
+  main { padding:2rem 1rem 6rem; }
+  .sec-title { font-size:1.7rem; }
+}
+
+/* ── SCROLL PROGRESS ──────────────────────────── */
+#progress { position:fixed; top:0; left:0; height:3px; background:linear-gradient(90deg,var(--c1),var(--c2),var(--c3)); z-index:200; transition:width .1s; }
+
+/* ── BACK TO TOP ──────────────────────────────── */
+#btt {
+  position:fixed; bottom:2rem; right:2rem; z-index:100;
+  width:44px; height:44px; border-radius:50%;
+  background:#eef1f8; border:1px solid var(--border);
+  color:var(--muted); font-size:1.2rem;
+  display:flex; align-items:center; justify-content:center;
+  cursor:pointer; transition:all .2s; opacity:0; pointer-events:none;
+  text-decoration:none;
+}
+#btt.show { opacity:1; pointer-events:all; }
+#btt:hover { background:var(--c1); color:#000; border-color:var(--c1); }
+
+<style>
+#interview-btn {
+  display:block; text-decoration:none;
+  background: linear-gradient(135deg, #1e40af 0%, #7c3aed 50%, #0ea5e9 100%);
+  border-radius: 20px; padding: 3px;
+  box-shadow: 0 8px 40px rgba(30,64,175,0.3), 0 2px 8px rgba(0,0,0,.1);
+  transition: transform .25s, box-shadow .25s; max-width: 700px; margin: 0 auto;
+}
+#interview-btn:hover { transform: translateY(-4px); box-shadow: 0 16px 50px rgba(30,64,175,0.4); }
+.btn-inner {
+  background: #fff; border-radius: 18px; padding: 1.8rem 2rem;
+  display: flex; align-items: center; gap: 1.4rem;
+}
+.btn-icon { font-size: 2.8rem; flex-shrink:0; }
+.btn-text { flex:1; text-align:left; }
+.btn-title { font-family: "Syne", sans-serif; font-size: 1.3rem; font-weight: 800; color: #0f172a; }
+.btn-sub { color: #4b5a75; font-size: .88rem; margin-top: .2rem; }
+.btn-arrow { font-size: 2rem; color: #7c3aed; font-weight: 800; flex-shrink:0; }
+</style>
+</style>
+</head>
+<body>
+
+<div id="progress"></div>
+<a id="btt" href="#hero" title="Back to top">↑</a>
+
+<!-- ═══════════ HERO ═══════════ -->
+<div id="hero">
+  <div class="hero-badge">⚡ Salesforce Development</div>
+  <h1>The Complete<br><span class="grad">Developer Guide</span></h1>
+  <p>Validation Rules · Roll-Up Summaries · Flow vs Apex · LWC · Integrations · Governor Limits & more — all in one place.</p>
+  <div class="hero-chips">
+    <a class="chip chip-1" href="#validation">Validation Rules</a>
+    <a class="chip chip-1" href="#rollup">Roll-Up Summary</a>
+    <a class="chip chip-2" href="#flowapex">Flow vs Apex</a>
+    <a class="chip chip-1" href="#formula">Formula Fields</a>
+    <a class="chip chip-5" href="#govlimits">Governor Limits</a>
+    <a class="chip chip-7" href="#soqlsosl">SOQL &amp; SOSL</a>
+    <a class="chip chip-2" href="#callouts">Callouts</a>
+    <a class="chip chip-2" href="#asyncapex">Async Apex</a>
+    <a class="chip chip-2" href="#triggers">Triggers</a>
+    <a class="chip chip-3" href="#lwc">LWC</a>
+    <a class="chip chip-3" href="#apexlwc">Apex in LWC</a>
+    <a class="chip chip-3" href="#events">LWC Events</a>
+    <a class="chip chip-3" href="#lifecycle">Lifecycle &amp; Nav</a>
+    <a class="chip chip-3" href="#datatable">Datatable</a>
+    <a class="chip chip-4" href="#integration">Integration</a>
+    <a class="chip chip-4" href="#namedcred">Named Credentials</a>
+    <a class="chip chip-6" href="#streaming">Streaming &amp; Events</a>
+  </div>
+  <div class="scroll-hint">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12l7 7 7-7"/></svg>
+    scroll to explore
+  </div>
+</div>
+
+<!-- ═══════════ STICKY NAV ═══════════ -->
+<nav id="topnav">
+  <a class="nav-logo" href="#hero">⚡ SF Dev</a>
+  <div class="nav-links">
+    <a href="#validation">Validation</a>
+    <a href="#rollup">Roll-Up</a>
+    <a href="#flowapex">Flow vs Apex</a>
+    <a href="#formula">Formula</a>
+    <a href="#govlimits">Gov Limits</a>
+    <a href="#soqlsosl">SOQL/SOSL</a>
+    <a href="#callouts">Callouts</a>
+    <a href="#asyncapex">Async</a>
+    <a href="#triggers">Triggers</a>
+    <a href="#lwc">LWC</a>
+    <a href="#apexlwc">Apex→LWC</a>
+    <a href="#events">Events</a>
+    <a href="#lifecycle">Lifecycle</a>
+    <a href="#datatable">Datatable</a>
+    <a href="#integration">Integration</a>
+    <a href="#namedcred">Credentials</a>
+    <a href="#streaming">Streaming</a>
+  </div>
+</nav>
+
+<main>
+
+<!-- ═══════════ 1. VALIDATION RULES ═══════════ -->
+<section id="validation">
+  <div class="sec-header">
+    <div class="sec-icon" style="background:rgba(0,212,255,.12); color:var(--c1)">🛡️</div>
+    <div>
+      <div class="topic-tag" style="background:rgba(0,212,255,.1);color:var(--c1)">Declarative</div>
+      <div class="sec-title">Validation Rules</div>
+      <div class="sec-sub">Enforce data quality without writing a single line of Apex</div>
+    </div>
+  </div>
+
+  <p style="color:var(--muted);margin-bottom:1.5rem">Validation Rules are declarative mechanisms that enforce business rules by validating input data before it's saved to the database. When a rule's formula evaluates to <code>TRUE</code>, the record is blocked and an error message is displayed.</p>
+
+  <div class="cards cards-3">
+    <div class="card card-accent" style="border-top-color:var(--c1)">
+      <div class="card-icon">🔐</div>
+      <h3>Field-Level Validation</h3>
+      <p>Enforce data rules without Apex. Each rule contains a boolean formula and an error message shown to the user.</p>
+    </div>
+    <div class="card card-accent" style="border-top-color:var(--c4)">
+      <div class="card-icon">🧹</div>
+      <h3>Clean Data</h3>
+      <p>Maintain high-quality, reliable records. Rules fire before DML, so dirty data never reaches the database.</p>
+    </div>
+    <div class="card card-accent" style="border-top-color:var(--c3)">
+      <div class="card-icon">🧭</div>
+      <h3>Real-Time Feedback</h3>
+      <p>Guide users during data entry with contextual, user-friendly error messages at field or page level.</p>
+    </div>
+  </div>
+
+  <h3 style="font-family:var(--font-head);margin:2rem 0 .8rem">Anatomy of a Validation Rule</h3>
+  <div class="cards cards-2" style="gap:.8rem">
+    <div class="card" style="border-color:rgba(0,212,255,.2)">
+      <h3 style="color:var(--c1)">Rule Name</h3><p>Unique, descriptive identifier for the rule.</p>
+    </div>
+    <div class="card" style="border-color:rgba(16,185,129,.2)">
+      <h3 style="color:var(--c4)">Active Status</h3><p>Toggle to enable or disable without deleting.</p>
+    </div>
+    <div class="card" style="border-color:rgba(245,158,11,.2)">
+      <h3 style="color:var(--c3)">Formula Expression</h3><p>Boolean formula returning <code>TRUE</code> when an error should occur.</p>
+    </div>
+    <div class="card" style="border-color:rgba(239,68,68,.2)">
+      <h3 style="color:var(--c5)">Error Message</h3><p>User-friendly explanation shown at field level or top of page.</p>
+    </div>
+  </div>
+
+  <h3 style="font-family:var(--font-head);margin:2rem 0 .8rem">Common Functions Reference</h3>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>Function</th><th>Description</th><th>Example</th></tr></thead>
+      <tbody>
+        <tr><td><code>ISBLANK()</code></td><td>Checks if a field is blank</td><td><code>ISBLANK(Phone)</code></td></tr>
+        <tr><td><code>ISPICKVAL()</code></td><td>Evaluates picklist values</td><td><code>ISPICKVAL(Status, "Open")</code></td></tr>
+        <tr><td><code>AND() / OR()</code></td><td>Combines multiple conditions</td><td><code>AND(ISBLANK(Email), ISBLANK(Phone))</code></td></tr>
+        <tr><td><code>NOT()</code></td><td>Negates a condition</td><td><code>NOT(ISPICKVAL(Type, "New"))</code></td></tr>
+        <tr><td><code>REGEX()</code></td><td>Validates text format</td><td>Email pattern matching</td></tr>
+        <tr><td><code>LEN()</code></td><td>Checks string length</td><td><code>LEN(Name) > 80</code></td></tr>
+        <tr><td><code>ISCHANGED()</code></td><td>Detects change in value</td><td><code>ISCHANGED(Status)</code></td></tr>
+        <tr><td><code>PRIORVALUE()</code></td><td>Gets old value before edit</td><td><code>PRIORVALUE(Status) = "Approved"</code></td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h3 style="font-family:var(--font-head);margin:2rem 0 .8rem">Real-World Use Cases</h3>
+  <div class="cards cards-2">
+    <div class="card" style="border-left:3px solid var(--c1)">
+      <h3>🔸 Prevent Past Close Date</h3>
+      <div class="code-block"><span class="cb-label">Formula</span>CloseDate &lt; TODAY()</div>
+      <p style="color:var(--muted);font-size:.85rem">Ensures future-oriented pipeline management.</p>
+    </div>
+    <div class="card" style="border-left:3px solid var(--c3)">
+      <h3>🔸 Require Phone for Inquiry</h3>
+      <div class="code-block"><span class="cb-label">Formula</span>ISPICKVAL(LeadSource,"Phone Inquiry")
+&amp;&amp; ISBLANK(Phone)</div>
+      <p style="color:var(--muted);font-size:.85rem">Ensures agents can always follow up on leads.</p>
+    </div>
+    <div class="card" style="border-left:3px solid var(--c4)">
+      <h3>🔸 Minimum Opportunity Amount</h3>
+      <div class="code-block"><span class="cb-label">Formula</span>Amount &lt; 1000</div>
+      <p style="color:var(--muted);font-size:.85rem">Prevents invalid or low-value revenue records.</p>
+    </div>
+    <div class="card" style="border-left:3px solid var(--c2)">
+      <h3>🔸 Lock Approved Records</h3>
+      <div class="code-block"><span class="cb-label">Formula</span>PRIORVALUE(Status__c) = "Approved"
+&amp;&amp; ISCHANGED(Amount)</div>
+      <p style="color:var(--muted);font-size:.85rem">Protects data integrity after approval.</p>
+    </div>
+  </div>
+
+  <h3 style="font-family:var(--font-head);margin:2rem 0 .8rem">Execution Order &amp; Governor Limits</h3>
+  <div class="hbox warn">
+    <strong>⚠️ Execution Context</strong>
+    Validation Rules execute <em>after</em> before-save triggers but <em>before</em> after-triggers and workflows. They can prevent records from being saved entirely.
+  </div>
+  <div class="cards cards-3">
+    <div class="card"><h3 style="color:var(--c5)">500</h3><p>Max active rules per object</p></div>
+    <div class="card"><h3 style="color:var(--c3)">5,000</h3><p>Formula compile size (characters)</p></div>
+    <div class="card"><h3 style="color:var(--c1)">3,900</h3><p>Formula character length limit</p></div>
+  </div>
+
+  <h3 style="font-family:var(--font-head);margin:2rem 0 .8rem">Advanced Use Cases</h3>
+  <div class="cards cards-2">
+    <div class="card"><h3>🔐 Conditional Mandatory Fields</h3><p>Based on user profile or record type — combine <code>$Profile.Name</code> with <code>ISBLANK()</code>.</p></div>
+    <div class="card"><h3>🌍 Multilingual Error Messages</h3><p>Use Custom Labels to support multiple languages in error messages.</p></div>
+  </div>
+
+  <h3 style="font-family:var(--font-head);margin:2rem 0 .8rem">Interview Q&amp;A</h3>
+  <div class="qa-list">
+    <div class="qa-item"><div class="qa-q">Q1: Enforce checkbox selection before record submission</div><div class="qa-a"><code>NOT(Acknowledged__c)</code> — Returns TRUE if checkbox is unchecked, blocking save until user checks it. Enforces user acknowledgment.</div></div>
+    <div class="qa-item"><div class="qa-q">Q2: Restrict Discount > 30% on Opportunities</div><div class="qa-a"><code>Discount__c > 0.30</code> — Prevents over-discounting during sales negotiations.</div></div>
+    <div class="qa-item"><div class="qa-q">Q3: Block future birthdates on Contact records</div><div class="qa-a"><code>Birthdate > TODAY()</code> — Validates that personal information is accurate and realistic.</div></div>
+    <div class="qa-item"><div class="qa-q">Q4: Ensure dependent picklist is not blank when parent is selected</div><div class="qa-a"><code>NOT(ISBLANK(Parent__c)) &amp;&amp; ISBLANK(Child__c)</code> — Validates completeness of hierarchical picklist data.</div></div>
+  </div>
+
+  <div class="hbox good" style="margin-top:1.5rem">
+    <strong>💡 Best Practices</strong>
+    Write clear, non-technical error messages · Test all edge cases in Sandbox first · Avoid over-validation that frustrates users · Combine with Flow logic for complex scenarios · Document every rule's purpose.
+  </div>
+</section>
+
+<!-- ═══════════ 2. ROLL-UP SUMMARY ═══════════ -->
+<section id="rollup">
+  <div class="sec-header">
+    <div class="sec-icon" style="background:rgba(0,212,255,.12); color:var(--c1)">📊</div>
+    <div>
+      <div class="topic-tag" style="background:rgba(0,212,255,.1);color:var(--c1)">Declarative</div>
+      <div class="sec-title">Roll-Up Summary Fields</div>
+      <div class="sec-sub">Aggregate child record values directly onto the master record</div>
+    </div>
+  </div>
+
+  <p style="color:var(--muted);margin-bottom:1.5rem">Roll-Up Summary Fields are read-only fields on a master object that automatically calculate values from related detail records in a master-detail relationship. They perform SUM, MIN, MAX, and COUNT operations and update automatically when child records change.</p>
+
+  <div class="hbox info"><strong>💡 Think of it this way</strong>Roll-Up Summary Fields are your built-in Excel formulas for related records — no code required.</div>
+
+  <h3 style="font-family:var(--font-head);margin:2rem 0 .8rem">Summary Types</h3>
+  <div class="cards cards-4">
+    <div class="card card-accent" style="border-top-color:var(--c4)">
+      <div class="card-icon">➕</div><h3 style="color:var(--c4)">SUM</h3>
+      <p>Adds numeric values — e.g., total sales revenue per customer.</p>
+    </div>
+    <div class="card card-accent" style="border-top-color:var(--c1)">
+      <div class="card-icon">⬇️</div><h3 style="color:var(--c1)">MIN</h3>
+      <p>Smallest value — e.g., first login date, earliest order.</p>
+    </div>
+    <div class="card card-accent" style="border-top-color:var(--c3)">
+      <div class="card-icon">⬆️</div><h3 style="color:var(--c3)">MAX</h3>
+      <p>Largest value — e.g., last support ticket creation date.</p>
+    </div>
+    <div class="card card-accent" style="border-top-color:var(--c2)">
+      <div class="card-icon">🔢</div><h3 style="color:var(--c2)">COUNT</h3>
+      <p>Number of related records — e.g., quotes per opportunity.</p>
+    </div>
+  </div>
+
+  <h3 style="font-family:var(--font-head);margin:2rem 0 .8rem">Where Can You Use Them?</h3>
+  <div class="hbox warn"><strong>⚠️ Important Constraint</strong>Roll-Up Summary Fields are <strong>only available on master-detail relationships</strong>. They cannot be created on lookup relationships natively — use DLRS or Apex triggers instead.</div>
+
+  <div class="cards cards-2">
+    <div class="card">
+      <h3>Common Object Pairs</h3>
+      <div class="flow-chain" style="flex-direction:column;align-items:flex-start">
+        <div style="display:flex;align-items:center;gap:.5rem"><div class="flow-node">Account</div><div class="flow-arrow">→</div><div class="flow-node">Opportunity</div></div>
+        <div style="display:flex;align-items:center;gap:.5rem"><div class="flow-node">Opportunity</div><div class="flow-arrow">→</div><div class="flow-node">Opportunity Product</div></div>
+        <div style="display:flex;align-items:center;gap:.5rem"><div class="flow-node">Custom Master</div><div class="flow-arrow">→</div><div class="flow-node">Custom Detail</div></div>
+      </div>
+    </div>
+    <div class="card">
+      <h3>Creation Steps</h3>
+      <ol class="fancy" style="color:var(--muted);font-size:.88rem">
+        <li>Navigate to the master object (e.g., Account)</li>
+        <li>Create a new custom field</li>
+        <li>Select <strong>Roll-Up Summary</strong> as the field type</li>
+        <li>Choose the child object (detail record)</li>
+        <li>Select the summary type: COUNT, SUM, MIN, MAX</li>
+        <li>Optionally add filter criteria</li>
+        <li>Save and add to page layout</li>
+      </ol>
+    </div>
+  </div>
+
+  <h3 style="font-family:var(--font-head);margin:2rem 0 .8rem">Real-World Use Cases</h3>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>Use Case</th><th>Summary Type</th><th>Description</th></tr></thead>
+      <tbody>
+        <tr><td>Total Order Value</td><td><span class="tag tag-yes">SUM</span></td><td>Sum of Order Amounts on a Customer</td></tr>
+        <tr><td>Oldest Invoice</td><td><span class="tag tag-warn">MIN</span></td><td>Min Invoice Date on a Billing Account</td></tr>
+        <tr><td>Number of Active Cases</td><td><span class="tag tag-no">COUNT</span></td><td>COUNT where Status = 'Open'</td></tr>
+        <tr><td>Highest Transaction</td><td><span class="tag tag-warn">MAX</span></td><td>MAX of Transaction.Amount__c</td></tr>
+        <tr><td>Average Sales</td><td>Formula</td><td>SUM / COUNT using two roll-up fields with a formula field</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h3 style="font-family:var(--font-head);margin:2rem 0 .8rem">Limitations &amp; Alternatives</h3>
+  <div class="vs-grid">
+    <div class="vs-side">
+      <h3 style="color:var(--c5)">⚠️ Limitations</h3>
+      <ul class="fancy" style="color:var(--muted);font-size:.88rem">
+        <li>Only on master-detail relationships</li>
+        <li>Cannot reference grandchild records</li>
+        <li>Max 25 fields per object</li>
+        <li>Cannot use text fields for SUM/MIN/MAX</li>
+        <li>No cross-object formulas in filters</li>
+        <li>Limited support for ISCHANGED() filters</li>
+      </ul>
+    </div>
+    <div class="vs-div">VS</div>
+    <div class="vs-side">
+      <h3 style="color:var(--c4)">✅ Alternatives</h3>
+      <div style="margin-bottom:1rem">
+        <strong style="font-family:var(--font-head);font-size:.9rem;color:var(--c1)">DLRS Tool</strong>
+        <p style="color:var(--muted);font-size:.85rem;margin-top:.3rem">Open-source package for lookup rollups, scheduled &amp; real-time calculations.</p>
+      </div>
+      <div>
+        <strong style="font-family:var(--font-head);font-size:.9rem;color:var(--c2)">Apex Trigger / Batch</strong>
+        <p style="color:var(--muted);font-size:.85rem;margin-top:.3rem">Custom logic with full control — handles grandchild, complex conditions, large data volumes.</p>
+      </div>
+    </div>
+  </div>
+
+  <h3 style="font-family:var(--font-head);margin:2rem 0 .8rem">Interview Q&amp;A</h3>
+  <div class="qa-list">
+    <div class="qa-item"><div class="qa-q">Can you create a roll-up summary field on a lookup relationship?</div><div class="qa-a">Not natively. Use the DLRS tool or Apex triggers for lookup rollups.</div></div>
+    <div class="qa-item"><div class="qa-q">How do you calculate total 'Closed Won' Opportunities on an Account?</div><div class="qa-a">Create a SUM roll-up field on Account for Opportunities with a filter: Stage = 'Closed Won'.</div></div>
+    <div class="qa-item"><div class="qa-q">Can Roll-Up Summary Fields reference formula fields?</div><div class="qa-a">Yes, but performance may vary, especially with complex formulas. Test thoroughly in Sandbox.</div></div>
+    <div class="qa-item"><div class="qa-q">Can you roll-up from grandchild records?</div><div class="qa-a">No. Use Apex or a combination of DLRS with intermediate roll-up fields.</div></div>
+  </div>
+</section>
+
+<!-- ═══════════ 3. FLOW vs APEX ═══════════ -->
+<section id="flowapex">
+  <div class="sec-header">
+    <div class="sec-icon" style="background:rgba(124,58,237,.12); color:var(--c2)">⚙️</div>
+    <div>
+      <div class="topic-tag" style="background:rgba(124,58,237,.1);color:var(--c2)">Automation</div>
+      <div class="sec-title">Flow vs Apex</div>
+      <div class="sec-sub">When to use declarative automation and when to reach for code</div>
+    </div>
+  </div>
+
+  <div class="vs-grid">
+    <div class="vs-side" style="border-color:rgba(0,212,255,.3)">
+      <h3 style="color:var(--c1)">🌊 Flow</h3>
+      <p style="color:var(--muted);font-size:.88rem;margin-bottom:1rem">Part of Salesforce's low-code automation toolbox — build business processes visually.</p>
+      <strong style="font-family:var(--font-head);font-size:.82rem;color:var(--muted);display:block;margin-bottom:.5rem">TYPES</strong>
+      <ul class="fancy" style="color:var(--muted);font-size:.85rem">
+        <li><strong style="color:var(--text)">Record-Triggered</strong> — Insert / update / delete events</li>
+        <li><strong style="color:var(--text)">Scheduled</strong> — Batch execution at a scheduled time</li>
+        <li><strong style="color:var(--text)">Screen Flow</strong> — User interaction with form inputs</li>
+        <li><strong style="color:var(--text)">Autolaunched</strong> — Invoked via Apex or another Flow</li>
+        <li><strong style="color:var(--text)">Platform Event-Triggered</strong> — Responds to events</li>
+      </ul>
+    </div>
+    <div class="vs-div">VS</div>
+    <div class="vs-side" style="border-color:rgba(124,58,237,.3)">
+      <h3 style="color:var(--c2)">⬡ Apex</h3>
+      <p style="color:var(--muted);font-size:.88rem;margin-bottom:1rem">Salesforce's strongly typed, object-oriented language for full programmatic control.</p>
+      <strong style="font-family:var(--font-head);font-size:.82rem;color:var(--muted);display:block;margin-bottom:.5rem">STRENGTHS</strong>
+      <ul class="fancy" style="color:var(--muted);font-size:.85rem">
+        <li><strong style="color:var(--text)">Triggers</strong> — Fine-grained DML event handling</li>
+        <li><strong style="color:var(--text)">Async Jobs</strong> — Future, Batch, Queueable, Scheduled</li>
+        <li><strong style="color:var(--text)">API Callouts</strong> — REST/SOAP integrations</li>
+        <li><strong style="color:var(--text)">Reusable Classes</strong> — Services, utilities, frameworks</li>
+        <li><strong style="color:var(--text)">Governor Control</strong> — Fine-grained limit management</li>
+      </ul>
+    </div>
+  </div>
+
+  <h3 style="font-family:var(--font-head);margin:2rem 0 .8rem">Deep Comparison</h3>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>Feature</th><th>Flow</th><th>Apex</th></tr></thead>
+      <tbody>
+        <tr><td>Setup Time</td><td>Very fast; UI-based</td><td>Slower; requires class + test class</td></tr>
+        <tr><td>Performance in Bulk</td><td>Limited; prone to limits</td><td>Highly optimized when bulkified</td></tr>
+        <tr><td>Reusability</td><td>Difficult beyond subflows</td><td>High — reusable methods, utils</td></tr>
+        <tr><td>Debugging</td><td>Visual debugger (limited stack trace)</td><td>Full stack trace, logs, breakpoints</td></tr>
+        <tr><td>Test Automation</td><td>Manual or 3rd-party tools</td><td>Required test classes; CI/CD ready</td></tr>
+        <tr><td>CI/CD Integration</td><td><span class="tag tag-warn">Challenging</span></td><td><span class="tag tag-yes">SFDX / Git / Copado</span></td></tr>
+        <tr><td>External Callouts</td><td><span class="tag tag-no">Not Supported</span></td><td><span class="tag tag-yes">HTTP, REST, SOAP</span></td></tr>
+        <tr><td>UI Forms</td><td><span class="tag tag-yes">Screen Flow</span></td><td><span class="tag tag-no">None</span></td></tr>
+        <tr><td>Recursion Management</td><td>No built-in handling</td><td>Manageable via static variables</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h3 style="font-family:var(--font-head);margin:2rem 0 .8rem">Governor Limits Comparison</h3>
+  <div class="cards cards-2">
+    <div class="card" style="border-color:rgba(0,212,255,.2)">
+      <h3 style="color:var(--c1)">Flow Limits</h3>
+      <div class="limit-bar-group">
+        <div class="limit-item"><span class="limit-label">SOQL Queries</span><div class="limit-bar-bg"><div class="limit-bar-fill" style="width:67%;background:var(--c1)"></div></div><span class="limit-val">100 max</span></div>
+        <div class="limit-item"><span class="limit-label">DML Operations</span><div class="limit-bar-bg"><div class="limit-bar-fill" style="width:75%;background:var(--c3)"></div></div><span class="limit-val">150 max</span></div>
+        <div class="limit-item"><span class="limit-label">CPU Time</span><div class="limit-bar-bg"><div class="limit-bar-fill" style="width:50%;background:var(--c2)"></div></div><span class="limit-val">10,000ms</span></div>
+      </div>
+    </div>
+    <div class="card" style="border-color:rgba(124,58,237,.2)">
+      <h3 style="color:var(--c2)">Apex Capabilities</h3>
+      <ul class="fancy" style="color:var(--muted);font-size:.85rem">
+        <li>Leverages Maps/Sets for bulk operations</li>
+        <li>Split work across Queueable/Batch jobs</li>
+        <li>Control transaction boundaries &amp; retry logic</li>
+        <li>Use <code>Limits.get...()</code> methods for monitoring</li>
+      </ul>
+    </div>
+  </div>
+
+  <h3 style="font-family:var(--font-head);margin:2rem 0 .8rem">Hybrid Pattern: Best of Both Worlds</h3>
+  <div class="hbox purple"><strong>🚀 Recommended Architecture</strong>
+    Use <strong>Flow for orchestration</strong> and <strong>Apex for heavy lifting</strong>. A record-triggered Flow checks criteria, then delegates complex processing to an Invocable Apex method.
+  </div>
+  <div class="flow-chain" style="flex-wrap:wrap">
+    <div class="flow-node" style="border-color:rgba(0,212,255,.3);color:var(--c1)">Record-Triggered Flow</div>
+    <div class="flow-arrow">→</div>
+    <div class="flow-node">Decision Element</div>
+    <div class="flow-arrow">→</div>
+    <div class="flow-node" style="border-color:rgba(124,58,237,.3);color:var(--c2)">Apex Action Element</div>
+    <div class="flow-arrow">→</div>
+    <div class="flow-node" style="border-color:rgba(16,185,129,.3);color:var(--c4)">Complex Processing</div>
+  </div>
+
+  <h3 style="font-family:var(--font-head);margin:2rem 0 .8rem">Real-World Scenario Decisions</h3>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>Scenario</th><th>Tool</th><th>Reason</th></tr></thead>
+      <tbody>
+        <tr><td>Multi-step onboarding form</td><td><span class="tag tag-yes">Screen Flow</span></td><td>Use Subflows for modularity</td></tr>
+        <tr><td>Update parent from child aggregate</td><td><span class="tag" style="background:rgba(124,58,237,.15);color:#a78bfa;border:1px solid rgba(124,58,237,.3)">Apex Trigger</span></td><td>SOQL aggregates not efficient in Flow</td></tr>
+        <tr><td>Bulk account enrichment via API</td><td><span class="tag" style="background:rgba(124,58,237,.15);color:#a78bfa;border:1px solid rgba(124,58,237,.3)">Queueable Apex</span></td><td>Avoid limits, control retry logic</td></tr>
+        <tr><td>Case routing with thresholds</td><td><span class="tag tag-warn">Flow + Invocable</span></td><td>Best of both worlds</td></tr>
+        <tr><td>Daily export to external FTP</td><td><span class="tag" style="background:rgba(124,58,237,.15);color:#a78bfa;border:1px solid rgba(124,58,237,.3)">Apex + Batch</span></td><td>Scheduled Apex + integration</td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<!-- ═══════════ 4. FORMULA FIELDS ═══════════ -->
+<section id="formula">
+  <div class="sec-header">
+    <div class="sec-icon" style="background:rgba(0,212,255,.12); color:var(--c1)">🧮</div>
+    <div>
+      <div class="topic-tag" style="background:rgba(0,212,255,.1);color:var(--c1)">Declarative</div>
+      <div class="sec-title">Formula Fields</div>
+      <div class="sec-sub">Real-time, auto-calculated read-only fields powered by expressions</div>
+    </div>
+  </div>
+
+  <p style="color:var(--muted);margin-bottom:1.5rem">Formula Fields automatically calculate values based on other fields, expressions, or logic. They are evaluated on-the-fly — no data is stored — and update in real-time whenever the record is viewed.</p>
+
+  <div class="hbox info"><strong>💡 Mental Model</strong>"Formula Fields are mini-calculators on your records. A single formula can save hours of development if used right."</div>
+
+  <h3 style="font-family:var(--font-head);margin:2rem 0 .8rem">Syntax Components</h3>
+  <div class="cards cards-2">
+    <div class="card">
+      <h3>Operators</h3>
+      <div class="badge-row">
+        <span class="badge" style="color:var(--c1);border-color:rgba(0,212,255,.3);background:rgba(0,100,200,.08)">+ - * /</span>
+        <span class="badge" style="color:var(--c4);border-color:rgba(16,185,129,.3);background:rgba(16,185,129,.08)">= != &lt; &gt;</span>
+        <span class="badge" style="color:var(--c2);border-color:rgba(124,58,237,.3);background:rgba(124,58,237,.08)">AND() OR()</span>
+      </div>
+    </div>
+    <div class="card">
+      <h3>Common Functions</h3>
+      <div class="badge-row">
+        <span class="badge" style="color:var(--c3);border-color:rgba(245,158,11,.3);background:rgba(245,158,11,.08)">IF()</span>
+        <span class="badge" style="color:var(--c3);border-color:rgba(245,158,11,.3);background:rgba(245,158,11,.08)">CASE()</span>
+        <span class="badge" style="color:var(--c3);border-color:rgba(245,158,11,.3);background:rgba(245,158,11,.08)">ISBLANK()</span>
+        <span class="badge" style="color:var(--c3);border-color:rgba(245,158,11,.3);background:rgba(245,158,11,.08)">TEXT()</span>
+        <span class="badge" style="color:var(--c3);border-color:rgba(245,158,11,.3);background:rgba(245,158,11,.08)">TODAY()</span>
+        <span class="badge" style="color:var(--c3);border-color:rgba(245,158,11,.3);background:rgba(245,158,11,.08)">NOW()</span>
+        <span class="badge" style="color:var(--c3);border-color:rgba(245,158,11,.3);background:rgba(245,158,11,.08)">ROUND()</span>
+        <span class="badge" style="color:var(--c3);border-color:rgba(245,158,11,.3);background:rgba(245,158,11,.08)">BLANKVALUE()</span>
+      </div>
+    </div>
+  </div>
+
+  <h3 style="font-family:var(--font-head);margin:2rem 0 .8rem">Use Case Recipes</h3>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>Use Case</th><th>Formula</th><th>What It Does</th></tr></thead>
+      <tbody>
+        <tr><td>Sales Commission</td><td><code>Amount * 0.05</code></td><td>Calculates 5% of Opportunity amount</td></tr>
+        <tr><td>Status Flag</td><td><code>IF(IsActive__c, "🟢 Active", "🔴 Inactive")</code></td><td>Visual status indicator for users</td></tr>
+        <tr><td>Days Since Created</td><td><code>TODAY() - CreatedDate</code></td><td>Tracks how old the record is</td></tr>
+        <tr><td>Age Calculation</td><td><code>YEAR(TODAY()) - YEAR(Date_of_Birth__c)</code></td><td>Approximate age from birthdate</td></tr>
+        <tr><td>Discount Check</td><td><code>IF(Discount__c &gt; 0.2, "⚠️ Check", "✅ OK")</code></td><td>Enforces discount policy visually</td></tr>
+        <tr><td>Cross-Object Field</td><td><code>Account.Phone</code></td><td>Display parent Account phone on Opportunity</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h3 style="font-family:var(--font-head);margin:2rem 0 .8rem">Cross-Object Formulas</h3>
+  <div class="hbox warn"><strong>⚠️ One Level Up Only</strong>You can reference fields from parent objects (lookup or master-detail), but only <em>one level up</em>. Child-to-parent is not possible — use custom roll-up summaries or Apex for that direction.</div>
+
+  <h3 style="font-family:var(--font-head);margin:2rem 0 .8rem">Limitations</h3>
+  <div class="cards cards-3">
+    <div class="card"><h3 style="color:var(--c5)">No DML/Callouts</h3><p>Formula fields are purely read — they cannot trigger automation.</p></div>
+    <div class="card"><h3 style="color:var(--c5)">No Child References</h3><p>Cannot reference child object fields. Use roll-up summaries instead.</p></div>
+    <div class="card"><h3 style="color:var(--c5)">3,900 chars</h3><p>Compiled formula size limit; display size is 5,000 characters.</p></div>
+  </div>
+</section>
+
+<!-- ═══════════ 5. GOVERNOR LIMITS ═══════════ -->
+<section id="govlimits">
+  <div class="sec-header">
+    <div class="sec-icon" style="background:rgba(239,68,68,.12); color:var(--c5)">⛔</div>
+    <div>
+      <div class="topic-tag" style="background:rgba(239,68,68,.1);color:var(--c5)">Performance</div>
+      <div class="sec-title">Governor Limits in Apex</div>
+      <div class="sec-sub">Multi-tenant safeguards that shape how you write scalable code</div>
+    </div>
+  </div>
+
+  <div class="hbox warn"><strong>Why Governor Limits Exist</strong>Salesforce runs on a multi-tenant architecture where resources are shared. Limits prevent any single tenant from monopolizing server resources. Embrace them as a guide to writing high-performance code.</div>
+
+  <h3 style="font-family:var(--font-head);margin:2rem 0 .8rem">Per-Transaction Limits</h3>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>Resource</th><th>Synchronous</th><th>Asynchronous</th></tr></thead>
+      <tbody>
+        <tr><td>Total SOQL Queries</td><td><strong style="color:var(--c3)">100</strong></td><td><strong style="color:var(--c4)">200</strong></td></tr>
+        <tr><td>Records Retrieved by SOQL</td><td>50,000</td><td>50,000</td></tr>
+        <tr><td>Total DML Statements</td><td>150</td><td>150</td></tr>
+        <tr><td>Records Processed by DML</td><td>10,000</td><td>10,000</td></tr>
+        <tr><td>CPU Time (ms)</td><td><strong style="color:var(--c3)">10,000</strong></td><td><strong style="color:var(--c4)">60,000</strong></td></tr>
+        <tr><td>Future Method Calls</td><td>0</td><td>50 per transaction</td></tr>
+        <tr><td>Callouts</td><td>1 (sync)</td><td>100 (async)</td></tr>
+        <tr><td>Heap Size</td><td>6MB</td><td>12MB</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h3 style="font-family:var(--font-head);margin:2rem 0 .8rem">Per-Org Static Limits</h3>
+  <div class="cards cards-4">
+    <div class="card"><h3 style="color:var(--c5)">5</h3><p>Max Batch Apex Jobs queued/active</p></div>
+    <div class="card"><h3 style="color:var(--c3)">50</h3><p>Max Queueable jobs chained</p></div>
+    <div class="card"><h3 style="color:var(--c1)">5,000</h3><p>Max daily email invocations per org</p></div>
+    <div class="card"><h3 style="color:var(--c2)">100</h3><p>Max scheduled Apex jobs</p></div>
+  </div>
+
+  <h3 style="font-family:var(--font-head);margin:2rem 0 .8rem">Anti-Patterns That Break Limits</h3>
+  <div class="cards cards-2">
+    <div class="card" style="border-color:rgba(239,68,68,.2)">
+      <h3 style="color:var(--c5)">❌ SOQL Inside For-Loop</h3>
+      <div class="code-block"><span class="cb-label">Bad</span>for(Account a : accounts) {
+  // ❌ SOQL in loop = limit violation
+  List&lt;Contact&gt; cons = [SELECT Id FROM Contact
+    WHERE AccountId = :a.Id];
+}</div>
+    </div>
+    <div class="card" style="border-color:rgba(16,185,129,.2)">
+      <h3 style="color:var(--c4)">✅ Bulk-Safe Pattern</h3>
+      <div class="code-block"><span class="cb-label">Good</span>Set&lt;Id&gt; accIds = new Set&lt;Id&gt;();
+for(Account a : accounts) accIds.add(a.Id);
+// ✅ One query outside loop
+Map&lt;Id,List&lt;Contact&gt;&gt; conMap = ...
+  [SELECT AccountId FROM Contact
+   WHERE AccountId IN :accIds];</div>
+    </div>
+  </div>
+
+  <h3 style="font-family:var(--font-head);margin:2rem 0 .8rem">Best Practices to Stay Within Limits</h3>
+  <div class="cards cards-3">
+    <div class="card card-accent" style="border-top-color:var(--c4)"><h3>Bulkify Everything</h3><p>Always process collections — List, Set, Map. Never assume single-record execution.</p></div>
+    <div class="card card-accent" style="border-top-color:var(--c1)"><h3>Use Maps for Association</h3><p><code>Map&lt;Id, SObject&gt;</code> patterns eliminate redundant queries and nested loops.</p></div>
+    <div class="card card-accent" style="border-top-color:var(--c2)"><h3>Async for Heavy Work</h3><p>Use Queueable or Batch Apex for operations approaching limit boundaries.</p></div>
+    <div class="card card-accent" style="border-top-color:var(--c3)"><h3>Monitor with Limits API</h3><p><code>Limits.getDmlStatements()</code>, <code>Limits.getQueryRows()</code> for proactive checks.</p></div>
+    <div class="card card-accent" style="border-top-color:var(--c6)"><h3>Cache When Possible</h3><p>Store query results in maps instead of re-querying the same records multiple times.</p></div>
+    <div class="card card-accent" style="border-top-color:var(--c7)"><h3>Mock in Tests</h3><p>Use <code>Test.startTest() / Test.stopTest()</code> to reset governor limits within test methods.</p></div>
+  </div>
+
+  <h3 style="font-family:var(--font-head);margin:2rem 0 .8rem">Scenario Interview Q&amp;A</h3>
+  <div class="qa-list">
+    <div class="qa-item"><div class="qa-q">What happens if a trigger exceeds 150 DML statements?</div><div class="qa-a">Salesforce throws: <code>Too many DML statements: 151</code>. The entire transaction rolls back. Refactor to bulkify and move DML outside of loops.</div></div>
+    <div class="qa-item"><div class="qa-q">You need to update 100,000 records. What's your approach?</div><div class="qa-a">Use Batch Apex with a scope of 200 records per execute() call. Schedule it with Scheduled Apex for off-peak execution.</div></div>
+    <div class="qa-item"><div class="qa-q">Code works in Sandbox but fails in Production with "Too many DML rows". Why?</div><div class="qa-a">Sandbox often has fewer records. Production triggers the 10,000 DML row limit due to larger data volumes. Switch to Batch Apex processing.</div></div>
+    <div class="qa-item"><div class="qa-q">How do you send 150 callouts in one process?</div><div class="qa-a">Use Batch Apex with 100 callouts per execute() iteration using Database.AllowsCallouts, or split across multiple chained Queueable jobs.</div></div>
+  </div>
+</section>
+
+<!-- ═══════════ 6. SOQL & SOSL ═══════════ -->
+<section id="soqlsosl">
+  <div class="sec-header">
+    <div class="sec-icon" style="background:rgba(6,182,212,.12); color:var(--c7)">🔍</div>
+    <div>
+      <div class="topic-tag" style="background:rgba(6,182,212,.1);color:var(--c7)">Query</div>
+      <div class="sec-title">SOQL &amp; SOSL</div>
+      <div class="sec-sub">Targeted queries vs full-text search — know when to use each</div>
+    </div>
+  </div>
+
+  <div class="vs-grid">
+    <div class="vs-side" style="border-color:rgba(6,182,212,.3)">
+      <h3 style="color:var(--c7)">SOQL — Salesforce Object Query Language</h3>
+      <p style="color:var(--muted);font-size:.88rem;margin-bottom:1rem">Like SQL, but Salesforce-specific. Use when you know exactly which object and fields you need.</p>
+      <div class="code-block"><span class="cb-label">Syntax</span>SELECT Id, Name, Amount
+FROM Opportunity
+WHERE StageName = 'Closed Won'
+  AND CloseDate = THIS_YEAR
+ORDER BY Amount DESC
+LIMIT 10</div>
+      <ul class="fancy" style="color:var(--muted);font-size:.85rem">
+        <li>Queries one object at a time (with relationships)</li>
+        <li>Cannot perform DML — read only</li>
+        <li>Supports WHERE, ORDER BY, LIMIT, GROUP BY</li>
+      </ul>
+    </div>
+    <div class="vs-div">VS</div>
+    <div class="vs-side" style="border-color:rgba(124,58,237,.3)">
+      <h3 style="color:var(--c2)">SOSL — Salesforce Object Search Language</h3>
+      <p style="color:var(--muted);font-size:.88rem;margin-bottom:1rem">Full-text search across multiple objects and fields. Use when you don't know where the data lives.</p>
+      <div class="code-block"><span class="cb-label">Syntax</span>FIND 'Cloud*'
+IN ALL FIELDS
+RETURNING Account(Name),
+  Contact(FirstName, LastName),
+  Lead(Company)</div>
+      <ul class="fancy" style="color:var(--muted);font-size:.85rem">
+        <li>Searches across multiple objects simultaneously</li>
+        <li>Returns lists of sObjects grouped by type</li>
+        <li>Supports wildcards: * and ?</li>
+      </ul>
+    </div>
+  </div>
+
+  <h3 style="font-family:var(--font-head);margin:2rem 0 .8rem">SOQL Relationship Queries</h3>
+  <div class="cards cards-2">
+    <div class="card">
+      <h3 style="color:var(--c7)">Parent → Child (Subquery)</h3>
+      <div class="code-block"><span class="cb-label">SOQL</span>SELECT Id, Name,
+  (SELECT Id, Subject FROM Cases)
+FROM Account
+WHERE Industry = 'Technology'</div>
+    </div>
+    <div class="card">
+      <h3 style="color:var(--c2)">Child → Parent</h3>
+      <div class="code-block"><span class="cb-label">SOQL</span>SELECT Id, Name, Account.Name,
+  Account.BillingCity
+FROM Contact
+WHERE Account.Industry = 'Finance'</div>
+    </div>
+  </div>
+
+  <h3 style="font-family:var(--font-head);margin:2rem 0 .8rem">SOQL vs SOSL Decision Matrix</h3>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>Feature</th><th>SOQL</th><th>SOSL</th></tr></thead>
+      <tbody>
+        <tr><td>Query known object</td><td><span class="tag tag-yes">✅ Yes</span></td><td><span class="tag tag-no">❌ Not suitable</span></td></tr>
+        <tr><td>Search multiple objects</td><td><span class="tag tag-no">❌ No</span></td><td><span class="tag tag-yes">✅ Yes</span></td></tr>
+        <tr><td>Performance (targeted)</td><td><span class="tag tag-yes">✅ Better</span></td><td><span class="tag tag-warn">❌ Slower</span></td></tr>
+        <tr><td>Full-text search</td><td><span class="tag tag-no">❌ No</span></td><td><span class="tag tag-yes">✅ Yes</span></td></tr>
+        <tr><td>Use in triggers</td><td><span class="tag tag-yes">✅ Common</span></td><td><span class="tag tag-warn">⚠️ Use caution</span></td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h3 style="font-family:var(--font-head);margin:2rem 0 .8rem">Performance Best Practices</h3>
+  <div class="cards cards-2">
+    <div class="card">
+      <h3>SOQL Tips</h3>
+      <ul class="fancy" style="color:var(--muted);font-size:.85rem">
+        <li>SELECT only needed fields</li>
+        <li>Use WHERE filters to minimize rows</li>
+        <li>Always LIMIT queries where possible</li>
+        <li>Use IN clauses with Set collections</li>
+        <li>Leverage indexed fields: Id, Name, CreatedDate</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h3>SOSL Tips</h3>
+      <ul class="fancy" style="color:var(--muted);font-size:.85rem">
+        <li>Use when object/field is unknown</li>
+        <li>Avoid in triggers unless necessary</li>
+        <li>Minimize wildcard searches</li>
+        <li>Specify search scope: ALL FIELDS or NAME FIELDS</li>
+      </ul>
+    </div>
+  </div>
+
+  <h3 style="font-family:var(--font-head);margin:2rem 0 .8rem">Scenario-Based Examples</h3>
+  <div class="qa-list">
+    <div class="qa-item"><div class="qa-q">Scenario 1: Fetch all Contacts under Accounts in 'India'</div><div class="qa-a"><div class="code-block">SELECT Id, Name FROM Contact
+WHERE Account.BillingCountry = 'India'</div><p>Child-to-parent relationship query filters based on Account fields.</p></div></div>
+    <div class="qa-item"><div class="qa-q">Scenario 2: Prevent SOQL-in-loop on trigger</div><div class="qa-a"><div class="code-block">// ✅ Bulk-safe trigger pattern
+Set&lt;Id&gt; accountIds = new Set&lt;Id&gt;();
+for(Contact c : Trigger.new) accountIds.add(c.AccountId);
+Map&lt;Id,Account&gt; accountMap = new Map&lt;Id,Account&gt;(
+  [SELECT Id, Name FROM Account WHERE Id IN :accountIds]
+);</div></div></div>
+    <div class="qa-item"><div class="qa-q">Scenario 3: Global search for term 'Cloud' across objects</div><div class="qa-a"><div class="code-block">List&lt;List&lt;SObject&gt;&gt; results = [
+  FIND 'Cloud*' IN ALL FIELDS
+  RETURNING Account(Name), Lead(Company)
+];</div><p>Use SOSL when the keyword may exist in multiple objects.</p></div></div>
+  </div>
+</section>
+
+<!-- ═══════════ 7. CALLOUTS ═══════════ -->
+<section id="callouts">
+  <div class="sec-header">
+    <div class="sec-icon" style="background:rgba(124,58,237,.12); color:var(--c2)">📡</div>
+    <div>
+      <div class="topic-tag" style="background:rgba(124,58,237,.1);color:var(--c2)">Integration</div>
+      <div class="sec-title">Callouts in Apex</div>
+      <div class="sec-sub">Sending HTTP requests from Salesforce to external services</div>
+    </div>
+  </div>
+
+  <p style="color:var(--muted);margin-bottom:1.5rem">A callout in Salesforce is an HTTP request sent from Apex code to an external service. This enables Salesforce to interact with REST/SOAP APIs, retrieve or send data, and integrate with third-party systems.</p>
+
+  <div class="cards cards-2">
+    <div class="card card-accent" style="border-top-color:var(--c1)"><h3>REST Callouts</h3><p>Use <code>HttpRequest</code>, <code>HttpResponse</code>, <code>Http</code> classes. JSON-based payloads. Modern, flexible.</p></div>
+    <div class="card card-accent" style="border-top-color:var(--c2)"><h3>SOAP Callouts</h3><p>Use WSDL2Apex-generated classes. XML-heavy. Required for legacy enterprise systems.</p></div>
+    <div class="card card-accent" style="border-top-color:var(--c4)"><h3>Named Credentials</h3><p>Secure endpoint + authentication management. No hardcoded secrets. Simplified callout code.</p></div>
+    <div class="card card-accent" style="border-top-color:var(--c3)"><h3>Continuation</h3><p>For long-running requests exceeding the 10-second timeout. Keeps UI responsive.</p></div>
+  </div>
+
+  <h3 style="font-family:var(--font-head);margin:2rem 0 .8rem">Basic REST Callout Pattern</h3>
+  <div class="code-block"><span class="cb-label">Apex</span>HttpRequest req = new HttpRequest();
+req.setEndpoint('callout:MyNamedCredential/api/v1/data');
+req.setMethod('GET');
+req.setHeader('Content-Type', 'application/json');
+req.setTimeout(10000); // 10 seconds
+
+try {
+  HttpResponse res = new Http().send(req);
+  if (res.getStatusCode() == 200) {
+    Map&lt;String,Object&gt; data =
+      (Map&lt;String,Object&gt;) JSON.deserializeUntyped(res.getBody());
+    // Process data...
+  } else {
+    System.debug('Error: ' + res.getStatus());
+  }
+} catch(CalloutException e) {
+  System.debug('Callout failed: ' + e.getMessage());
+}</div>
+
+  <h3 style="font-family:var(--font-head);margin:2rem 0 .8rem">Key Annotations &amp; Interfaces</h3>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>Feature</th><th>Purpose</th></tr></thead>
+      <tbody>
+        <tr><td><code>@future(callout=true)</code></td><td>Async callout from triggers (cannot do DML before callout in same context)</td></tr>
+        <tr><td><code>Queueable implements Database.AllowsCallouts</code></td><td>Preferred async callout with job chaining</td></tr>
+        <tr><td><code>Continuation</code></td><td>Handles long-running requests (&gt;10 seconds) without blocking</td></tr>
+        <tr><td><code>HttpCalloutMock</code></td><td>Used in test methods to mock HTTP responses</td></tr>
+        <tr><td><code>@InvocableMethod</code></td><td>Exposes callout logic to Salesforce Flow</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h3 style="font-family:var(--font-head);margin:2rem 0 .8rem">Callout Limits</h3>
+  <div class="cards cards-4">
+    <div class="card"><h3 style="color:var(--c5)">100</h3><p>Max callouts per async transaction</p></div>
+    <div class="card"><h3 style="color:var(--c3)">120s</h3><p>Maximum callout timeout</p></div>
+    <div class="card"><h3 style="color:var(--c5)">❌</h3><p>No callout after DML in same method</p></div>
+    <div class="card"><h3 style="color:var(--c4)">✅ Mock</h3><p>Tests require HttpCalloutMock</p></div>
+  </div>
+
+  <div class="hbox warn"><strong>⚠️ DML + Callout Rule</strong>You cannot perform DML and a callout in the same synchronous transaction. Use <code>@future(callout=true)</code> or <code>Queueable</code> Apex to separate the contexts.</div>
+
+  <h3 style="font-family:var(--font-head);margin:2rem 0 .8rem">Testing Callouts</h3>
+  <div class="code-block"><span class="cb-label">Test Class</span>@isTest
+static void testCallout() {
+  Test.setMock(HttpCalloutMock.class, new MyMockClass());
+  // Call your callout method here
+  MyCalloutClass.makeRequest();
+  // Assert results...
+}
+
+// Mock implementation
+public class MyMockClass implements HttpCalloutMock {
+  public HttpResponse respond(HttpRequest req) {
+    HttpResponse res = new HttpResponse();
+    res.setStatusCode(200);
+    res.setBody('{"status": "success"}');
+    return res;
+  }
+}</div>
+</section>
+
+<!-- ═══════════ 8. ASYNC APEX ═══════════ -->
+<section id="asyncapex">
+  <div class="sec-header">
+    <div class="sec-icon" style="background:rgba(124,58,237,.12); color:var(--c2)">⏳</div>
+    <div>
+      <div class="topic-tag" style="background:rgba(124,58,237,.1);color:var(--c2)">Apex</div>
+      <div class="sec-title">Async Apex</div>
+      <div class="sec-sub">Background processing for heavy operations, large data, and scheduled work</div>
+    </div>
+  </div>
+
+  <p style="color:var(--muted);margin-bottom:1.5rem">Asynchronous Apex runs in the background, separate from the main transaction. Use it for improving performance, handling large data volumes, and performing time-intensive operations like callouts and batch updates.</p>
+
+  <div class="cards cards-2">
+    <div class="card card-accent" style="border-top-color:var(--c1)">
+      <h3>Future Methods</h3>
+      <div class="code-block"><span class="cb-label">Apex</span>@future(callout=true)
+public static void sendEmail(String addr) {
+  // lightweight async task
+}</div>
+      <p style="color:var(--muted);font-size:.85rem;margin-top:.8rem">Lightweight async processing. No return values, cannot be chained, limited to primitives.</p>
+    </div>
+    <div class="card card-accent" style="border-top-color:var(--c2)">
+      <h3>Queueable Apex</h3>
+      <div class="code-block"><span class="cb-label">Apex</span>public class MyJob implements Queueable,
+  Database.AllowsCallouts {
+  public void execute(QueueableContext ctx) {
+    // callout + complex logic
+    System.enqueueJob(new NextJob());
+  }
+}</div>
+      <p style="color:var(--muted);font-size:.85rem;margin-top:.8rem">Supports job chaining, state passing, callouts, and complex logic. Preferred over Future.</p>
+    </div>
+    <div class="card card-accent" style="border-top-color:var(--c3)">
+      <h3>Batch Apex</h3>
+      <div class="code-block"><span class="cb-label">Apex</span>global class MyBatch implements
+  Database.Batchable&lt;SObject&gt; {
+  global Database.QueryLocator start(...) {...}
+  global void execute(..., List&lt;SObject&gt; scope) {...}
+  global void finish(...) {...}
+}</div>
+      <p style="color:var(--muted);font-size:.85rem;margin-top:.8rem">Massive record processing (millions). Supports parallelism and restartability.</p>
+    </div>
+    <div class="card card-accent" style="border-top-color:var(--c4)">
+      <h3>Scheduled Apex</h3>
+      <div class="code-block"><span class="cb-label">Apex</span>global class MySchedule implements Schedulable {
+  global void execute(SchedulableContext ctx) {
+    Database.executeBatch(new MyBatch());
+  }
+}
+// Schedule: 0 0 2 * * ? (daily at 2am)</div>
+      <p style="color:var(--muted);font-size:.85rem;margin-top:.8rem">Run logic at defined intervals using cron expressions.</p>
+    </div>
+  </div>
+
+  <h3 style="font-family:var(--font-head);margin:2rem 0 .8rem">Choosing the Right Async Tool</h3>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>Requirement</th><th>Recommended</th></tr></thead>
+      <tbody>
+        <tr><td>External API callout</td><td><span class="tag" style="background:rgba(124,58,237,.15);color:#a78bfa;border:1px solid rgba(124,58,237,.3)">Queueable</span></td></tr>
+        <tr><td>Scheduled data cleanup</td><td><span class="tag tag-warn">Scheduled Apex</span></td></tr>
+        <tr><td>Bulk record updates (10k+)</td><td><span class="tag" style="background:rgba(245,158,11,.15);color:#fbbf24;border:1px solid rgba(245,158,11,.3)">Batch Apex</span></td></tr>
+        <tr><td>Lightweight background task</td><td><span class="tag tag-yes">Future Method</span></td></tr>
+        <tr><td>Chained dependent operations</td><td><span class="tag" style="background:rgba(124,58,237,.15);color:#a78bfa;border:1px solid rgba(124,58,237,.3)">Queueable</span></td></tr>
+        <tr><td>Export 1M+ records to FTP</td><td><span class="tag tag-warn">Batch + Callout</span></td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="hbox info"><strong>💡 Why Queueable &gt; Future?</strong>Queueable supports job chaining, state passing via constructor, return of job IDs, and callouts — none of which Future methods support.</div>
+
+  <h3 style="font-family:var(--font-head);margin:2rem 0 .8rem">Common Anti-Patterns</h3>
+  <div class="cards cards-2">
+    <div class="card" style="border-color:rgba(239,68,68,.2)">
+      <h3 style="color:var(--c5)">❌ Avoid</h3>
+      <ul class="fancy" style="color:var(--muted);font-size:.85rem">
+        <li>Chaining more than 50 Queueables</li>
+        <li>Running long operations synchronously</li>
+        <li>Not bulkifying logic inside execute()</li>
+        <li>Not checking limits before DML</li>
+        <li>Using Future when Queueable fits better</li>
+      </ul>
+    </div>
+    <div class="card" style="border-color:rgba(16,185,129,.2)">
+      <h3 style="color:var(--c4)">✅ Best Practices</h3>
+      <ul class="fancy" style="color:var(--muted);font-size:.85rem">
+        <li>Wrap logic in try-catch blocks</li>
+        <li>Store errors in custom log object</li>
+        <li>Use <code>Limits.getCPUTime()</code> for graceful fallback</li>
+        <li>Always use Test.stopTest() in test classes</li>
+        <li>Create feature flags via Custom Metadata to toggle async logic</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════ 9. APEX TRIGGERS ═══════════ -->
+<section id="triggers">
+  <div class="sec-header">
+    <div class="sec-icon" style="background:rgba(124,58,237,.12); color:var(--c2)">⚡</div>
+    <div>
+      <div class="topic-tag" style="background:rgba(124,58,237,.1);color:var(--c2)">Apex</div>
+      <div class="sec-title">Apex Triggers</div>
+      <div class="sec-sub">Event-driven logic that fires on DML operations at the database level</div>
+    </div>
+  </div>
+
+  <p style="color:var(--muted);margin-bottom:1.5rem">Apex Triggers are event handlers that respond to DML operations (insert, update, delete) and let you run custom logic before or after data changes. Think of them as database-level automation that Flows can't handle.</p>
+
+  <h3 style="font-family:var(--font-head);margin:2rem 0 .8rem">Trigger Context Variables</h3>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>Variable</th><th>Purpose</th></tr></thead>
+      <tbody>
+        <tr><td><code>Trigger.new</code></td><td>New version of records (insert/update)</td></tr>
+        <tr><td><code>Trigger.old</code></td><td>Previous version (update/delete only)</td></tr>
+        <tr><td><code>Trigger.newMap</code></td><td>Id → new record map</td></tr>
+        <tr><td><code>Trigger.oldMap</code></td><td>Id → old record map</td></tr>
+        <tr><td><code>Trigger.isInsert / isUpdate / isDelete</code></td><td>Boolean event type checks</td></tr>
+        <tr><td><code>Trigger.isBefore / isAfter</code></td><td>Context: before or after save</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h3 style="font-family:var(--font-head);margin:2rem 0 .8rem">Before vs After — When to Use Which</h3>
+  <div class="cards cards-2">
+    <div class="card" style="border-color:rgba(0,212,255,.2)">
+      <h3 style="color:var(--c1)">before insert/update/delete</h3>
+      <ul class="fancy" style="color:var(--muted);font-size:.85rem">
+        <li>Modify field values before saving</li>
+        <li>Custom validation logic</li>
+        <li>Normalize or format data</li>
+        <li>No extra DML needed — record not yet saved</li>
+      </ul>
+    </div>
+    <div class="card" style="border-color:rgba(124,58,237,.2)">
+      <h3 style="color:var(--c2)">after insert/update/delete/undelete</h3>
+      <ul class="fancy" style="color:var(--muted);font-size:.85rem">
+        <li>Access record IDs (available after insert)</li>
+        <li>Create related records</li>
+        <li>Cross-object updates</li>
+        <li>Requires DML to update the triggering record</li>
+      </ul>
+    </div>
+  </div>
+
+  <h3 style="font-family:var(--font-head);margin:2rem 0 .8rem">Handler Pattern — One Trigger Per Object</h3>
+  <div class="hbox purple"><strong>🏗️ Architecture Best Practice</strong>Always use ONE trigger per object and delegate all logic to a handler class. This prevents unpredictable execution order and makes debugging straightforward.</div>
+  <div class="cards cards-2">
+    <div class="card">
+      <h3>Trigger File</h3>
+      <div class="code-block"><span class="cb-label">AccountTrigger.trigger</span>trigger AccountTrigger on Account
+  (before insert, before update,
+   after insert, after update) {
+  AccountTriggerHandler handler =
+    new AccountTriggerHandler();
+  if (Trigger.isBefore) {
+    if (Trigger.isInsert) handler.beforeInsert(Trigger.new);
+    if (Trigger.isUpdate) handler.beforeUpdate(Trigger.newMap, Trigger.oldMap);
+  }
+}</div>
+    </div>
+    <div class="card">
+      <h3>Handler Class</h3>
+      <div class="code-block"><span class="cb-label">AccountTriggerHandler.cls</span>public class AccountTriggerHandler {
+  public void beforeInsert(List&lt;Account&gt; newList) {
+    // Logic here
+  }
+  public void beforeUpdate(
+    Map&lt;Id,Account&gt; newMap,
+    Map&lt;Id,Account&gt; oldMap
+  ) {
+    // Logic here
+  }
+}</div>
+    </div>
+  </div>
+
+  <h3 style="font-family:var(--font-head);margin:2rem 0 .8rem">Preventing Recursive Triggers</h3>
+  <div class="code-block"><span class="cb-label">Static Flag Pattern</span>public class TriggerHelper {
+  // Static variable resets between transactions
+  public static Boolean hasRun = false;
+}
+
+// In your trigger:
+if (!TriggerHelper.hasRun) {
+  TriggerHelper.hasRun = true;
+  // Execute logic
+}</div>
+
+  <h3 style="font-family:var(--font-head);margin:2rem 0 .8rem">Best Practices Checklist</h3>
+  <div class="cards cards-3">
+    <div class="card"><h3 style="color:var(--c4)">✅ Bulkify All Logic</h3><p>Triggers always run in bulk — never assume single-record execution.</p></div>
+    <div class="card"><h3 style="color:var(--c4)">✅ No SOQL/DML in Loops</h3><p>Query first outside the loop, process results with Maps/Sets.</p></div>
+    <div class="card"><h3 style="color:var(--c4)">✅ 1 Trigger Per Object</h3><p>Delegate to a handler class for maintainable, testable code.</p></div>
+    <div class="card"><h3 style="color:var(--c4)">✅ Prevent Recursion</h3><p>Use static boolean flags to stop infinite trigger loops.</p></div>
+    <div class="card"><h3 style="color:var(--c4)">✅ Try-Catch Blocks</h3><p>Handle exceptions gracefully and log errors to a custom object.</p></div>
+    <div class="card"><h3 style="color:var(--c4)">✅ Test with 200+ Records</h3><p>Write bulk test cases — Salesforce may batch up to 200 records.</p></div>
+  </div>
+</section>
+
+<!-- ═══════════ 10. LWC ═══════════ -->
+<section id="lwc">
+  <div class="sec-header">
+    <div class="sec-icon" style="background:rgba(245,158,11,.12); color:var(--c3)">🌩️</div>
+    <div>
+      <div class="topic-tag" style="background:rgba(245,158,11,.1);color:var(--c3)">Frontend</div>
+      <div class="sec-title">Lightning Web Components</div>
+      <div class="sec-sub">Modern, standards-based UI development on the Salesforce platform</div>
+    </div>
+  </div>
+
+  <p style="color:var(--muted);margin-bottom:1.5rem">LWC is Salesforce's latest programming model built on native Web Components — Custom Elements, Shadow DOM, ES Modules, and ES6+ JavaScript. It's lightweight, fast, and familiar to any modern web developer.</p>
+
+  <div class="hbox amber"><strong>💡 LWC is to Salesforce what React is to JavaScript: modern, modular, and powerful.</strong></div>
+
+  <h3 style="font-family:var(--font-head);margin:2rem 0 .8rem">LWC vs Aura</h3>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>Feature</th><th>LWC</th><th>Aura</th></tr></thead>
+      <tbody>
+        <tr><td>Rendering Engine</td><td>Native browser APIs</td><td>Proprietary framework</td></tr>
+        <tr><td>Data Binding</td><td>One-way, reactive</td><td>Bi-directional</td></tr>
+        <tr><td>JS Features</td><td>ES6+ supported</td><td>ES5-style JS</td></tr>
+        <tr><td>Performance</td><td><span class="tag tag-yes">Optimized, lightweight</span></td><td><span class="tag tag-warn">Higher memory usage</span></td></tr>
+        <tr><td>Testing</td><td><span class="tag tag-yes">Jest supported</span></td><td><span class="tag tag-warn">Complex setup</span></td></tr>
+        <tr><td>Compatibility</td><td><span class="tag tag-yes">Future-proof standards</span></td><td><span class="tag tag-no">Legacy framework</span></td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h3 style="font-family:var(--font-head);margin:2rem 0 .8rem">File Structure</h3>
+  <div class="code-block"><span class="cb-label">Folder Structure</span>myComponent/
+├── myComponent.html        ← HTML Markup Template
+├── myComponent.js          ← JavaScript Controller
+├── myComponent.js-meta.xml ← Metadata (deployment targets)
+├── myComponent.css         ← Scoped CSS styles
+└── __tests__/
+    └── myComponent.test.js ← Jest unit tests</div>
+
+  <h3 style="font-family:var(--font-head);margin:2rem 0 .8rem">Key Concepts &amp; Decorators</h3>
+  <div class="cards cards-3">
+    <div class="card card-accent" style="border-top-color:var(--c3)">
+      <h3><code>@api</code></h3>
+      <p>Exposes properties to parent components. Creates a public interface for your component.</p>
+    </div>
+    <div class="card card-accent" style="border-top-color:var(--c1)">
+      <h3><code>@wire</code></h3>
+      <p>Reactive connection to Salesforce data services (Apex, LDS, UI API). Auto-refreshes on dependency changes.</p>
+    </div>
+    <div class="card card-accent" style="border-top-color:var(--c2)">
+      <h3><code>@track</code></h3>
+      <p>Now deprecated. Previously used for mutable internal state — today all reactive properties are tracked by default.</p>
+    </div>
+  </div>
+
+  <h3 style="font-family:var(--font-head);margin:2rem 0 .8rem">Template Directives</h3>
+  <div class="code-block"><span class="cb-label">HTML Template</span>&lt;!-- Conditional rendering --&gt;
+&lt;template if:true={isLoaded}&gt;
+  &lt;p&gt;Data loaded!&lt;/p&gt;
+&lt;/template&gt;
+
+&lt;!-- List iteration --&gt;
+&lt;template for:each={contacts} for:item="contact"&gt;
+  &lt;p key={contact.Id}&gt;{contact.Name}&lt;/p&gt;
+&lt;/template&gt;</div>
+
+  <h3 style="font-family:var(--font-head);margin:2rem 0 .8rem">Data Handling: Lightning Data Service (LDS)</h3>
+  <div class="cards cards-2">
+    <div class="card">
+      <h3>Fetch Record</h3>
+      <div class="code-block"><span class="cb-label">JS</span>import { getRecord } from 'lightning/uiRecordApi';
+import NAME_FIELD from '@salesforce/schema/Account.Name';
+
+@wire(getRecord, { recordId: '$recordId',
+  fields: [NAME_FIELD] })
+account;</div>
+    </div>
+    <div class="card">
+      <h3>Create Record</h3>
+      <div class="code-block"><span class="cb-label">JS</span>import { createRecord } from 'lightning/uiRecordApi';
+
+const fields = { Name: 'Acme', Industry: 'Tech' };
+const recordInput = { apiName: 'Account', fields };
+await createRecord(recordInput);</div>
+    </div>
+  </div>
+
+  <h3 style="font-family:var(--font-head);margin:2rem 0 .8rem">Component Communication Overview</h3>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>Direction</th><th>Mechanism</th><th>Example</th></tr></thead>
+      <tbody>
+        <tr><td>Parent → Child</td><td><code>@api</code> property</td><td>Pass data from parent template</td></tr>
+        <tr><td>Child → Parent</td><td><code>CustomEvent</code></td><td><code>this.dispatchEvent(new CustomEvent('selected', {detail: id}))</code></td></tr>
+        <tr><td>Siblings (via Parent)</td><td>Parent mediator</td><td>Parent captures event, updates child prop</td></tr>
+        <tr><td>Unrelated Components</td><td>Lightning Message Service (LMS)</td><td>Across utility bar, app page, console tabs</td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<!-- ═══════════ 11. CALLING APEX FROM LWC ═══════════ -->
+<section id="apexlwc">
+  <div class="sec-header">
+    <div class="sec-icon" style="background:rgba(245,158,11,.12); color:var(--c3)">🔗</div>
+    <div>
+      <div class="topic-tag" style="background:rgba(245,158,11,.1);color:var(--c3)">LWC + Apex</div>
+      <div class="sec-title">Calling Apex from LWC</div>
+      <div class="sec-sub">Wire adapter vs imperative calls — choosing the right strategy</div>
+    </div>
+  </div>
+
+  <div class="hbox amber"><strong>Apex Method Requirements</strong>Methods must be annotated with <code>@AuraEnabled</code>, be <code>static</code>, belong to a <code>public</code>/<code>global</code> class, and use <code>cacheable=true</code> for wire usage.</div>
+
+  <div class="vs-grid">
+    <div class="vs-side" style="border-color:rgba(0,212,255,.3)">
+      <h3 style="color:var(--c1)">@wire (Reactive)</h3>
+      <div class="code-block"><span class="cb-label">JS</span>import getAccounts from
+  '@salesforce/apex/AccountCtrl.getAccounts';
+
+@wire(getAccounts, { status: '$statusFilter' })
+wiredAccounts({ data, error }) {
+  if (data) this.accounts = data;
+  if (error) this.error = error;
+}</div>
+      <div style="margin-top:.8rem">
+        <div style="color:var(--c4);font-size:.85rem;margin-bottom:.3rem">✅ Pros</div>
+        <p style="color:var(--muted);font-size:.85rem">Auto-refreshes on prop changes · Browser caching · Simple syntax · Reactive to UI changes</p>
+      </div>
+      <div style="margin-top:.8rem">
+        <div style="color:var(--c5);font-size:.85rem;margin-bottom:.3rem">⚠️ Cons</div>
+        <p style="color:var(--muted);font-size:.85rem">No DML · Must be cacheable=true · Harder to debug</p>
+      </div>
+    </div>
+    <div class="vs-div">VS</div>
+    <div class="vs-side" style="border-color:rgba(124,58,237,.3)">
+      <h3 style="color:var(--c2)">Imperative (Programmatic)</h3>
+      <div class="code-block"><span class="cb-label">JS</span>import createAccount from
+  '@salesforce/apex/AccountCtrl.createAccount';
+
+handleSubmit() {
+  this.isLoading = true;
+  createAccount({ name: this.name })
+    .then(result => {
+      this.showToast('Success!', result);
+    })
+    .catch(err => {
+      this.error = err.body.message;
+    })
+    .finally(() => this.isLoading = false);
+}</div>
+      <div style="margin-top:.8rem">
+        <div style="color:var(--c4);font-size:.85rem;margin-bottom:.3rem">✅ Pros</div>
+        <p style="color:var(--muted);font-size:.85rem">Greater control · Better error handling · On-demand execution · Supports DML</p>
+      </div>
+      <div style="margin-top:.8rem">
+        <div style="color:var(--c5);font-size:.85rem;margin-bottom:.3rem">⚠️ Cons</div>
+        <p style="color:var(--muted);font-size:.85rem">Not reactive · More verbose · No automatic caching</p>
+      </div>
+    </div>
+  </div>
+
+  <h3 style="font-family:var(--font-head);margin:2rem 0 .8rem">When to Use Which</h3>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>Scenario</th><th>Method</th><th>Reason</th></tr></thead>
+      <tbody>
+        <tr><td>Search bar with input</td><td>Imperative</td><td>Reactive input call, not cached</td></tr>
+        <tr><td>Data table on page load</td><td>@wire</td><td>Simple read, cacheable</td></tr>
+        <tr><td>Create record form</td><td>Imperative</td><td>Needs validation and user feedback</td></tr>
+        <tr><td>Refresh table after insert</td><td>Imperative + refreshApex</td><td>UI sync after DML</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h3 style="font-family:var(--font-head);margin:2rem 0 .8rem">Refreshing Wired Data After DML</h3>
+  <div class="code-block"><span class="cb-label">refreshApex Pattern</span>import { refreshApex } from '@salesforce/apex';
+
+// Store wired result reference
+@wire(getAccounts) wiredResult;
+
+handleSave() {
+  saveRecord({ ... })
+    .then(() => refreshApex(this.wiredResult))
+    .catch(err => console.error(err));
+}</div>
+</section>
+
+<!-- ═══════════ 12. LWC EVENTS ═══════════ -->
+<section id="events">
+  <div class="sec-header">
+    <div class="sec-icon" style="background:rgba(245,158,11,.12); color:var(--c3)">📢</div>
+    <div>
+      <div class="topic-tag" style="background:rgba(245,158,11,.1);color:var(--c3)">LWC</div>
+      <div class="sec-title">Events &amp; Component Communication</div>
+      <div class="sec-sub">Parent-child, sibling, and unrelated component communication patterns</div>
+    </div>
+  </div>
+
+  <h3 style="font-family:var(--font-head);margin:0 0 1.5rem">Communication Patterns</h3>
+
+  <div class="cards cards-2">
+    <div class="card" style="border-color:rgba(0,212,255,.2)">
+      <h3 style="color:var(--c1)">Parent → Child via @api</h3>
+      <div class="code-block"><span class="cb-label">childComponent.js</span>import { LightningElement, api } from 'lwc';
+export default class ChildComp extends LightningElement {
+  @api greeting = 'Hello!';
+}</div>
+      <div class="code-block"><span class="cb-label">parentComponent.html</span>&lt;c-child-comp greeting="Hi from Parent!"&gt;&lt;/c-child-comp&gt;</div>
+    </div>
+    <div class="card" style="border-color:rgba(124,58,237,.2)">
+      <h3 style="color:var(--c2)">Child → Parent via CustomEvent</h3>
+      <div class="code-block"><span class="cb-label">childComponent.js</span>handleClick() {
+  this.dispatchEvent(new CustomEvent('selected', {
+    detail: { id: this.recordId }
+  }));
+}</div>
+      <div class="code-block"><span class="cb-label">parentComponent.html</span>&lt;c-child-comp onselected={handleSelected}&gt;&lt;/c-child-comp&gt;</div>
+    </div>
+  </div>
+
+  <h3 style="font-family:var(--font-head);margin:2rem 0 .8rem">Bubbling Events to Grandparent</h3>
+  <div class="code-block"><span class="cb-label">childComponent.js – Bubbling</span>this.dispatchEvent(new CustomEvent('notify', {
+  detail: { message: 'Hello from deep child' },
+  bubbles: true,    // allows parent/grandparent to receive
+  composed: true    // crosses shadow DOM boundaries
+}));</div>
+  <div class="cards cards-2" style="margin-top:.8rem">
+    <div class="card"><h3>bubbles: true</h3><p>Event moves up the DOM tree so parent and grandparent can handle it.</p></div>
+    <div class="card"><h3>composed: true</h3><p>Allows the event to cross Shadow DOM boundaries between components.</p></div>
+  </div>
+
+  <h3 style="font-family:var(--font-head);margin:2rem 0 .8rem">Lightning Message Service (LMS)</h3>
+  <p style="color:var(--muted);font-size:.9rem;margin-bottom:1rem">LMS enables communication between <strong>completely unrelated components</strong> — across utility bars, record pages, and console apps.</p>
+
+  <div class="cards cards-2">
+    <div class="card">
+      <h3>Publisher Component</h3>
+      <div class="code-block"><span class="cb-label">JS</span>import { publish, MessageContext }
+  from 'lightning/messageService';
+import MY_CHANNEL from
+  '@salesforce/messageChannel/MyChannel__c';
+
+@wire(MessageContext) messageContext;
+
+publishMessage() {
+  publish(this.messageContext, MY_CHANNEL,
+    { recordId: this.selectedId });
+}</div>
+    </div>
+    <div class="card">
+      <h3>Subscriber Component</h3>
+      <div class="code-block"><span class="cb-label">JS</span>import { subscribe, MessageContext }
+  from 'lightning/messageService';
+import MY_CHANNEL from
+  '@salesforce/messageChannel/MyChannel__c';
+
+@wire(MessageContext) messageContext;
+
+connectedCallback() {
+  this.subscription = subscribe(
+    this.messageContext, MY_CHANNEL,
+    (message) => this.handleMessage(message)
+  );
+}</div>
+    </div>
+  </div>
+
+  <h3 style="font-family:var(--font-head);margin:2rem 0 .8rem">Interview Q&amp;A</h3>
+  <div class="qa-list">
+    <div class="qa-item"><div class="qa-q">How do you send data from a child to a grandparent?</div><div class="qa-a">Fire a CustomEvent with <code>bubbles: true, composed: true</code>. The grandparent listens for the event using <code>oneventname</code> on any ancestor in its template.</div></div>
+    <div class="qa-item"><div class="qa-q">Difference between LMS and CustomEvent?</div><div class="qa-a">LMS is for unrelated components across the entire app (even across tabs in console). CustomEvent is for components within the same DOM hierarchy.</div></div>
+    <div class="qa-item"><div class="qa-q">Can you communicate between Aura and LWC components?</div><div class="qa-a">Yes, using LMS or events if properly encapsulated. LMS is the most reliable cross-framework communication channel.</div></div>
+  </div>
+</section>
+
+<!-- ═══════════ 13. LIFECYCLE & NAVIGATION ═══════════ -->
+<section id="lifecycle">
+  <div class="sec-header">
+    <div class="sec-icon" style="background:rgba(245,158,11,.12); color:var(--c3)">🔄</div>
+    <div>
+      <div class="topic-tag" style="background:rgba(245,158,11,.1);color:var(--c3)">LWC</div>
+      <div class="sec-title">Lifecycle Hooks &amp; Navigation</div>
+      <div class="sec-sub">Component lifecycle callbacks and NavigationMixin patterns</div>
+    </div>
+  </div>
+
+  <div class="cards cards-2">
+    <div class="card">
+      <h3 style="margin-bottom:1.5rem">Lifecycle Flow</h3>
+      <div class="lifecycle-steps">
+        <div class="lc-step"><div class="lc-dot" style="border-color:var(--c1);background:#f5f7fc"></div><h4 style="color:var(--c1)">constructor()</h4><p>JS init only. Call <code>super()</code> first. No DOM access. Avoid Apex calls here.</p></div>
+        <div class="lc-step"><div class="lc-dot" style="border-color:var(--c4);background:#f5f7fc"></div><h4 style="color:var(--c4)">connectedCallback()</h4><p>Component inserted in DOM. Place imperative Apex calls, subscribe to LMS, register event listeners.</p></div>
+        <div class="lc-step"><div class="lc-dot" style="border-color:var(--c3);background:#f5f7fc"></div><h4 style="color:var(--c3)">renderedCallback()</h4><p>After every render. Access/manipulate DOM, init 3rd party JS libraries. Avoid setting tracked values here (infinite loop risk).</p></div>
+        <div class="lc-step"><div class="lc-dot" style="border-color:var(--c2);background:#f5f7fc"></div><h4 style="color:var(--c2)">disconnectedCallback()</h4><p>Component removed from DOM. Unsubscribe from LMS, release resources, clear intervals/timeouts.</p></div>
+        <div class="lc-step" style="padding-bottom:0"><div class="lc-dot" style="border-color:var(--c5);background:#f5f7fc"></div><h4 style="color:var(--c5)">errorCallback(error, stack)</h4><p>Catches errors in self/child components. Log errors, show fallback UI.</p></div>
+      </div>
+    </div>
+    <div class="card">
+      <h3>Hook Decision Table</h3>
+      <div class="table-wrap" style="margin:0">
+        <table>
+          <thead><tr><th>Task</th><th>Hook</th></tr></thead>
+          <tbody>
+            <tr><td>Fetch server data</td><td><code>connectedCallback()</code></td></tr>
+            <tr><td>DOM manipulation</td><td><code>renderedCallback()</code></td></tr>
+            <tr><td>LMS subscription</td><td><code>connectedCallback()</code></td></tr>
+            <tr><td>Remove listeners</td><td><code>disconnectedCallback()</code></td></tr>
+            <tr><td>Handle child errors</td><td><code>errorCallback()</code></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <h3 style="font-family:var(--font-head);margin:2rem 0 .8rem">Navigation with NavigationMixin</h3>
+  <div class="code-block"><span class="cb-label">Setup</span>import { LightningElement } from 'lwc';
+import { NavigationMixin } from 'lightning/navigation';
+export default class MyComp extends NavigationMixin(LightningElement) { }</div>
+
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>Page Type</th><th>Description</th></tr></thead>
+      <tbody>
+        <tr><td><code>standard__recordPage</code></td><td>Navigate to a specific record (view/edit)</td></tr>
+        <tr><td><code>standard__objectPage</code></td><td>Navigate to an object's tab/list view</td></tr>
+        <tr><td><code>standard__webPage</code></td><td>External URL navigation</td></tr>
+        <tr><td><code>standard__namedPage</code></td><td>Predefined pages like Home</td></tr>
+        <tr><td><code>standard__app</code></td><td>Navigate to a Lightning app</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="cards cards-2">
+    <div class="card">
+      <h3>Navigate to Record</h3>
+      <div class="code-block"><span class="cb-label">JS</span>this[NavigationMixin.Navigate]({
+  type: 'standard__recordPage',
+  attributes: {
+    recordId: this.accountId,
+    objectApiName: 'Account',
+    actionName: 'view'
+  }
+});</div>
+    </div>
+    <div class="card">
+      <h3>Open External URL</h3>
+      <div class="code-block"><span class="cb-label">JS</span>this[NavigationMixin.Navigate]({
+  type: 'standard__webPage',
+  attributes: {
+    url: 'https://www.salesforce.com'
+  }
+});</div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════ 14. LIGHTNING DATATABLE ═══════════ -->
+<section id="datatable">
+  <div class="sec-header">
+    <div class="sec-icon" style="background:rgba(245,158,11,.12); color:var(--c3)">📋</div>
+    <div>
+      <div class="topic-tag" style="background:rgba(245,158,11,.1);color:var(--c3)">LWC</div>
+      <div class="sec-title">Lightning Datatable</div>
+      <div class="sec-sub">Rich, spreadsheet-like data tables with sorting, inline editing, and row actions</div>
+    </div>
+  </div>
+
+  <h3 style="font-family:var(--font-head);margin:0 0 .8rem">Basic Anatomy</h3>
+  <div class="code-block"><span class="cb-label">HTML</span>&lt;lightning-datatable
+  key-field="Id"
+  data={accounts}
+  columns={columns}
+  sorted-by={sortBy}
+  sorted-direction={sortDirection}
+  onsort={handleSort}
+  onrowaction={handleRowAction}
+&gt;&lt;/lightning-datatable&gt;</div>
+
+  <h3 style="font-family:var(--font-head);margin:2rem 0 .8rem">Column Definition Properties</h3>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>Property</th><th>Purpose</th></tr></thead>
+      <tbody>
+        <tr><td><code>label</code></td><td>Column header text</td></tr>
+        <tr><td><code>fieldName</code></td><td>API name in the data array</td></tr>
+        <tr><td><code>type</code></td><td>text, number, currency, date, boolean, url, button, action</td></tr>
+        <tr><td><code>editable</code></td><td>Enables inline editing for the column</td></tr>
+        <tr><td><code>sortable</code></td><td>Enables column header sorting</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h3 style="font-family:var(--font-head);margin:2rem 0 .8rem">Pagination Strategies</h3>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>Strategy</th><th>Pros</th><th>Cons</th></tr></thead>
+      <tbody>
+        <tr><td>Client (slice array)</td><td>Simple to implement</td><td>Loads all records — heavy for large datasets</td></tr>
+        <tr><td>Server (LIMIT/OFFSET)</td><td>Scales to thousands</td><td>Requires state + query coordination</td></tr>
+        <tr><td>Virtual scroll / Lazy Load</td><td>Fast UI, loads on demand</td><td>More JS and Apex logic required</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h3 style="font-family:var(--font-head);margin:2rem 0 .8rem">Inline Editing Save Flow</h3>
+  <div class="flow-chain">
+    <div class="flow-node" style="color:var(--c1)">Add editable: true</div>
+    <div class="flow-arrow">→</div>
+    <div class="flow-node">Listen for onsave</div>
+    <div class="flow-arrow">→</div>
+    <div class="flow-node">Read draftValues</div>
+    <div class="flow-arrow">→</div>
+    <div class="flow-node" style="color:var(--c2)">Apex DML</div>
+    <div class="flow-arrow">→</div>
+    <div class="flow-node" style="color:var(--c4)">refreshApex()</div>
+  </div>
+
+  <h3 style="font-family:var(--font-head);margin:2rem 0 .8rem">Best Practices</h3>
+  <div class="cards cards-3">
+    <div class="card"><h3>Spinners Always</h3><p>Show loading spinners during save operations to improve perceived performance.</p></div>
+    <div class="card"><h3>Server-Side Totals</h3><p>Let Apex calculate aggregates — never loop large datasets in JavaScript.</p></div>
+    <div class="card"><h3>Lazy Load > 2k Rows</h3><p>Use virtual scrolling or server-side pagination for large datasets.</p></div>
+    <div class="card"><h3>draftValues Pattern</h3><p>Always use the standard <code>draftValues</code> pattern for inline edits and clear after save.</p></div>
+    <div class="card"><h3>Componentize Columns</h3><p>Extract column definitions into a separate JS file for maintainability.</p></div>
+    <div class="card"><h3>Cache Strategically</h3><p>Cache client-side; invalidate on save. Debounce user filters before Apex calls.</p></div>
+  </div>
+</section>
+
+<!-- ═══════════ 15. INTEGRATION ═══════════ -->
+<section id="integration">
+  <div class="sec-header">
+    <div class="sec-icon" style="background:rgba(16,185,129,.12); color:var(--c4)">🔌</div>
+    <div>
+      <div class="topic-tag" style="background:rgba(16,185,129,.1);color:var(--c4)">Integration</div>
+      <div class="sec-title">Salesforce Integration Deep Dive</div>
+      <div class="sec-sub">REST, SOAP, OAuth, Platform Events, and enterprise integration patterns</div>
+    </div>
+  </div>
+
+  <h3 style="font-family:var(--font-head);margin:0 0 .8rem">Integration Types</h3>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>Type</th><th>Description</th><th>Tools / Techniques</th></tr></thead>
+      <tbody>
+        <tr><td>Data Integration</td><td>Synchronize or replicate data across systems</td><td>MuleSoft, ETL tools, External Objects</td></tr>
+        <tr><td>Process Integration</td><td>Trigger processes based on events or actions</td><td>Platform Events, Flow, Callouts</td></tr>
+        <tr><td>UI Integration</td><td>Embed user interfaces seamlessly</td><td>Lightning Out, Canvas, Web Components</td></tr>
+        <tr><td>Event-Driven</td><td>Decoupled, scalable communication via events</td><td>Platform Events, CDC, Pub/Sub API</td></tr>
+        <tr><td>Middleware</td><td>Enterprise service buses and iPaaS</td><td>MuleSoft, Dell Boomi, Informatica</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h3 style="font-family:var(--font-head);margin:2rem 0 .8rem">REST vs SOAP</h3>
+  <div class="vs-grid">
+    <div class="vs-side" style="border-color:rgba(16,185,129,.3)">
+      <h3 style="color:var(--c4)">REST API</h3>
+      <ul class="fancy" style="color:var(--muted);font-size:.85rem">
+        <li>JSON payloads — lightweight &amp; modern</li>
+        <li>Resource-based URI design</li>
+        <li>HTTP methods: GET, POST, PUT, PATCH, DELETE</li>
+        <li>Easy testing with Postman/cURL</li>
+        <li>Ideal for mobile apps and modern APIs</li>
+        <li>Rate limit: ~15k daily API requests</li>
+      </ul>
+    </div>
+    <div class="vs-div">VS</div>
+    <div class="vs-side" style="border-color:rgba(245,158,11,.3)">
+      <h3 style="color:var(--c3)">SOAP API</h3>
+      <ul class="fancy" style="color:var(--muted);font-size:.85rem">
+        <li>XML-heavy with WSDL contracts</li>
+        <li>Strict typing and contract enforcement</li>
+        <li>POST only via SoapUI/WSDL2Apex</li>
+        <li>Best for legacy enterprise systems</li>
+        <li>Tighter metadata-heavy integrations</li>
+      </ul>
+    </div>
+  </div>
+
+  <h3 style="font-family:var(--font-head);margin:2rem 0 .8rem">OAuth 2.0 Flows</h3>
+  <div class="cards cards-2">
+    <div class="card card-accent" style="border-top-color:var(--c4)"><h3>Authorization Code</h3><p>Browser-based apps with redirect URLs. User logs in, grants consent, receives authorization code exchanged for token.</p></div>
+    <div class="card card-accent" style="border-top-color:var(--c1)"><h3>JWT Bearer</h3><p>Backend server-to-server integrations using certificates. No user interaction required.</p></div>
+    <div class="card card-accent" style="border-top-color:var(--c3)"><h3>Username-Password</h3><p>CLI scripts and server automation. Least secure — avoid in production where possible.</p></div>
+    <div class="card card-accent" style="border-top-color:var(--c2)"><h3>Client Credentials</h3><p>Secure server-to-server API access. Scalable headless integrations.</p></div>
+  </div>
+
+  <h3 style="font-family:var(--font-head);margin:2rem 0 .8rem">Custom REST API in Apex</h3>
+  <div class="code-block"><span class="cb-label">@RestResource Example</span>@RestResource(urlMapping='/AccountTest')
+global with sharing class AccountAPI {
+
+  @HttpGet
+  global static Account doGet() {
+    String accId = RestContext.request.params.get('id');
+    return [SELECT Id, Name, Industry FROM Account WHERE Id = :accId LIMIT 1];
+  }
+
+  @HttpPost
+  global static Id doPost() {
+    String jsonBody = RestContext.request.requestBody.toString();
+    Account acc = (Account) JSON.deserialize(jsonBody, Account.class);
+    insert acc;
+    return acc.Id;
+  }
+
+  @HttpDelete
+  global static String doDelete() {
+    String accId = RestContext.request.params.get('id');
+    Account acc = [SELECT Id FROM Account WHERE Id = :accId];
+    delete acc;
+    return 'Deleted: ' + accId;
+  }
+}</div>
+
+  <h3 style="font-family:var(--font-head);margin:2rem 0 .8rem">Integration Patterns</h3>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>Pattern</th><th>Description</th><th>Example</th></tr></thead>
+      <tbody>
+        <tr><td>Remote Call-In</td><td>External system calls Salesforce API</td><td>Mobile app querying Case records</td></tr>
+        <tr><td>Request &amp; Reply</td><td>Salesforce makes synchronous callout</td><td>Get real-time product availability from SAP</td></tr>
+        <tr><td>Fire &amp; Forget</td><td>No response expected</td><td>Send SMS via third-party from Flow</td></tr>
+        <tr><td>Batch Data Sync</td><td>Scheduled/bulk data load</td><td>Nightly order sync from ERP</td></tr>
+        <tr><td>Event-Driven</td><td>Event triggers communication</td><td>New Lead → webhook via Platform Event</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h3 style="font-family:var(--font-head);margin:2rem 0 .8rem">JSON Serialization in Apex</h3>
+  <div class="cards cards-2">
+    <div class="card">
+      <h3>Typed Serialization</h3>
+      <div class="code-block"><span class="cb-label">Wrapper Class</span>public class AccountWrapper {
+  public String Name;
+  public String Industry;
+}
+AccountWrapper w = new AccountWrapper();
+w.Name = 'Acme'; w.Industry = 'Tech';
+String json = JSON.serialize(w);</div>
+    </div>
+    <div class="card">
+      <h3>Untyped Deserialization</h3>
+      <div class="code-block"><span class="cb-label">Dynamic Parsing</span>String jsonInput = '{"id":1,"name":"Alice"}';
+Map&lt;String,Object&gt; m = (Map&lt;String,Object&gt;)
+  JSON.deserializeUntyped(jsonInput);
+String name = (String) m.get('name');</div>
+    </div>
+  </div>
+
+  <h3 style="font-family:var(--font-head);margin:2rem 0 .8rem">Scenario-Based Interview Q&amp;A</h3>
+  <div class="qa-list">
+    <div class="qa-item"><div class="qa-q">How do you ensure data consistency in a two-way sync?</div><div class="qa-a">Use Platform Events and Change Data Capture for real-time updates. Employ external IDs with UPSERT logic. Implement middleware to ensure transactional integrity and handle conflicts.</div></div>
+    <div class="qa-item"><div class="qa-q">Your callout fails randomly due to API rate limits. How do you handle it?</div><div class="qa-a">Implement exponential backoff retry logic. Monitor response headers for rate-limit information. Use batch processing with retry capability and store failed records for re-processing.</div></div>
+    <div class="qa-item"><div class="qa-q">What happens if the endpoint URL changes?</div><div class="qa-a">Store the endpoint in Custom Metadata or Custom Settings — never hardcode in Apex. Named Credentials are the best approach as they abstract the URL entirely from code.</div></div>
+    <div class="qa-item"><div class="qa-q">You're limited by Salesforce API governor limits. What's your strategy?</div><div class="qa-a">Combine requests using the Composite API. Use Bulk API for high-volume data operations. Cache results when possible to reduce repeated API calls.</div></div>
+  </div>
+</section>
+
+<!-- ═══════════ 16. NAMED CREDENTIALS ═══════════ -->
+<section id="namedcred">
+  <div class="sec-header">
+    <div class="sec-icon" style="background:rgba(16,185,129,.12); color:var(--c4)">🔐</div>
+    <div>
+      <div class="topic-tag" style="background:rgba(16,185,129,.1);color:var(--c4)">Security</div>
+      <div class="sec-title">Named Credentials &amp; External Services</div>
+      <div class="sec-sub">Secure, admin-managed credentials that never touch Apex code</div>
+    </div>
+  </div>
+
+  <div class="hbox good"><strong>💡 The Named Credential Promise</strong>"Write the logic once, manage the secrets never." Named Credentials bundle endpoint URL + authentication method + authorization storage into a single metadata item referenced by name.</div>
+
+  <h3 style="font-family:var(--font-head);margin:2rem 0 .8rem">Supported Authentication Methods</h3>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>Method</th><th>Typical Use Case</th></tr></thead>
+      <tbody>
+        <tr><td>OAuth 2.0</td><td>Modern REST / GraphQL APIs</td></tr>
+        <tr><td>JWT Bearer</td><td>Server-to-server integrations (no user login)</td></tr>
+        <tr><td>Username &amp; Password</td><td>Legacy APIs where OAuth isn't available</td></tr>
+        <tr><td>AWS Signature v4</td><td>Calling AWS services directly</td></tr>
+        <tr><td>Mutual TLS (Certificate)</td><td>High-security B2B integrations</td></tr>
+        <tr><td>Custom Header (v2)</td><td>Special token or API key headers</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h3 style="font-family:var(--font-head);margin:2rem 0 .8rem">Principal Types</h3>
+  <div class="cards cards-2">
+    <div class="card"><h3 style="color:var(--c1)">Named Principal</h3><p>One org-wide credential. Simplest option for backend jobs where user context isn't needed.</p></div>
+    <div class="card"><h3 style="color:var(--c2)">Per-User Principal</h3><p>OAuth token per individual user. Ideal for user-context callouts where data isolation matters.</p></div>
+  </div>
+
+  <h3 style="font-family:var(--font-head);margin:2rem 0 .8rem">Using Named Credentials in Apex</h3>
+  <div class="code-block"><span class="cb-label">Callout with Named Credential</span>HttpRequest req = new HttpRequest();
+// 'callout:' prefix activates auth injection automatically
+req.setEndpoint('callout:Zoho_Integration/crm/v2/Leads');
+req.setMethod('GET');
+
+HttpResponse res = new Http().send(req);
+// Token management handled entirely by Salesforce</div>
+
+  <h3 style="font-family:var(--font-head);margin:2rem 0 .8rem">External Services</h3>
+  <p style="color:var(--muted);font-size:.9rem;margin-bottom:1rem">External Services lets you import an OpenAPI definition and auto-generates Flow Builder actions — no Apex required.</p>
+  <div class="flow-chain">
+    <div class="flow-node" style="color:var(--c1)">OpenAPI 3.0 JSON</div>
+    <div class="flow-arrow">→</div>
+    <div class="flow-node">Setup → External Services → Register</div>
+    <div class="flow-arrow">→</div>
+    <div class="flow-node" style="color:var(--c4)">Flow Actions Auto-Generated</div>
+    <div class="flow-arrow">→</div>
+    <div class="flow-node" style="color:var(--c3)">No Code Needed</div>
+  </div>
+
+  <h3 style="font-family:var(--font-head);margin:2rem 0 .8rem">Pattern Library</h3>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>Pattern</th><th>Tools</th><th>Notes</th></tr></thead>
+      <tbody>
+        <tr><td>Server-to-server nightly sync</td><td>Named Cred (JWT) + Batch Apex</td><td>No user context required</td></tr>
+        <tr><td>User-initiated shipping quote</td><td>External Service (OAuth Per-User)</td><td>Flow screen button</td></tr>
+        <tr><td>Upload logs to AWS S3</td><td>Named Cred (AWS Sig v4)</td><td>Signed headers via putObject</td></tr>
+        <tr><td>Multi-step order payment</td><td>External Service + Subflow</td><td>Declarative steps + Apex fallback</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h3 style="font-family:var(--font-head);margin:2rem 0 .8rem">Security Best Practices</h3>
+  <div class="cards cards-3">
+    <div class="card"><h3 style="color:var(--c5)">Never Hardcode</h3><p>Always use Named Credentials — never store tokens or URLs in Apex code or change sets.</p></div>
+    <div class="card"><h3 style="color:var(--c4)">HTTPS Only</h3><p>Lock Named Credentials to HTTPS endpoints. Enable IP restrictions and session policies.</p></div>
+    <div class="card"><h3 style="color:var(--c3)">Rotate Secrets</h3><p>Regularly rotate credentials and audit Named Credential usage via Setup Audit Trail.</p></div>
+  </div>
+</section>
+
+<!-- ═══════════ 17. STREAMING API ═══════════ -->
+<section id="streaming">
+  <div class="sec-header">
+    <div class="sec-icon" style="background:rgba(236,72,153,.12); color:var(--c6)">📡</div>
+    <div>
+      <div class="topic-tag" style="background:rgba(236,72,153,.1);color:var(--c6)">Event-Driven</div>
+      <div class="sec-title">Streaming API vs Pub/Sub API vs REST Hooks</div>
+      <div class="sec-sub">Real-time eventing mechanisms — choose the right pipe for your use case</div>
+    </div>
+  </div>
+
+  <p style="color:var(--muted);margin-bottom:1.5rem">Real-time communication delivers low-latency updates, reduces polling inefficiencies, and enables external system reactivity for true event-driven architectures.</p>
+
+  <div class="cards cards-3">
+    <div class="card card-accent" style="border-top-color:var(--c1)">
+      <h3>🌊 Streaming API</h3>
+      <div class="badge-row"><span class="badge" style="color:var(--c1);border-color:rgba(0,212,255,.3);background:rgba(0,100,200,.08)">CometD</span><span class="badge" style="color:var(--muted);border-color:var(--border)">HTTP/JSON</span></div>
+      <ul class="fancy" style="color:var(--muted);font-size:.85rem;margin-top:.8rem">
+        <li>Native LWC support via <code>lightning/empApi</code></li>
+        <li>ReplayId for event replay (24 hrs)</li>
+        <li>PushTopics, Platform Events, CDC</li>
+        <li>Long polling — higher overhead</li>
+      </ul>
+    </div>
+    <div class="card card-accent" style="border-top-color:var(--c2)">
+      <h3>🚀 Pub/Sub API</h3>
+      <div class="badge-row"><span class="badge" style="color:var(--c2);border-color:rgba(124,58,237,.3);background:rgba(124,58,237,.08)">gRPC</span><span class="badge" style="color:var(--muted);border-color:var(--border)">HTTP/2 + Protobuf</span></div>
+      <ul class="fancy" style="color:var(--muted);font-size:.85rem;margin-top:.8rem">
+        <li>High-throughput binary streaming</li>
+        <li>Bi-directional — publish &amp; subscribe</li>
+        <li>Backpressure-aware delivery</li>
+        <li>Enterprise-grade: Kafka, Azure Event Grid</li>
+      </ul>
+    </div>
+    <div class="card card-accent" style="border-top-color:var(--c4)">
+      <h3>🔔 REST Hooks</h3>
+      <div class="badge-row"><span class="badge" style="color:var(--c4);border-color:rgba(16,185,129,.3);background:rgba(16,185,129,.08)">HTTPS POST</span><span class="badge" style="color:var(--muted);border-color:var(--border)">Stateless</span></div>
+      <ul class="fancy" style="color:var(--muted);font-size:.85rem;margin-top:.8rem">
+        <li>External endpoint registers to receive callbacks</li>
+        <li>Salesforce sends POST on change</li>
+        <li>Simple, fire-and-forget</li>
+        <li>No replay — missed events are lost</li>
+      </ul>
+    </div>
+  </div>
+
+  <h3 style="font-family:var(--font-head);margin:2rem 0 .8rem">Feature Comparison</h3>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>Feature</th><th>Streaming API</th><th>Pub/Sub API</th><th>REST Hooks</th></tr></thead>
+      <tbody>
+        <tr><td>Protocol</td><td>HTTP + JSON (CometD)</td><td>HTTP/2 + Protobuf (gRPC)</td><td>HTTPS POST + JSON</td></tr>
+        <tr><td>Browser / LWC Support</td><td><span class="tag tag-yes">✅ Yes</span></td><td><span class="tag tag-no">❌ No</span></td><td><span class="tag tag-no">❌ No</span></td></tr>
+        <tr><td>Publish + Subscribe</td><td>Receive only</td><td><span class="tag tag-yes">✅ Bi-directional</span></td><td>Receive only</td></tr>
+        <tr><td>Replay Support</td><td>✅ ReplayId (24 hrs)</td><td>✅ ReplayId (24 hrs)</td><td>❌ None</td></tr>
+        <tr><td>Delivery Guarantee</td><td>At least once</td><td>At least once</td><td>Best effort</td></tr>
+        <tr><td>Backpressure Handling</td><td>❌ No</td><td><span class="tag tag-yes">✅ Built-in</span></td><td>❌ Manual</td></tr>
+        <tr><td>Ideal Subscriber</td><td>Browser UI, LWC</td><td>Microservices, Middleware</td><td>Webhooks / REST endpoints</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h3 style="font-family:var(--font-head);margin:2rem 0 .8rem">Choosing the Right Tool</h3>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>Scenario</th><th>Recommended</th><th>Reason</th></tr></thead>
+      <tbody>
+        <tr><td>Real-time UI update on Case escalation</td><td><span class="tag tag-yes">Streaming API</span></td><td>Native LWC support via empApi</td></tr>
+        <tr><td>ETL sync to AWS Redshift</td><td><span class="tag" style="background:rgba(124,58,237,.15);color:#a78bfa;border:1px solid rgba(124,58,237,.3)">Pub/Sub API</span></td><td>Scalable, high throughput, binary</td></tr>
+        <tr><td>Send Slack message on Opportunity Won</td><td><span class="tag tag-warn">REST Hook</span></td><td>Simple fire-and-forget</td></tr>
+        <tr><td>Internal Order → Shipment flow</td><td><span class="tag" style="background:rgba(124,58,237,.15);color:#a78bfa;border:1px solid rgba(124,58,237,.3)">Pub/Sub API</span></td><td>Multi-topic, backpressure handling</td></tr>
+        <tr><td>LWC push notifications</td><td><span class="tag tag-yes">Streaming API</span></td><td>Only API with browser support</td></tr>
+        <tr><td>Microservices event backbone</td><td><span class="tag" style="background:rgba(124,58,237,.15);color:#a78bfa;border:1px solid rgba(124,58,237,.3)">Pub/Sub API</span></td><td>Enterprise-grade streaming</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h3 style="font-family:var(--font-head);margin:2rem 0 .8rem">Interview Q&amp;A</h3>
+  <div class="qa-list">
+    <div class="qa-item"><div class="qa-q">Key difference between Streaming API and Pub/Sub API?</div><div class="qa-a">Streaming API uses CometD over HTTP long-polling — browser-friendly but higher overhead. Pub/Sub API uses gRPC (HTTP/2 + Protobuf) — faster, bi-directional, supports publish + subscribe, enterprise-grade.</div></div>
+    <div class="qa-item"><div class="qa-q">How do you ensure no events are missed using Streaming API?</div><div class="qa-a">Track the <code>replayId</code> and re-subscribe with offset on reconnection. Consider durable subscribers. Store the latest replayId in persistent storage so you can resume after disconnection.</div></div>
+    <div class="qa-item"><div class="qa-q">Which API for scalable Kafka integration?</div><div class="qa-a">Pub/Sub API — binary transport, backpressure handling, replay support, and native protocol compatibility for event brokers like Kafka and Azure Event Grid.</div></div>
+    <div class="qa-item"><div class="qa-q">Is Pub/Sub API supported in LWC?</div><div class="qa-a">No. Pub/Sub API requires gRPC, which browsers do not support. Use Streaming API (via <code>lightning/empApi</code>) for LWC real-time updates.</div></div>
+  </div>
+
+  <div class="hbox purple" style="margin-top:1.5rem">
+    <strong>🏁 Final Thought</strong>
+    "In event-driven design, your integration is only as good as your pipe. Choose wisely."
+  </div>
+</section>
+
+</main>
+
+<!-- ════════════ FOOTER ════════════ -->
+<footer style="background:#eef1f8;border-top:1px solid #d8dff0;padding:3rem 2rem;text-align:center;color:var(--muted);font-size:.85rem">
+  <div style="max-width:600px;margin:0 auto">
+    <div style="font-family:var(--font-head);font-size:1.2rem;font-weight:800;color:var(--text);margin-bottom:.5rem">Salesforce Development Guide</div>
+    <p>A comprehensive reference covering Validation Rules, Roll-Up Summaries, Flow vs Apex, Formula Fields, Governor Limits, SOQL/SOSL, Callouts, Async Apex, Triggers, LWC, Integration, Named Credentials, and Streaming APIs.</p>
+  </div>
+
+  <div style="margin-top:2.5rem">
+    <a href="sf_interview_prep.html" id="interview-btn">
+      <div class="btn-inner">
+        <div class="btn-icon">🎯</div>
+        <div class="btn-text">
+          <div class="btn-title">Company Interview Questions</div>
+          <div class="btn-sub">Real questions from Deloitte, Air India, Veeva, HCL &amp; more · Topic-wise prep guide</div>
+        </div>
+        <div class="btn-arrow">→</div>
+      </div>
+    </a>
+  </div>
+</footer>
+
+<script>
+// ── Progress bar
+window.addEventListener('scroll', () => {
+  const scrollTop = document.documentElement.scrollTop;
+  const scrollHeight = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+  const progress = (scrollTop / scrollHeight) * 100;
+  document.getElementById('progress').style.width = progress + '%';
+  const btt = document.getElementById('btt');
+  if (scrollTop > 400) btt.classList.add('show');
+  else btt.classList.remove('show');
+});
+
+// ── Intersection observer for section reveal
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) entry.target.classList.add('visible');
+  });
+}, { threshold: 0.05 });
+document.querySelectorAll('section').forEach(s => observer.observe(s));
+
+// ── Q&A accordion
+document.querySelectorAll('.qa-q').forEach(q => {
+  q.addEventListener('click', () => {
+    const item = q.parentElement;
+    const isOpen = item.classList.contains('open');
+    document.querySelectorAll('.qa-item.open').forEach(i => i.classList.remove('open'));
+    if (!isOpen) item.classList.add('open');
+  });
+});
+</script>
+</body>
+</html>
