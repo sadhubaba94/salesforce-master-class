@@ -253,7 +253,10 @@ ul.fancy li::before { content:'▸'; position:absolute; left:0; color:var(--c1);
 code { font-family:var(--font-code); font-size:.84em; background:rgba(30,64,175,.08); color:var(--c1); padding:.1em .35em; border-radius:4px; }
 .highlight { background:linear-gradient(120deg,rgba(254,215,170,.6) 0%,rgba(254,215,170,.2) 100%); border-radius:4px; padding:.05em .2em; }
 
-@media(max-width:768px){ main{padding:2rem 1rem 6rem;} .sec-title{font-size:1.6rem;} }
+@media(max-width:768px){ 
+  main{padding:2rem 1rem 6rem;} .sec-title{font-size:1.6rem;} 
+  .company-grid, .prep-grid { grid-template-columns: 1fr; }
+}
 
 #btt { position:fixed; bottom:2rem; right:2rem; z-index:100; width:42px; height:42px; border-radius:50%; background:#1e40af; color:#fff; font-size:1.1rem; display:flex; align-items:center; justify-content:center; cursor:pointer; text-decoration:none; opacity:0; pointer-events:none; transition:.2s; box-shadow:0 4px 16px rgba(30,64,175,.3); }
 #btt.show { opacity:1; pointer-events:all; }
