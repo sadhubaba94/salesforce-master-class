@@ -1,0 +1,2252 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Salesforce Triggers: Mastery & Implementation Guide</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Mono:ital,wght@0,400;0,700;1,400&family=Syne:wght@400;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet">
+<style>
+/* ═══════════════════════════════════════════════════════════ TOKENS */
+:root {
+  --bg:        #f5f8fd;
+  --bg2:       #eef2fa;
+  --bg3:       #e6ecf7;
+  --surface:   #ffffff;
+  --border:    #d0daea;
+  --border2:   #b8c8df;
+
+  --cyan:      #0891b2;
+  --cyan2:     #0e7490;
+  --blue:      #1d4ed8;
+  --purple:    #7c3aed;
+  --orange:    #ea580c;
+  --green:     #059669;
+  --yellow:    #d97706;
+  --red:       #dc2626;
+
+  --text:      #0f172a;
+  --text2:     #374151;
+  --text3:     #6b7280;
+
+  --mono:      'Space Mono', monospace;
+  --sans:      'DM Sans', sans-serif;
+  --display:   'Syne', sans-serif;
+
+  --r:         8px;
+  --r2:        14px;
+  --sidebar-w: 260px;
+  --transition: 0.3s cubic-bezier(0.4,0,0.2,1);
+}
+
+/* ═══════════════════════════════════════════════════════════ RESET */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; font-size: 16px; }
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--sans);
+  font-weight: 400;
+  line-height: 1.75;
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+::selection { background: var(--cyan); color: #fff; }
+
+/* ═══════════════════════════════════════════════════════════ LIGHT BG */
+body::before {
+  content: '';
+  position: fixed; inset: 0;
+  background:
+    radial-gradient(ellipse 80% 50% at 10% 0%, rgba(8,145,178,0.05) 0%, transparent 60%),
+    radial-gradient(ellipse 60% 40% at 90% 100%, rgba(124,58,237,0.04) 0%, transparent 60%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* ═══════════════════════════════════════════════════════════ HERO */
+.hero {
+  position: relative;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  overflow: hidden;
+  padding: 80px 40px;
+  background: linear-gradient(165deg, #f0f7ff 0%, #f5f8fd 50%, #f0f4ff 100%);
+}
+.hero-grid {
+  position: absolute; inset: 0;
+  background-image:
+    linear-gradient(rgba(8,145,178,0.12) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(8,145,178,0.12) 1px, transparent 1px);
+  background-size: 60px 60px;
+  mask-image: radial-gradient(ellipse 70% 60% at 50% 50%, black 0%, transparent 100%);
+  opacity: 0.5;
+}
+.hero-glow {
+  position: absolute;
+  width: 700px; height: 700px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(8,145,178,0.08) 0%, transparent 70%);
+  top: 50%; left: 50%; transform: translate(-50%, -50%);
+  pointer-events: none;
+}
+.hero-glow2 {
+  position: absolute;
+  width: 400px; height: 400px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(29,78,216,0.07) 0%, transparent 70%);
+  top: 30%; left: 20%;
+  pointer-events: none;
+}
+.hero-glow3 {
+  position: absolute;
+  width: 300px; height: 300px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(124,58,237,0.06) 0%, transparent 70%);
+  bottom: 20%; right: 20%;
+  pointer-events: none;
+}
+.hero-content { position: relative; z-index: 1; max-width: 900px; }
+.hero-badge {
+  display: inline-flex; align-items: center; gap: 8px;
+  background: rgba(8,145,178,0.08);
+  border: 1px solid rgba(8,145,178,0.25);
+  border-radius: 100px;
+  padding: 6px 18px;
+  font-family: var(--mono);
+  font-size: 0.72rem;
+  color: var(--cyan);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  margin-bottom: 32px;
+  animation: fadeDown 0.8s ease both;
+}
+.hero-badge::before { content: '●'; font-size: 0.5rem; animation: pulse 2s infinite; }
+@keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.3} }
+.hero-title {
+  font-family: var(--display);
+  font-weight: 800;
+  font-size: clamp(3rem, 7vw, 6rem);
+  line-height: 1.05;
+  letter-spacing: -0.02em;
+  margin-bottom: 12px;
+  animation: fadeDown 0.8s 0.1s ease both;
+}
+.hero-title .line1 { display: block; color: #0f172a; }
+.hero-title .line2 {
+  display: block;
+  background: linear-gradient(135deg, var(--cyan) 0%, var(--blue) 50%, var(--purple) 100%);
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+.hero-sub {
+  font-size: 1.1rem; color: var(--text2); font-weight: 300;
+  max-width: 600px; margin: 0 auto 48px;
+  animation: fadeDown 0.8s 0.2s ease both;
+}
+.hero-stats {
+  display: flex; justify-content: center; gap: 40px; flex-wrap: wrap;
+  animation: fadeDown 0.8s 0.3s ease both;
+}
+.hero-stat { text-align: center; }
+.hero-stat-num {
+  font-family: var(--display); font-size: 2.5rem; font-weight: 800;
+  line-height: 1;
+  background: linear-gradient(135deg, var(--cyan), var(--blue));
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+}
+.hero-stat-label { font-size: 0.78rem; color: #6b7280; text-transform: uppercase; letter-spacing: 0.1em; margin-top: 4px; }
+.scroll-cue {
+  position: absolute; bottom: 40px; left: 50%; transform: translateX(-50%);
+  display: flex; flex-direction: column; align-items: center; gap: 8px;
+  color: var(--text3); font-size: 0.72rem; letter-spacing: 0.1em; text-transform: uppercase;
+  animation: fadeDown 1s 0.6s ease both;
+}
+.scroll-cue::after {
+  content: '';
+  width: 1px; height: 40px;
+  background: linear-gradient(var(--cyan), transparent);
+  animation: scrollLine 2s infinite;
+}
+@keyframes scrollLine { 0%{opacity:0;transform:scaleY(0);transform-origin:top} 50%{opacity:1;transform:scaleY(1)} 100%{opacity:0} }
+@keyframes fadeDown { from{opacity:0;transform:translateY(-20px)} to{opacity:1;transform:translateY(0)} }
+
+/* ═══════════════════════════════════════════════════════════ LAYOUT */
+.layout { display: flex; position: relative; }
+.sidebar {
+  width: var(--sidebar-w);
+  flex-shrink: 0;
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  overflow-y: auto;
+  background: var(--bg2);
+  border-right: 1px solid var(--border);
+  padding: 32px 0;
+  z-index: 10;
+  scrollbar-width: thin;
+  scrollbar-color: var(--border2) transparent;
+}
+.sidebar::-webkit-scrollbar { width: 4px; }
+.sidebar::-webkit-scrollbar-track { background: transparent; }
+.sidebar::-webkit-scrollbar-thumb { background: var(--border2); border-radius: 2px; }
+.sidebar-logo {
+  padding: 0 24px 28px;
+  border-bottom: 1px solid var(--border);
+  margin-bottom: 20px;
+}
+.sidebar-logo-text {
+  font-family: var(--display); font-size: 0.85rem; font-weight: 700;
+  color: var(--cyan); text-transform: uppercase; letter-spacing: 0.1em;
+}
+.nav-section-label {
+  padding: 10px 24px 6px;
+  font-size: 0.65rem; font-weight: 700; color: var(--text3);
+  text-transform: uppercase; letter-spacing: 0.15em;
+  font-family: var(--mono);
+}
+.nav-link {
+  display: flex; align-items: center; gap: 10px;
+  padding: 8px 24px;
+  color: var(--text2);
+  text-decoration: none;
+  font-size: 0.82rem;
+  transition: all var(--transition);
+  border-left: 2px solid transparent;
+  position: relative;
+}
+.nav-link:hover { color: var(--cyan2); background: rgba(8,145,178,0.07); border-left-color: var(--cyan2); }
+.nav-link.active { color: var(--cyan2); background: rgba(8,145,178,0.1); border-left-color: var(--cyan2); }
+.nav-link .nav-num {
+  font-family: var(--mono); font-size: 0.65rem; color: var(--text3);
+  background: var(--bg3); border-radius: 4px; padding: 1px 5px;
+  flex-shrink: 0;
+}
+.main { flex: 1; min-width: 0; padding: 60px 64px 120px; max-width: 960px; }
+
+/* ═══════════════════════════════════════════════════════════ SECTION HEADERS */
+.section-header {
+  display: flex; align-items: center; gap: 16px;
+  margin-bottom: 40px; padding-bottom: 20px;
+  border-bottom: 1px solid var(--border);
+}
+.section-num {
+  font-family: var(--display); font-size: 3rem; font-weight: 800;
+  color: var(--border2); line-height: 1;
+  flex-shrink: 0;
+}
+.section-info {}
+.section-tag {
+  font-family: var(--mono); font-size: 0.65rem; color: var(--cyan);
+  text-transform: uppercase; letter-spacing: 0.15em; margin-bottom: 4px;
+}
+.section-title {
+  font-family: var(--display); font-size: 2rem; font-weight: 800;
+  line-height: 1.1; color: var(--text);
+}
+h2 {
+  font-family: var(--display); font-size: 1.35rem; font-weight: 700;
+  color: var(--text); margin: 48px 0 16px;
+  display: flex; align-items: center; gap: 10px;
+}
+h2::before {
+  content: '';
+  display: block; width: 3px; height: 22px;
+  background: linear-gradient(var(--cyan), var(--blue));
+  border-radius: 2px; flex-shrink: 0;
+}
+h3 {
+  font-family: var(--display); font-size: 1.05rem; font-weight: 600;
+  color: var(--cyan2); margin: 32px 0 12px;
+}
+p { color: var(--text2); margin-bottom: 16px; }
+strong { color: var(--text); font-weight: 500; }
+a { color: var(--cyan); }
+.divider {
+  height: 1px;
+  background: linear-gradient(90deg, var(--cyan) 0%, var(--blue) 30%, transparent 100%);
+  margin: 64px 0;
+  opacity: 0.4;
+}
+
+/* ═══════════════════════════════════════════════════════════ CODE BLOCKS */
+.code-wrap { margin: 24px 0; border-radius: var(--r2); overflow: hidden; border: 1px solid var(--border2); }
+.code-header {
+  background: #e8edf5;
+  padding: 10px 20px;
+  display: flex; align-items: center; justify-content: space-between;
+  border-bottom: 1px solid var(--border2);
+}
+.code-dots { display: flex; gap: 6px; }
+.code-dots span { width: 10px; height: 10px; border-radius: 50%; }
+.code-dots span:nth-child(1) { background: #ff5f56; }
+.code-dots span:nth-child(2) { background: #ffbd2e; }
+.code-dots span:nth-child(3) { background: #27c93f; }
+.code-lang {
+  font-family: var(--mono); font-size: 0.65rem;
+  color: var(--text3); letter-spacing: 0.1em; text-transform: uppercase;
+}
+.copy-btn {
+  background: none; border: 1px solid var(--border2); border-radius: 4px;
+  color: #6b7280; padding: 3px 10px; font-size: 0.68rem;
+  cursor: pointer; transition: all var(--transition); font-family: var(--mono);
+}
+.copy-btn:hover { border-color: var(--cyan); color: var(--cyan); }
+pre {
+  background: #1e2a3a;
+  padding: 24px;
+  overflow-x: auto;
+  margin: 0;
+  scrollbar-width: thin;
+  scrollbar-color: var(--border2) transparent;
+}
+pre::-webkit-scrollbar { height: 4px; }
+pre::-webkit-scrollbar-track { background: transparent; }
+pre::-webkit-scrollbar-thumb { background: var(--border2); }
+code {
+  font-family: var(--mono);
+  font-size: 0.8rem;
+  line-height: 1.7;
+  color: #abb2bf;
+}
+/* syntax highlight classes */
+.kw { color: #c678dd; }   /* keyword */
+.kw2 { color: #56b6c2; }  /* keyword2 */
+.str { color: #98c379; }  /* string */
+.num { color: #d19a66; }  /* number */
+.cmt { color: #5c6370; font-style: italic; } /* comment */
+.cls { color: #e5c07b; }  /* class */
+.fn { color: #61afef; }   /* function */
+.var { color: #e06c75; }  /* variable */
+.op { color: #56b6c2; }   /* operator */
+.prop { color: #abb2bf; } /* property */
+
+/* ═══════════════════════════════════════════════════════════ TABLES */
+.tbl-wrap { overflow-x: auto; margin: 24px 0; border-radius: var(--r2); border: 1px solid var(--border2); }
+table { width: 100%; border-collapse: collapse; }
+thead tr { background: #eef2fa; }
+thead th {
+  padding: 14px 16px; text-align: left;
+  font-family: var(--mono); font-size: 0.72rem;
+  color: var(--cyan2); text-transform: uppercase; letter-spacing: 0.1em;
+  font-weight: 700;
+  border-bottom: 2px solid var(--border2);
+}
+tbody tr { border-bottom: 1px solid var(--border); transition: background var(--transition); }
+tbody tr:hover { background: rgba(8,145,178,0.04); }
+tbody tr:last-child { border-bottom: none; }
+tbody td {
+  padding: 13px 16px; font-size: 0.88rem;
+  color: var(--text2); vertical-align: top;
+}
+tbody td:first-child { color: var(--text); }
+.mono-cell { font-family: var(--mono); font-size: 0.77rem; color: var(--cyan2); }
+
+/* ═══════════════════════════════════════════════════════════ CALLOUTS */
+.callout {
+  margin: 24px 0; padding: 18px 22px;
+  border-radius: var(--r);
+  border-left: 3px solid var(--cyan);
+  background: rgba(8,145,178,0.05);
+  display: flex; gap: 14px; align-items: flex-start;
+}
+.callout-icon { font-size: 1.1rem; flex-shrink: 0; margin-top: 2px; }
+.callout-body { flex: 1; }
+.callout-label { font-weight: 600; color: var(--cyan2); font-size: 0.88rem; margin-bottom: 4px; }
+.callout p { margin: 0; font-size: 0.88rem; }
+.callout.warn { border-color: var(--orange); background: rgba(234,88,12,0.05); }
+.callout.warn .callout-label { color: var(--orange); }
+.callout.success { border-color: var(--green); background: rgba(5,150,105,0.05); }
+.callout.success .callout-label { color: var(--green); }
+
+/* ═══════════════════════════════════════════════════════════ LISTS */
+ul, ol { padding-left: 24px; margin-bottom: 16px; }
+li { color: var(--text2); font-size: 0.92rem; margin-bottom: 8px; }
+li::marker { color: var(--cyan); }
+ul li::marker { content: '▸  '; }
+
+/* ═══════════════════════════════════════════════════════════ Q&A */
+.qa-grid { display: flex; flex-direction: column; gap: 16px; margin: 28px 0; }
+.qa-item {
+  border: 1px solid var(--border);
+  border-radius: var(--r2);
+  overflow: hidden;
+  transition: border-color var(--transition);
+  background: var(--surface);
+}
+.qa-item:hover { border-color: var(--border2); }
+.qa-item.open { border-color: var(--cyan); }
+.qa-question {
+  padding: 20px 24px;
+  cursor: pointer;
+  display: flex; align-items: flex-start; gap: 16px;
+  transition: background var(--transition);
+}
+.qa-question:hover { background: rgba(8,145,178,0.04); }
+.qa-q-num {
+  font-family: var(--display); font-size: 1.4rem; font-weight: 800; line-height: 1;
+  background: linear-gradient(135deg, var(--cyan), var(--blue));
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+  flex-shrink: 0; width: 32px;
+}
+.qa-q-text {
+  font-size: 0.95rem; font-weight: 500; color: var(--text); flex: 1; line-height: 1.4;
+  padding-top: 2px;
+}
+.qa-badge {
+  flex-shrink: 0; margin-top: 2px;
+  font-family: var(--mono); font-size: 0.6rem; padding: 3px 8px;
+  border-radius: 100px; text-transform: uppercase; letter-spacing: 0.08em;
+}
+.qa-badge.conceptual { background: rgba(139,92,246,0.15); color: var(--purple); border: 1px solid rgba(139,92,246,0.3); }
+.qa-badge.scenario { background: rgba(255,107,53,0.12); color: var(--orange); border: 1px solid rgba(255,107,53,0.3); }
+.qa-chevron {
+  flex-shrink: 0; width: 20px; height: 20px; margin-top: 2px;
+  color: var(--text3); transition: transform var(--transition);
+  display: flex; align-items: center; justify-content: center;
+}
+.qa-item.open .qa-chevron { transform: rotate(180deg); color: var(--cyan); }
+.qa-answer {
+  display: none; padding: 0 24px 24px 72px;
+  border-top: 1px solid var(--border);
+  padding-top: 20px;
+  animation: fadeIn 0.3s ease;
+}
+.qa-item.open .qa-answer { display: block; }
+@keyframes fadeIn { from{opacity:0;transform:translateY(-8px)} to{opacity:1;transform:translateY(0)} }
+.qa-answer p { font-size: 0.88rem; }
+.qa-answer ul li, .qa-answer ol li { font-size: 0.88rem; }
+.qa-answer .code-wrap { margin: 16px 0; }
+
+/* ═══════════════════════════════════════════════════════════ EXEC ORDER */
+.exec-steps { display: flex; flex-direction: column; gap: 0; margin: 24px 0; }
+.exec-step {
+  display: flex; gap: 0; position: relative;
+}
+.exec-step::before {
+  content: '';
+  position: absolute; left: 26px; top: 52px; bottom: -8px; width: 2px;
+  background: linear-gradient(var(--border2), transparent);
+  z-index: 0;
+}
+.exec-step:last-child::before { display: none; }
+.exec-num {
+  width: 54px; height: 54px; flex-shrink: 0;
+  background: #eef2fa; border: 1px solid var(--border2);
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-family: var(--display); font-weight: 800; font-size: 0.95rem;
+  color: var(--cyan2); z-index: 1; margin-top: 8px;
+  transition: all var(--transition);
+}
+.exec-step:hover .exec-num { background: var(--cyan); color: #fff; border-color: var(--cyan); }
+.exec-content {
+  padding: 12px 16px 28px 20px; flex: 1;
+}
+.exec-phase { font-weight: 600; color: var(--text); font-size: 0.92rem; }
+.exec-desc { color: var(--text2); font-size: 0.83rem; margin-top: 3px; line-height: 1.5; }
+.exec-highlight .exec-num { background: rgba(8,145,178,0.12); border-color: var(--cyan); }
+.exec-highlight .exec-phase { color: var(--cyan2); }
+
+/* ═══════════════════════════════════════════════════════════ CONTEXT VAR CARDS */
+.ctx-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin: 24px 0; }
+@media (max-width: 700px) { .ctx-grid { grid-template-columns: 1fr; } }
+.ctx-card {
+  background: #ffffff; border: 1px solid var(--border);
+  border-radius: var(--r2); padding: 18px; transition: all var(--transition);
+}
+.ctx-card:hover { border-color: var(--border2); transform: translateY(-2px); box-shadow: 0 4px 16px rgba(8,145,178,0.1); }
+.ctx-name { font-family: var(--mono); font-size: 0.82rem; color: var(--cyan2); margin-bottom: 6px; }
+.ctx-type { font-family: var(--mono); font-size: 0.7rem; color: var(--purple); margin-bottom: 8px; }
+.ctx-avail {
+  display: inline-block; font-size: 0.68rem;
+  background: rgba(5,150,105,0.08); color: var(--green);
+  border: 1px solid rgba(5,150,105,0.2);
+  border-radius: 100px; padding: 2px 10px; margin-bottom: 10px;
+}
+.ctx-desc { font-size: 0.82rem; color: var(--text2); line-height: 1.5; }
+
+/* ═══════════════════════════════════════════════════════════ BEFORE/AFTER COMPARISON */
+.compare { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin: 24px 0; }
+@media (max-width: 650px) { .compare { grid-template-columns: 1fr; } }
+.compare-card {
+  border-radius: var(--r2); padding: 24px; border: 1px solid var(--border);
+  background: #ffffff;
+}
+.compare-card.before { border-top: 3px solid var(--orange); background: rgba(234,88,12,0.03); }
+.compare-card.after { border-top: 3px solid var(--cyan); background: rgba(8,145,178,0.03); }
+.compare-title {
+  font-family: var(--display); font-weight: 700; font-size: 1.1rem; margin-bottom: 16px;
+}
+.compare-card.before .compare-title { color: var(--orange); }
+.compare-card.after .compare-title { color: var(--cyan); }
+.compare-list { list-style: none; padding: 0; }
+.compare-list li {
+  display: flex; gap: 8px; margin-bottom: 10px; font-size: 0.85rem;
+}
+.compare-list li::before { flex-shrink: 0; margin-top: 1px; }
+.compare-card.before .compare-list li::before { content: '🔶'; font-size: 0.7rem; }
+.compare-card.after .compare-list li::before { content: '🔷'; font-size: 0.7rem; }
+
+/* ═══════════════════════════════════════════════════════════ FRAMEWORK DIAGRAM */
+.framework-diagram {
+  margin: 28px 0; border-radius: var(--r2); overflow: hidden;
+  border: 1px solid var(--border2);
+}
+.fw-layer {
+  padding: 20px 28px; border-bottom: 1px solid var(--border);
+  position: relative;
+}
+.fw-layer:last-child { border-bottom: none; }
+.fw-arrow {
+  text-align: center; padding: 8px 0;
+  color: var(--text3); font-size: 1.2rem;
+  background: var(--bg2);
+  border-bottom: 1px solid var(--border);
+}
+.fw-1 { background: linear-gradient(135deg, rgba(8,145,178,0.07), rgba(8,145,178,0.02)); }
+.fw-2 { background: linear-gradient(135deg, rgba(29,78,216,0.07), rgba(29,78,216,0.02)); }
+.fw-3 { background: linear-gradient(135deg, rgba(124,58,237,0.07), rgba(124,58,237,0.02)); }
+.fw-label {
+  font-family: var(--mono); font-size: 0.65rem; text-transform: uppercase;
+  letter-spacing: 0.15em; margin-bottom: 6px;
+}
+.fw-1 .fw-label { color: var(--cyan); }
+.fw-2 .fw-label { color: var(--blue); }
+.fw-3 .fw-label { color: var(--purple); }
+.fw-name { font-family: var(--display); font-size: 1.1rem; font-weight: 700; color: var(--text); margin-bottom: 6px; }
+.fw-desc { font-size: 0.83rem; color: var(--text2); }
+
+/* ═══════════════════════════════════════════════════════════ PILLS / TAGS */
+.tag {
+  display: inline-block; font-family: var(--mono); font-size: 0.68rem;
+  padding: 3px 10px; border-radius: 100px; margin: 2px;
+}
+.tag-blue { background: rgba(29,78,216,0.08); color: var(--blue); border: 1px solid rgba(29,78,216,0.2); }
+.tag-cyan { background: rgba(8,145,178,0.08); color: var(--cyan2); border: 1px solid rgba(8,145,178,0.2); }
+.tag-orange { background: rgba(234,88,12,0.08); color: var(--orange); border: 1px solid rgba(234,88,12,0.2); }
+.tag-purple { background: rgba(124,58,237,0.08); color: var(--purple); border: 1px solid rgba(124,58,237,0.2); }
+.tag-green { background: rgba(5,150,105,0.08); color: var(--green); border: 1px solid rgba(5,150,105,0.2); }
+
+/* ═══════════════════════════════════════════════════════════ CHECKLIST */
+.checklist { list-style: none; padding: 0; margin: 20px 0; }
+.checklist li {
+  display: flex; gap: 12px; align-items: flex-start;
+  padding: 10px 0; border-bottom: 1px solid var(--border);
+  font-size: 0.88rem;
+}
+.checklist li:last-child { border-bottom: none; }
+.check-icon { color: var(--green); flex-shrink: 0; margin-top: 2px; }
+
+/* ═══════════════════════════════════════════════════════════ REVEAL ANIMATION */
+.reveal {
+  opacity: 0; transform: translateY(24px);
+  transition: opacity 0.6s ease, transform 0.6s ease;
+}
+.reveal.visible { opacity: 1; transform: translateY(0); }
+
+/* ═══════════════════════════════════════════════════════════ PROGRESS BAR */
+.progress-bar {
+  position: fixed; top: 0; left: 0; height: 3px; z-index: 1000;
+  background: linear-gradient(90deg, var(--cyan), var(--blue), var(--purple));
+  transition: width 0.1s linear;
+  width: 0%;
+}
+
+/* ═══════════════════════════════════════════════════════════ FOOTER */
+footer {
+  text-align: center; padding: 40px;
+  border-top: 1px solid var(--border);
+  color: var(--text3); font-size: 0.8rem;
+  background: var(--bg2);
+}
+footer .footer-logo {
+  font-family: var(--display); font-size: 1.2rem; font-weight: 800;
+  background: linear-gradient(135deg, var(--cyan2), var(--blue));
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+  margin-bottom: 8px;
+}
+
+/* ═══════════════════════════════════════════════════════════ MOBILE */
+@media (max-width: 900px) {
+  .sidebar { display: none; }
+  .main { padding: 32px 24px 80px; }
+  .hero { padding: 60px 24px; }
+}
+</style>
+</head>
+<body>
+
+<div class="progress-bar" id="progress"></div>
+
+<!-- ════════════════════════ HERO ════════════════════════ -->
+<section class="hero">
+  <div class="hero-grid"></div>
+  <div class="hero-glow"></div>
+  <div class="hero-glow2"></div>
+  <div class="hero-glow3"></div>
+  <div class="hero-content">
+    <a href="index.html" style="display:inline-flex;align-items:center;gap:6px;margin-bottom:24px;padding:6px 16px;background:rgba(8,145,178,0.08);border:1px solid rgba(8,145,178,0.2);border-radius:100px;font-family:var(--mono);font-size:0.72rem;color:var(--cyan2);text-decoration:none;letter-spacing:0.05em;transition:all 0.2s" onmouseover="this.style.background='rgba(8,145,178,0.15)'" onmouseout="this.style.background='rgba(8,145,178,0.08)'">← Back to Dev Guide</a>
+    <div class="hero-badge">Apex Development · Senior Level · 2025</div>
+    <h1 class="hero-title">
+      <span class="line1">Salesforce Triggers</span>
+      <span class="line2">Mastery Guide</span>
+    </h1>
+    <p class="hero-sub">A comprehensive technical reference for team training and interview preparation — from fundamentals to production-grade patterns.</p>
+    <div class="hero-stats">
+      <div class="hero-stat"><div class="hero-stat-num">4</div><div class="hero-stat-label">Sections</div></div>
+      <div class="hero-stat"><div class="hero-stat-num">20</div><div class="hero-stat-label">Q&amp;A Items</div></div>
+      <div class="hero-stat"><div class="hero-stat-num">15+</div><div class="hero-stat-label">Code Examples</div></div>
+      <div class="hero-stat"><div class="hero-stat-num">10+</div><div class="hero-stat-label">Yrs Experience</div></div>
+    </div>
+  </div>
+  <div class="scroll-cue">Scroll</div>
+</section>
+
+<!-- ════════════════════════ LAYOUT ════════════════════════ -->
+<div class="layout">
+
+  <!-- SIDEBAR NAV -->
+  <nav class="sidebar">
+    <div class="sidebar-logo">
+      <div class="sidebar-logo-text">⚡ SF Triggers</div>
+    </div>
+
+    <div class="nav-section-label">Contents</div>
+    <a href="#s1" class="nav-link"><span class="nav-num">01</span>Fundamentals &amp; Syntax</a>
+    <a href="#syntax" class="nav-link"><span class="nav-num">1.1</span>Trigger Syntax</a>
+    <a href="#execorder" class="nav-link"><span class="nav-num">1.2</span>Execution Order</a>
+    <a href="#contextvars" class="nav-link"><span class="nav-num">1.3</span>Context Variables</a>
+    <a href="#beforeafter" class="nav-link"><span class="nav-num">1.4</span>Before vs After</a>
+
+    <div class="nav-section-label" style="margin-top:12px">Best Practices</div>
+    <a href="#s2" class="nav-link"><span class="nav-num">02</span>Professional Approach</a>
+    <a href="#bulk" class="nav-link"><span class="nav-num">2.1</span>Bulkification</a>
+    <a href="#onetrigger" class="nav-link"><span class="nav-num">2.2</span>One Trigger Rule</a>
+    <a href="#handler" class="nav-link"><span class="nav-num">2.3</span>Handler Pattern</a>
+    <a href="#recursion" class="nav-link"><span class="nav-num">2.4</span>Recursion Guard</a>
+
+    <div class="nav-section-label" style="margin-top:12px">Methodology</div>
+    <a href="#s3" class="nav-link"><span class="nav-num">03</span>Implementation</a>
+
+    <div class="nav-section-label" style="margin-top:12px">Interview Prep</div>
+    <a href="#s4" class="nav-link"><span class="nav-num">04</span>20 Q&amp;A Bank</a>
+    <a href="#conceptual" class="nav-link"><span class="nav-num">4A</span>Conceptual (10)</a>
+    <a href="#scenario" class="nav-link"><span class="nav-num">4B</span>Scenario-Based (10)</a>
+
+    <div class="nav-section-label" style="margin-top:12px">Reference</div>
+    <a href="#appendix" class="nav-link"><span class="nav-num">A</span>Architecture Diagram</a>
+
+    <div class="nav-section-label" style="margin-top:12px">Extended</div>
+    <a href="#s5" class="nav-link"><span class="nav-num">05</span>Testing Triggers</a>
+    <a href="#teststructure" class="nav-link"><span class="nav-num">5.1</span>Test Structure</a>
+    <a href="#mockcallouts" class="nav-link"><span class="nav-num">5.2</span>Mock Callouts</a>
+    <a href="#s6" class="nav-link"><span class="nav-num">06</span>Governor Limits</a>
+
+    <div class="nav-section-label" style="margin-top:12px">Quality</div>
+    <a href="#s5" class="nav-link"><span class="nav-num">05</span>Testing Triggers</a>
+    <a href="#teststructure" class="nav-link"><span class="nav-num">5.1</span>Test Class Anatomy</a>
+    <a href="#testbest" class="nav-link"><span class="nav-num">5.2</span>Best Practices</a>
+
+    <div class="nav-section-label" style="margin-top:12px">Advanced</div>
+    <a href="#s6" class="nav-link"><span class="nav-num">06</span>Advanced Patterns</a>
+    <a href="#killswitch" class="nav-link"><span class="nav-num">6.1</span>Kill Switch</a>
+    <a href="#asyncoffload" class="nav-link"><span class="nav-num">6.2</span>Async Offloading</a>
+    <a href="#platformevents" class="nav-link"><span class="nav-num">6.3</span>Platform Events</a>
+  </nav>
+
+  <!-- MAIN CONTENT -->
+  <main class="main">
+
+    <!-- ══════════════════ SECTION 1 ══════════════════ -->
+    <section id="s1" class="reveal">
+      <div class="section-header">
+        <div class="section-num">01</div>
+        <div class="section-info">
+          <div class="section-tag">Fundamentals</div>
+          <div class="section-title">Fundamentals &amp; Syntax</div>
+        </div>
+      </div>
+
+      <!-- 1.1 -->
+      <h2 id="syntax">Trigger Syntax</h2>
+      <p>An Apex trigger follows a rigid syntax. Every element plays a specific role. Understanding each piece before writing any logic is essential for a professional developer.</p>
+
+      <div class="code-wrap">
+        <div class="code-header">
+          <div class="code-dots"><span></span><span></span><span></span></div>
+          <span class="code-lang">Apex — Skeleton</span>
+          <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+        </div>
+        <pre><code><span class="kw">trigger</span> <span class="cls">TriggerName</span> <span class="kw">on</span> <span class="cls">SObjectName</span> (trigger_events) {
+    <span class="cmt">// Trigger body — keep this logic-less. Delegate immediately.</span>
+}
+
+<span class="cmt">// ── Fully-formed trigger skeleton ───────────────────────────────</span>
+<span class="kw">trigger</span> <span class="cls">AccountTrigger</span> <span class="kw">on</span> <span class="cls">Account</span> (
+    <span class="kw2">before insert</span>,  <span class="kw2">before update</span>,  <span class="kw2">before delete</span>,
+    <span class="kw2">after insert</span>,   <span class="kw2">after update</span>,   <span class="kw2">after delete</span>,
+    <span class="kw2">after undelete</span>
+) {
+    <span class="kw">new</span> <span class="cls">AccountTriggerHandler</span>().<span class="fn">run</span>();
+}</code></pre>
+      </div>
+
+      <p>Key components: <span class="tag tag-cyan">trigger</span> keyword declares it. <span class="tag tag-cyan">on SObjectName</span> binds it to the object. <span class="tag tag-orange">trigger_events</span> is a comma-separated list of DML events. Keep the body a single delegating call.</p>
+
+      <!-- 1.2 -->
+      <h2 id="execorder">Trigger Execution Order</h2>
+      <p>When a DML operation fires, Salesforce follows a precise, deterministic execution order. A senior developer must know this sequence — it governs where bugs hide and why unexpected behavior occurs.</p>
+
+      <div class="exec-steps">
+        <div class="exec-step exec-highlight">
+          <div class="exec-num">1</div>
+          <div class="exec-content">
+            <div class="exec-phase">System Validation Rules</div>
+            <div class="exec-desc">Required fields, field formats, and max lengths are enforced by Salesforce before any Apex runs.</div>
+          </div>
+        </div>
+        <div class="exec-step exec-highlight">
+          <div class="exec-num">2</div>
+          <div class="exec-content">
+            <div class="exec-phase">Before Triggers 🔥</div>
+            <div class="exec-desc">All before-trigger logic runs. You can still modify field values before the record is written to the database.</div>
+          </div>
+        </div>
+        <div class="exec-step">
+          <div class="exec-num">3</div>
+          <div class="exec-content">
+            <div class="exec-phase">Custom Validation Rules</div>
+            <div class="exec-desc">Declarative validation rules evaluate <em>after</em> before triggers — so your trigger can set a field that the validation rule then checks.</div>
+          </div>
+        </div>
+        <div class="exec-step">
+          <div class="exec-num">4</div>
+          <div class="exec-content">
+            <div class="exec-phase">Duplicate Rules</div>
+            <div class="exec-desc">Salesforce evaluates matching rules and enforces or alerts on duplicate records.</div>
+          </div>
+        </div>
+        <div class="exec-step exec-highlight">
+          <div class="exec-num">5</div>
+          <div class="exec-content">
+            <div class="exec-phase">Record Saved to Database</div>
+            <div class="exec-desc">The record is committed to the database row, but the transaction is not yet finalized.</div>
+          </div>
+        </div>
+        <div class="exec-step exec-highlight">
+          <div class="exec-num">6</div>
+          <div class="exec-content">
+            <div class="exec-phase">After Triggers 🔥</div>
+            <div class="exec-desc">After triggers fire. Record IDs are now available. The triggering record is read-only — modifying it requires another DML call.</div>
+          </div>
+        </div>
+        <div class="exec-step">
+          <div class="exec-num">7–11</div>
+          <div class="exec-content">
+            <div class="exec-phase">Assignment, Auto-Response, Workflow, Escalation, Entitlement Rules</div>
+            <div class="exec-desc">Declarative automation runs in this window. Workflow Field Updates can re-evaluate triggers — be aware of potential recursion here.</div>
+          </div>
+        </div>
+        <div class="exec-step">
+          <div class="exec-num">12–13</div>
+          <div class="exec-content">
+            <div class="exec-phase">Roll-Up Summaries &amp; Sharing Rules</div>
+            <div class="exec-desc">Parent record roll-up fields recalculate. Criteria-based sharing is re-evaluated and updated.</div>
+          </div>
+        </div>
+        <div class="exec-step exec-highlight">
+          <div class="exec-num">14</div>
+          <div class="exec-content">
+            <div class="exec-phase">Commit to Database</div>
+            <div class="exec-desc">The full transaction commits. Email notifications are dispatched. If anything throws an unhandled exception, the entire transaction rolls back.</div>
+          </div>
+        </div>
+        <div class="exec-step">
+          <div class="exec-num">15</div>
+          <div class="exec-content">
+            <div class="exec-phase">Post-Commit: Async Jobs</div>
+            <div class="exec-desc">Queueable, Future, and Batch Apex jobs are added to the async queue after the transaction commits.</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="callout warn">
+        <div class="callout-icon">⚠️</div>
+        <div class="callout-body">
+          <div class="callout-label">Workflow Re-Evaluation Warning</div>
+          <p>Workflow Field Updates that re-evaluate conditions can cause triggers to fire a second time within the same transaction. Always use static Boolean recursion guards when your trigger performs DML on the same object.</p>
+        </div>
+      </div>
+
+      <!-- 1.3 -->
+      <h2 id="contextvars">All Trigger Context Variables</h2>
+      <p>Salesforce injects these implicit variables into every trigger. They are your primary interface to record data inside any trigger context.</p>
+
+      <div class="ctx-grid">
+        <div class="ctx-card">
+          <div class="ctx-name">Trigger.new</div>
+          <div class="ctx-type">List&lt;SObject&gt;</div>
+          <div class="ctx-avail">Before/After Insert · Before/After Update · After Undelete</div>
+          <div class="ctx-desc">New versions of records. <strong>Writable</strong> in Before context — direct field assignment here saves a DML operation. Read-only in After context.</div>
+        </div>
+        <div class="ctx-card">
+          <div class="ctx-name">Trigger.newMap</div>
+          <div class="ctx-type">Map&lt;Id, SObject&gt;</div>
+          <div class="ctx-avail">Before Update · After Insert/Update/Undelete</div>
+          <div class="ctx-desc">Map of record IDs to new versions. Ideal for cross-referencing records from a related SOQL query. Not available in Before Insert (no Id yet).</div>
+        </div>
+        <div class="ctx-card">
+          <div class="ctx-name">Trigger.old</div>
+          <div class="ctx-type">List&lt;SObject&gt;</div>
+          <div class="ctx-avail">Before/After Update · Before/After Delete</div>
+          <div class="ctx-desc">Previous versions of records. Essential for comparing old vs new values to detect field changes. Not available on Insert.</div>
+        </div>
+        <div class="ctx-card">
+          <div class="ctx-name">Trigger.oldMap</div>
+          <div class="ctx-type">Map&lt;Id, SObject&gt;</div>
+          <div class="ctx-avail">Before/After Update · Before/After Delete</div>
+          <div class="ctx-desc">Map of record IDs to old versions. <strong>The primary tool for field-change detection</strong>: <code>oldMap.get(rec.Id).Field__c</code>.</div>
+        </div>
+        <div class="ctx-card">
+          <div class="ctx-name">Trigger.isBefore / isAfter</div>
+          <div class="ctx-type">Boolean</div>
+          <div class="ctx-avail">All contexts</div>
+          <div class="ctx-desc">True if executing before or after the record is saved. Used in Handler routing logic.</div>
+        </div>
+        <div class="ctx-card">
+          <div class="ctx-name">Trigger.isInsert / isUpdate / isDelete / isUndelete</div>
+          <div class="ctx-type">Boolean</div>
+          <div class="ctx-avail">All contexts</div>
+          <div class="ctx-desc">True if the trigger fired from the corresponding DML operation. Combine with isAfter/isBefore for precise routing.</div>
+        </div>
+        <div class="ctx-card">
+          <div class="ctx-name">Trigger.operationType</div>
+          <div class="ctx-type">TriggerOperation Enum</div>
+          <div class="ctx-avail">All contexts</div>
+          <div class="ctx-desc">Returns <code>BEFORE_INSERT</code>, <code>AFTER_UPDATE</code>, etc. Use with <code>switch on</code> for the cleanest handler routing.</div>
+        </div>
+        <div class="ctx-card">
+          <div class="ctx-name">Trigger.size</div>
+          <div class="ctx-type">Integer</div>
+          <div class="ctx-avail">All contexts</div>
+          <div class="ctx-desc">Total record count in the trigger invocation. Useful for logging and debugging bulk scenarios.</div>
+        </div>
+        <div class="ctx-card">
+          <div class="ctx-name">Trigger.isExecuting</div>
+          <div class="ctx-type">Boolean</div>
+          <div class="ctx-avail">All contexts</div>
+          <div class="ctx-desc">True if the current Apex is running from a trigger (vs. Visualforce page, test, or anonymous Apex). Useful in shared utility classes.</div>
+        </div>
+      </div>
+
+      <!-- 1.4 -->
+      <h2 id="beforeafter">Before vs. After Triggers</h2>
+      <p>This is one of the most fundamental architectural decisions. Using the wrong context wastes governor limit budget.</p>
+
+      <div class="compare">
+        <div class="compare-card before">
+          <div class="compare-title">🔶 Before Trigger</div>
+          <ul class="compare-list">
+            <li>Fires <strong>before</strong> record is written to DB</li>
+            <li>Record ID <strong>not available</strong> on Insert</li>
+            <li>Can <strong>modify the record directly</strong> — no DML needed</li>
+            <li>Lower governor cost for field modifications</li>
+          </ul>
+          <div style="margin-top:16px">
+            <strong style="font-size:0.82rem;color:var(--text3)">USE FOR:</strong><br>
+            <span class="tag tag-orange">Field defaulting</span>
+            <span class="tag tag-orange">Custom validation</span>
+            <span class="tag tag-orange">Auto-calculation</span>
+            <span class="tag tag-orange">De-duplication check</span>
+          </div>
+        </div>
+        <div class="compare-card after">
+          <div class="compare-title">🔷 After Trigger</div>
+          <ul class="compare-list">
+            <li>Fires <strong>after</strong> record is persisted to DB</li>
+            <li>Record ID is <strong>always available</strong></li>
+            <li>Triggering record is <strong>read-only</strong> here</li>
+            <li>Required for operations needing confirmed IDs</li>
+          </ul>
+          <div style="margin-top:16px">
+            <strong style="font-size:0.82rem;color:var(--text3)">USE FOR:</strong><br>
+            <span class="tag tag-cyan">Creating child records</span>
+            <span class="tag tag-cyan">Email notifications</span>
+            <span class="tag tag-cyan">Future/Queueable calls</span>
+            <span class="tag tag-cyan">Updating related records</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="code-wrap">
+        <div class="code-header"><div class="code-dots"><span></span><span></span><span></span></div><span class="code-lang">Apex — Before Insert Example</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+        <pre><code><span class="cmt">// BEFORE INSERT: Auto-populate Rating based on AnnualRevenue</span>
+<span class="cmt">// Direct assignment — no DML needed, saves 1 DML statement per batch</span>
+<span class="kw">trigger</span> <span class="cls">AccountTrigger</span> <span class="kw">on</span> <span class="cls">Account</span> (<span class="kw2">before insert</span>) {
+    <span class="kw">for</span> (<span class="cls">Account</span> <span class="var">acc</span> : <span class="cls">Trigger</span>.new) {
+        <span class="kw">if</span> (<span class="var">acc</span>.AnnualRevenue != <span class="kw">null</span> &amp;&amp; <span class="var">acc</span>.AnnualRevenue &gt; <span class="num">1000000</span>) {
+            <span class="var">acc</span>.Rating = <span class="str">'Hot'</span>;  <span class="cmt">// Direct mutation — no update() DML needed</span>
+        }
+    }
+}</code></pre>
+      </div>
+
+      <div class="code-wrap">
+        <div class="code-header"><div class="code-dots"><span></span><span></span><span></span></div><span class="code-lang">Apex — After Insert Example</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+        <pre><code><span class="cmt">// AFTER INSERT: Create a follow-up Task for every new Lead</span>
+<span class="cmt">// Requires after context because WhoId needs a confirmed Lead ID</span>
+<span class="kw">trigger</span> <span class="cls">LeadTrigger</span> <span class="kw">on</span> <span class="cls">Lead</span> (<span class="kw2">after insert</span>) {
+    <span class="cls">List</span>&lt;<span class="cls">Task</span>&gt; <span class="var">tasksToInsert</span> = <span class="kw">new</span> <span class="cls">List</span>&lt;<span class="cls">Task</span>&gt;();
+    <span class="kw">for</span> (<span class="cls">Lead</span> <span class="var">ld</span> : <span class="cls">Trigger</span>.new) {
+        <span class="var">tasksToInsert</span>.add(<span class="kw">new</span> <span class="cls">Task</span>(
+            Subject      = <span class="str">'Follow up with new Lead'</span>,
+            WhoId        = <span class="var">ld</span>.Id,          <span class="cmt">// Id confirmed in after context</span>
+            OwnerId      = <span class="var">ld</span>.OwnerId,
+            ActivityDate = <span class="cls">Date</span>.<span class="fn">today</span>().<span class="fn">addDays</span>(<span class="num">1</span>),
+            Status       = <span class="str">'Not Started'</span>
+        ));
+    }
+    <span class="kw">if</span> (!<span class="var">tasksToInsert</span>.<span class="fn">isEmpty</span>()) { <span class="kw2">insert</span> <span class="var">tasksToInsert</span>; }
+}</code></pre>
+      </div>
+    </section>
+
+    <div class="divider"></div>
+
+    <!-- ══════════════════ SECTION 2 ══════════════════ -->
+    <section id="s2" class="reveal">
+      <div class="section-header">
+        <div class="section-num">02</div>
+        <div class="section-info">
+          <div class="section-tag">Best Practices</div>
+          <div class="section-title">The Professional Approach</div>
+        </div>
+      </div>
+
+      <!-- 2.1 Bulkification -->
+      <h2 id="bulk">Bulkification: Avoiding SOQL/DML Inside Loops</h2>
+      <p>Bulkification is the <strong>single most critical concept</strong> in professional Apex development. Salesforce enforces hard governor limits of <span class="tag tag-orange">100 SOQL queries</span> and <span class="tag tag-orange">150 DML operations</span> per transaction. A Data Loader import of 200 records with a naive trigger will breach these limits instantly.</p>
+
+      <h3>❌ Anti-Pattern — Never Write This</h3>
+      <div class="code-wrap">
+        <div class="code-header"><div class="code-dots"><span></span><span></span><span></span></div><span class="code-lang">Apex — Bad Pattern (DO NOT USE)</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+        <pre><code><span class="cmt">// ❌ WRONG — SOQL and DML inside a for loop</span>
+<span class="kw">trigger</span> <span class="cls">OpportunityTrigger</span> <span class="kw">on</span> <span class="cls">Opportunity</span> (<span class="kw2">after insert</span>) {
+    <span class="kw">for</span> (<span class="cls">Opportunity</span> <span class="var">opp</span> : <span class="cls">Trigger</span>.new) {
+        <span class="cmt">// Fires 1 SOQL per record — 201 records = 201 SOQL queries 💀</span>
+        <span class="cls">Account</span> <span class="var">acc</span> = [<span class="kw2">SELECT</span> Id, Name <span class="kw2">FROM</span> <span class="cls">Account</span>
+                        <span class="kw2">WHERE</span> Id = :<span class="var">opp</span>.AccountId];
+        <span class="cmt">// Fires 1 DML per record — 151 records = 151 DML rows 💀</span>
+        <span class="kw2">insert</span> <span class="kw">new</span> <span class="cls">Task</span>(Subject = <span class="str">'Follow Up'</span>, WhatId = <span class="var">opp</span>.Id);
+    }
+}</code></pre>
+      </div>
+
+      <h3>✅ Best Practice — The Bulkified Pattern</h3>
+      <div class="code-wrap">
+        <div class="code-header"><div class="code-dots"><span></span><span></span><span></span></div><span class="code-lang">Apex — Correct Bulkified Pattern</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+        <pre><code><span class="kw">trigger</span> <span class="cls">OpportunityTrigger</span> <span class="kw">on</span> <span class="cls">Opportunity</span> (<span class="kw2">after insert</span>) {
+
+    <span class="cmt">// Step 1: Collect all Account IDs into a Set — O(n) loop, zero queries</span>
+    <span class="cls">Set</span>&lt;<span class="cls">Id</span>&gt; <span class="var">accountIds</span> = <span class="kw">new</span> <span class="cls">Set</span>&lt;<span class="cls">Id</span>&gt;();
+    <span class="kw">for</span> (<span class="cls">Opportunity</span> <span class="var">opp</span> : <span class="cls">Trigger</span>.new) {
+        <span class="kw">if</span> (<span class="var">opp</span>.AccountId != <span class="kw">null</span>) { <span class="var">accountIds</span>.<span class="fn">add</span>(<span class="var">opp</span>.AccountId); }
+    }
+
+    <span class="cmt">// Step 2: ONE SOQL query for all relevant Accounts</span>
+    <span class="cls">Map</span>&lt;<span class="cls">Id</span>, <span class="cls">Account</span>&gt; <span class="var">accountMap</span> = <span class="kw">new</span> <span class="cls">Map</span>&lt;<span class="cls">Id</span>, <span class="cls">Account</span>&gt;(
+        [<span class="kw2">SELECT</span> Id, Name, Industry <span class="kw2">FROM</span> <span class="cls">Account</span> <span class="kw2">WHERE</span> Id <span class="kw2">IN</span> :<span class="var">accountIds</span>]
+    );
+
+    <span class="cmt">// Step 3: Build DML list — logic is inside loop, NOT DML</span>
+    <span class="cls">List</span>&lt;<span class="cls">Task</span>&gt; <span class="var">tasksToInsert</span> = <span class="kw">new</span> <span class="cls">List</span>&lt;<span class="cls">Task</span>&gt;();
+    <span class="kw">for</span> (<span class="cls">Opportunity</span> <span class="var">opp</span> : <span class="cls">Trigger</span>.new) {
+        <span class="cls">Account</span> <span class="var">relatedAcc</span> = <span class="var">accountMap</span>.<span class="fn">get</span>(<span class="var">opp</span>.AccountId);
+        <span class="kw">if</span> (<span class="var">relatedAcc</span> != <span class="kw">null</span>) {
+            <span class="var">tasksToInsert</span>.<span class="fn">add</span>(<span class="kw">new</span> <span class="cls">Task</span>(
+                Subject      = <span class="str">'Follow Up - '</span> + <span class="var">relatedAcc</span>.Name,
+                WhatId       = <span class="var">opp</span>.Id,
+                ActivityDate = <span class="cls">Date</span>.<span class="fn">today</span>().<span class="fn">addDays</span>(<span class="num">3</span>)
+            ));
+        }
+    }
+
+    <span class="cmt">// Step 4: ONE DML operation for ALL tasks</span>
+    <span class="kw">if</span> (!<span class="var">tasksToInsert</span>.<span class="fn">isEmpty</span>()) { <span class="kw2">insert</span> <span class="var">tasksToInsert</span>; }
+}</code></pre>
+      </div>
+
+      <div class="callout success">
+        <div class="callout-icon">💡</div>
+        <div class="callout-body">
+          <div class="callout-label">The Bulkification Mantra</div>
+          <p><strong>Collect → Query → Process → DML.</strong> Never query or perform DML inside a for loop. No exceptions.</p>
+        </div>
+      </div>
+
+      <!-- 2.2 One Trigger -->
+      <h2 id="onetrigger">The One Trigger Per Object Rule</h2>
+      <p>Salesforce allows multiple triggers per object, but this is a recognized anti-pattern in enterprise development because Salesforce <strong>does not guarantee the execution order</strong> of multiple triggers on the same object.</p>
+
+      <div class="tbl-wrap">
+        <table>
+          <thead><tr><th>Problem with Multiple Triggers</th><th>Consequence</th></tr></thead>
+          <tbody>
+            <tr><td>No guaranteed execution order</td><td>Logic outcome changes unpredictably after deployments</td></tr>
+            <tr><td>Logic fragmentation</td><td>Business rules scattered; impossible to audit in one place</td></tr>
+            <tr><td>Conflicting field updates</td><td>Two triggers may write different values to the same field</td></tr>
+            <tr><td>Test complexity</td><td>Trigger interactions are nearly untestable in isolation</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <p>The solution is simple: <strong>one trigger per object, delegating to one handler class</strong>.</p>
+
+      <!-- 2.3 Handler Pattern -->
+      <h2 id="handler">Logic-less Triggers &amp; The Handler/Helper Pattern</h2>
+      <p>Production-grade Apex separates concerns across three distinct layers. This mirrors the MVC pattern and is the industry standard for any org with more than one developer.</p>
+
+      <div class="framework-diagram">
+        <div class="fw-layer fw-1">
+          <div class="fw-label">Layer 1 — Trigger File</div>
+          <div class="fw-name">Dispatcher</div>
+          <div class="fw-desc">Contains <strong>zero business logic</strong>. Its only job: check the kill switch and invoke the handler. One file per object, period.</div>
+        </div>
+        <div class="fw-arrow">↓</div>
+        <div class="fw-layer fw-2">
+          <div class="fw-label">Layer 2 — Handler Class</div>
+          <div class="fw-name">Router</div>
+          <div class="fw-desc">Uses <code>switch on Trigger.operationType</code> to route each trigger event to the correct helper method. Applies the recursion guard here.</div>
+        </div>
+        <div class="fw-arrow">↓</div>
+        <div class="fw-layer fw-3">
+          <div class="fw-label">Layer 3 — Helper Class</div>
+          <div class="fw-name">Business Logic</div>
+          <div class="fw-desc">Static methods, each responsible for exactly <strong>one concern</strong>. Fully bulkified. Independently unit-testable. No references to Trigger.* context here — data is passed as parameters.</div>
+        </div>
+      </div>
+
+      <div class="code-wrap">
+        <div class="code-header"><div class="code-dots"><span></span><span></span><span></span></div><span class="code-lang">Apex — Handler Class (Router)</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+        <pre><code><span class="kw">public class</span> <span class="cls">ContactTriggerHandler</span> {
+
+    <span class="kw">public void</span> <span class="fn">run</span>() {
+        <span class="kw2">switch on</span> <span class="cls">Trigger</span>.operationType {
+            <span class="kw2">when</span> BEFORE_INSERT  { <span class="fn">onBeforeInsert</span>(<span class="cls">Trigger</span>.new); }
+            <span class="kw2">when</span> BEFORE_UPDATE  { <span class="fn">onBeforeUpdate</span>(<span class="cls">Trigger</span>.new, <span class="cls">Trigger</span>.oldMap); }
+            <span class="kw2">when</span> AFTER_INSERT   { <span class="fn">onAfterInsert</span>(<span class="cls">Trigger</span>.new); }
+            <span class="kw2">when</span> AFTER_UPDATE   { <span class="fn">onAfterUpdate</span>(<span class="cls">Trigger</span>.new, <span class="cls">Trigger</span>.oldMap); }
+            <span class="kw2">when</span> BEFORE_DELETE  { <span class="fn">onBeforeDelete</span>(<span class="cls">Trigger</span>.old); }
+            <span class="kw2">when</span> AFTER_DELETE   { <span class="fn">onAfterDelete</span>(<span class="cls">Trigger</span>.oldMap); }
+            <span class="kw2">when</span> AFTER_UNDELETE { <span class="fn">onAfterUndelete</span>(<span class="cls">Trigger</span>.new); }
+        }
+    }
+
+    <span class="kw">private void</span> <span class="fn">onBeforeInsert</span>(<span class="cls">List</span>&lt;<span class="cls">Contact</span>&gt; <span class="var">newContacts</span>) {
+        <span class="cls">ContactTriggerHelper</span>.<span class="fn">setDefaultValues</span>(<span class="var">newContacts</span>);
+    }
+    <span class="kw">private void</span> <span class="fn">onAfterInsert</span>(<span class="cls">List</span>&lt;<span class="cls">Contact</span>&gt; <span class="var">newContacts</span>) {
+        <span class="cls">ContactTriggerHelper</span>.<span class="fn">createWelcomeTask</span>(<span class="var">newContacts</span>);
+    }
+    <span class="kw">private void</span> <span class="fn">onAfterUpdate</span>(<span class="cls">List</span>&lt;<span class="cls">Contact</span>&gt; <span class="var">newContacts</span>,
+                               <span class="cls">Map</span>&lt;<span class="cls">Id</span>, <span class="cls">Contact</span>&gt; <span class="var">oldMap</span>) {
+        <span class="cls">ContactTriggerHelper</span>.<span class="fn">syncAddressToAccount</span>(<span class="var">newContacts</span>, <span class="var">oldMap</span>);
+    }
+}</code></pre>
+      </div>
+
+      <!-- 2.4 Recursion -->
+      <h2 id="recursion">Handling Recursion with Static Variables</h2>
+      <p>Recursion occurs when a trigger causes DML on the same object, firing the trigger again — creating an infinite loop until Salesforce's max trigger depth (16 levels) is exceeded.</p>
+
+      <div class="code-wrap">
+        <div class="code-header"><div class="code-dots"><span></span><span></span><span></span></div><span class="code-lang">Apex — Recursion Guard</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+        <pre><code><span class="kw">public class</span> <span class="cls">AccountTriggerHandler</span> {
+    <span class="cmt">// Static vars persist for the entire transaction — not per trigger invocation</span>
+    <span class="kw">private static</span> <span class="cls">Boolean</span> <span class="var">hasRun</span> = <span class="kw">false</span>;
+
+    <span class="kw">public void</span> <span class="fn">run</span>() {
+        <span class="kw">if</span> (<span class="var">hasRun</span>) { <span class="kw">return</span>; }  <span class="cmt">// 🛑 Already ran this transaction — exit</span>
+        <span class="var">hasRun</span> = <span class="kw">true</span>;
+
+        <span class="kw">try</span> {
+            <span class="kw2">switch on</span> <span class="cls">Trigger</span>.operationType {
+                <span class="kw2">when</span> AFTER_UPDATE { <span class="fn">onAfterUpdate</span>(<span class="cls">Trigger</span>.new, <span class="cls">Trigger</span>.oldMap); }
+            }
+        } <span class="kw">finally</span> {
+            <span class="cmt">// CRITICAL: Always reset in finally — handles exceptions gracefully</span>
+            <span class="cmt">// Without this, a thrown exception permanently disables the trigger!</span>
+            <span class="var">hasRun</span> = <span class="kw">false</span>;
+        }
+    }
+}</code></pre>
+      </div>
+
+      <div class="callout warn">
+        <div class="callout-icon">🚨</div>
+        <div class="callout-body">
+          <div class="callout-label">Always Reset in a finally Block</div>
+          <p>If the logic throws an exception and the flag is never reset, the trigger is silently disabled for the remainder of the transaction — an extremely difficult bug to diagnose in production.</p>
+        </div>
+      </div>
+    </section>
+
+    <div class="divider"></div>
+
+    <!-- ══════════════════ SECTION 3 ══════════════════ -->
+    <section id="s3" class="reveal">
+      <div class="section-header">
+        <div class="section-num">03</div>
+        <div class="section-info">
+          <div class="section-tag">Methodology</div>
+          <div class="section-title">Implementation Framework</div>
+        </div>
+      </div>
+
+      <p>A repeatable four-phase framework for every trigger requirement ensures quality, maintainability, and reliable test coverage.</p>
+
+      <h2>Phase 1: Requirement Analysis</h2>
+      <ul>
+        <li>Identify the triggering SObject and DML event (before/after insert/update/delete).</li>
+        <li>Define the business rule precisely: <em>"When X happens to Object Y, do Z to Object W."</em></li>
+        <li>Determine if a declarative solution (Flow, Validation Rule) suffices — code as a last resort.</li>
+        <li>Clarify bulk implications: How many records could fire this trigger at once? (Data migration? Integration?)</li>
+        <li>Identify all related objects that need to be queried or updated.</li>
+        <li>Confirm field-change detection needs: Does the logic depend on a <em>change</em>, or just the current value?</li>
+      </ul>
+
+      <h2>Phase 2: Logic Flow Design</h2>
+      <ul>
+        <li>Sketch the conditional logic before writing code: <code>if field changed AND new value is X, then...</code></li>
+        <li>Identify all required SOQL queries and ensure none are inside loops.</li>
+        <li>Map data relationships: Which IDs must you collect? What Maps do you need to build?</li>
+        <li>Design error handling: Where should <code>addError()</code> be called? What should trigger rollback?</li>
+        <li>Consider the Salesforce execution order: Will this trigger interact with Workflow or Flow?</li>
+      </ul>
+
+      <h2>Phase 3: Handler Class Construction</h2>
+
+      <ul class="checklist">
+        <li><span class="check-icon">✅</span><div><strong>Create a single, logic-less trigger file</strong> — enforces the one-trigger-per-object rule.</div></li>
+        <li><span class="check-icon">✅</span><div><strong>Create the Handler class with a run() method</strong> using <code>switch on Trigger.operationType</code>.</div></li>
+        <li><span class="check-icon">✅</span><div><strong>Create the Helper class with static methods</strong> — one method per concern, fully testable in isolation.</div></li>
+        <li><span class="check-icon">✅</span><div><strong>Use Set/Map collection patterns for SOQL</strong> — collect IDs first, query once with <code>WHERE Id IN :idSet</code>.</div></li>
+        <li><span class="check-icon">✅</span><div><strong>Use List collections for DML</strong> — batch all DML into a single operation outside the loop.</div></li>
+        <li><span class="check-icon">✅</span><div><strong>Implement null-safety checks</strong> — <code>if (field != null)</code> before every reference to prevent NullPointerException.</div></li>
+        <li><span class="check-icon">✅</span><div><strong>Add the RecursionGuard</strong> if performing DML on the same triggering object.</div></li>
+        <li><span class="check-icon">✅</span><div><strong>Use Trigger.oldMap for change detection</strong> — not index comparison between Trigger.old and Trigger.new.</div></li>
+        <li><span class="check-icon">✅</span><div><strong>Guard DML calls with isEmpty()</strong> — avoid unnecessary DML governor usage when there's nothing to do.</div></li>
+      </ul>
+
+      <h2>Phase 4: Unit Testing (75%+ Coverage is Mandatory)</h2>
+      <p>Salesforce requires 75% coverage to deploy. Best practice is 90%+. Tests must verify <em>behavior</em>, not just execute lines.</p>
+
+      <div class="code-wrap">
+        <div class="code-header"><div class="code-dots"><span></span><span></span><span></span></div><span class="code-lang">Apex — Test Class</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+        <pre><code><span class="kw">@isTest</span>
+<span class="kw">public class</span> <span class="cls">ContactTriggerTest</span> {
+
+    <span class="kw">@isTest</span>
+    <span class="kw">static void</span> <span class="fn">testDefaultDescriptionBulk</span>() {
+        <span class="cls">Account</span> <span class="var">acc</span> = <span class="kw">new</span> <span class="cls">Account</span>(Name = <span class="str">'Test Account'</span>);
+        <span class="kw2">insert</span> <span class="var">acc</span>;
+
+        <span class="cls">List</span>&lt;<span class="cls">Contact</span>&gt; <span class="var">contacts</span> = <span class="kw">new</span> <span class="cls">List</span>&lt;<span class="cls">Contact</span>&gt;();
+        <span class="kw">for</span> (<span class="cls">Integer</span> <span class="var">i</span> = <span class="num">0</span>; <span class="var">i</span> &lt; <span class="num">200</span>; <span class="var">i</span>++) {  <span class="cmt">// ← Always test at 200 (batch size)</span>
+            <span class="var">contacts</span>.<span class="fn">add</span>(<span class="kw">new</span> <span class="cls">Contact</span>(FirstName=<span class="str">'Test'</span>, LastName=<span class="str">'C'</span>+<span class="var">i</span>, AccountId=<span class="var">acc</span>.Id));
+        }
+
+        <span class="cls">Test</span>.<span class="fn">startTest</span>();
+        <span class="kw2">insert</span> <span class="var">contacts</span>;
+        <span class="cls">Test</span>.<span class="fn">stopTest</span>();
+
+        <span class="cls">List</span>&lt;<span class="cls">Contact</span>&gt; <span class="var">inserted</span> = [<span class="kw2">SELECT</span> Id, Description <span class="kw2">FROM</span> <span class="cls">Contact</span>
+                                      <span class="kw2">WHERE</span> AccountId = :<span class="var">acc</span>.Id];
+        <span class="kw">for</span> (<span class="cls">Contact</span> <span class="var">c</span> : <span class="var">inserted</span>) {
+            <span class="cls">System</span>.<span class="fn">assertEquals</span>(<span class="str">'New Contact - Pending Review'</span>, <span class="var">c</span>.Description,
+                <span class="str">'Default description must be set on all contacts.'</span>);
+        }
+    }
+}</code></pre>
+      </div>
+
+      <div class="callout">
+        <div class="callout-icon">🎯</div>
+        <div class="callout-body">
+          <div class="callout-label">Testing Rule</div>
+          <p>Always test with <strong>200 records</strong>. A test inserting 1 record passes even if SOQL is inside a loop. 200 records will trigger a governor limit exception that immediately exposes the bug.</p>
+        </div>
+      </div>
+    </section>
+
+    <div class="divider"></div>
+
+    <!-- ══════════════════ SECTION 4 ══════════════════ -->
+    <section id="s4" class="reveal">
+      <div class="section-header">
+        <div class="section-num">04</div>
+        <div class="section-info">
+          <div class="section-tag">Interview Prep</div>
+          <div class="section-title">20 Q&amp;A Bank</div>
+        </div>
+      </div>
+
+      <p>Click any question to expand the detailed answer. Conceptual questions test theoretical knowledge; scenario questions require writing or reasoning about production code.</p>
+
+      <!-- ── PART A ── -->
+      <h2 id="conceptual">Part A — 10 Conceptual Questions</h2>
+
+      <div class="qa-grid">
+
+        <!-- Q1 -->
+        <div class="qa-item">
+          <div class="qa-question" onclick="toggleQA(this)">
+            <div class="qa-q-num">1</div>
+            <div class="qa-q-text">What is an Apex Trigger and when does it execute?</div>
+            <span class="qa-badge conceptual">Conceptual</span>
+            <div class="qa-chevron">▼</div>
+          </div>
+          <div class="qa-answer">
+            <p>An Apex trigger is event-driven Apex code bound to a specific SObject. It fires automatically when the specified DML operation (insert, update, delete, or undelete) occurs on records of that type — without being explicitly invoked by any user or code.</p>
+            <ul>
+              <li><strong>Before triggers</strong> execute before the record is saved, allowing field modification without DML.</li>
+              <li><strong>After triggers</strong> execute after the record is persisted. Record IDs are confirmed. The triggering record is read-only.</li>
+            </ul>
+            <p>If a trigger throws an unhandled exception, the <em>entire transaction rolls back</em> — including the original DML operation that fired it.</p>
+          </div>
+        </div>
+
+        <!-- Q2 -->
+        <div class="qa-item">
+          <div class="qa-question" onclick="toggleQA(this)">
+            <div class="qa-q-num">2</div>
+            <div class="qa-q-text">What happens if a trigger fails during a bulk DML operation?</div>
+            <span class="qa-badge conceptual">Conceptual</span>
+            <div class="qa-chevron">▼</div>
+          </div>
+          <div class="qa-answer">
+            <p>By default, Salesforce uses <strong>all-or-nothing</strong> behavior: an unhandled exception in a trigger rolls back the entire batch — all records fail, not just the problematic one.</p>
+            <p>To allow partial success, you must use <code>Database.insert(records, false)</code> and inspect the returned <code>Database.SaveResult[]</code>. However, this does NOT prevent trigger exceptions — to mark specific records as failed without rolling back others, use <code>record.addError('message')</code> inside the trigger:</p>
+            <div class="code-wrap">
+              <div class="code-header"><div class="code-dots"><span></span><span></span><span></span></div><span class="code-lang">Apex</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+              <pre><code><span class="kw">trigger</span> <span class="cls">AccountTrigger</span> <span class="kw">on</span> <span class="cls">Account</span> (<span class="kw2">before insert</span>) {
+    <span class="kw">for</span> (<span class="cls">Account</span> <span class="var">acc</span> : <span class="cls">Trigger</span>.new) {
+        <span class="kw">if</span> (<span class="cls">String</span>.<span class="fn">isBlank</span>(<span class="var">acc</span>.Phone)) {
+            <span class="cmt">// Fails THIS record only — other records in the batch succeed</span>
+            <span class="var">acc</span>.<span class="fn">addError</span>(<span class="str">'Phone is required for all Accounts.'</span>);
+        }
+    }
+}</code></pre>
+            </div>
+          </div>
+        </div>
+
+        <!-- Q3 -->
+        <div class="qa-item">
+          <div class="qa-question" onclick="toggleQA(this)">
+            <div class="qa-q-num">3</div>
+            <div class="qa-q-text">What is the difference between Trigger.new and Trigger.newMap?</div>
+            <span class="qa-badge conceptual">Conceptual</span>
+            <div class="qa-chevron">▼</div>
+          </div>
+          <div class="qa-answer">
+            <ul>
+              <li><strong>Trigger.new</strong> is a <code>List&lt;SObject&gt;</code>. Ideal for iterating over all records in sequence. Available in before/after insert and update, and after undelete. On before insert, records have no Id.</li>
+              <li><strong>Trigger.newMap</strong> is a <code>Map&lt;Id, SObject&gt;</code>. Ideal for looking up a record by ID — for example, cross-referencing against a SOQL query result. Not available on before insert because IDs don't exist yet.</li>
+            </ul>
+            <p>In practice, <code>Trigger.newMap</code> is used for cross-referencing: you query related records that hold trigger record IDs, then call <code>Trigger.newMap.get(someId)</code> to retrieve the corresponding new record version.</p>
+          </div>
+        </div>
+
+        <!-- Q4 -->
+        <div class="qa-item">
+          <div class="qa-question" onclick="toggleQA(this)">
+            <div class="qa-q-num">4</div>
+            <div class="qa-q-text">Can we call a @future method from a trigger? What are the limitations?</div>
+            <span class="qa-badge conceptual">Conceptual</span>
+            <div class="qa-chevron">▼</div>
+          </div>
+          <div class="qa-answer">
+            <p>Yes. <code>@future</code> methods are commonly used when a trigger needs to make an HTTP callout, since callouts are not permitted within a synchronous DML transaction.</p>
+            <p><strong>Limitations:</strong></p>
+            <ul>
+              <li>Cannot be called from another future method or from Batch Apex.</li>
+              <li>Only <strong>primitive types</strong> (or collections of primitives) can be passed — no SObjects. Pass <code>List&lt;Id&gt;</code> and re-query inside the future method.</li>
+              <li>Asynchronous — no guarantee of execution timing.</li>
+              <li>Maximum 50 future invocations per transaction.</li>
+              <li>Governor limits apply independently to the future context.</li>
+            </ul>
+          </div>
+        </div>
+
+        <!-- Q5 -->
+        <div class="qa-item">
+          <div class="qa-question" onclick="toggleQA(this)">
+            <div class="qa-q-num">5</div>
+            <div class="qa-q-text">Why should you never have more than one trigger per object?</div>
+            <span class="qa-badge conceptual">Conceptual</span>
+            <div class="qa-chevron">▼</div>
+          </div>
+          <div class="qa-answer">
+            <p>Salesforce <strong>does not guarantee execution order</strong> when multiple triggers exist on the same object. The order can change unpredictably after deployments or metadata refreshes.</p>
+            <p>Additional problems: logic fragmentation across files, conflicting field updates, exponentially complex test scenarios, and governance challenges when different teams own different triggers. The professional solution is the <strong>One Trigger + Handler pattern</strong> where a single logic-less trigger delegates to a handler that explicitly controls execution order.</p>
+          </div>
+        </div>
+
+        <!-- Q6 -->
+        <div class="qa-item">
+          <div class="qa-question" onclick="toggleQA(this)">
+            <div class="qa-q-num">6</div>
+            <div class="qa-q-text">What is the difference between addError() and throwing an exception?</div>
+            <span class="qa-badge conceptual">Conceptual</span>
+            <div class="qa-chevron">▼</div>
+          </div>
+          <div class="qa-answer">
+            <ul>
+              <li><code>record.addError('msg')</code> — marks a <strong>specific record</strong> as failed. In a bulk operation, other records succeed. The error appears inline on the field or page header. <strong>Use for user-facing validation.</strong></li>
+              <li><code>throw new ExceptionType('msg')</code> — halts the <strong>entire transaction</strong>. All records in the DML operation are rolled back. Less user-friendly. <strong>Use for unexpected system-level failures.</strong></li>
+            </ul>
+            <p><strong>Rule of thumb:</strong> <code>addError()</code> for business validation; exceptions for system errors.</p>
+          </div>
+        </div>
+
+        <!-- Q7 -->
+        <div class="qa-item">
+          <div class="qa-question" onclick="toggleQA(this)">
+            <div class="qa-q-num">7</div>
+            <div class="qa-q-text">What are governor limits, and which are most relevant to triggers?</div>
+            <span class="qa-badge conceptual">Conceptual</span>
+            <div class="qa-chevron">▼</div>
+          </div>
+          <div class="qa-answer">
+            <p>Governor limits are Salesforce's hard resource caps per transaction. They exist because Salesforce is multi-tenant — one org cannot monopolize shared infrastructure.</p>
+            <div class="tbl-wrap">
+              <table>
+                <thead><tr><th>Limit</th><th>Synchronous Cap</th></tr></thead>
+                <tbody>
+                  <tr><td>SOQL Queries</td><td>100</td></tr>
+                  <tr><td>SOQL Rows Returned</td><td>50,000</td></tr>
+                  <tr><td>DML Statements</td><td>150</td></tr>
+                  <tr><td>DML Rows Processed</td><td>10,000</td></tr>
+                  <tr><td>CPU Time</td><td>10,000ms</td></tr>
+                  <tr><td>Heap Size</td><td>6MB</td></tr>
+                  <tr><td>@future Calls</td><td>50</td></tr>
+                </tbody>
+              </table>
+            </div>
+            <p>Bulkification — collect IDs, single SOQL, batch DML — is the primary defense against all of these.</p>
+          </div>
+        </div>
+
+        <!-- Q8 -->
+        <div class="qa-item">
+          <div class="qa-question" onclick="toggleQA(this)">
+            <div class="qa-q-num">8</div>
+            <div class="qa-q-text">Can triggers be disabled? How do you implement a kill switch?</div>
+            <span class="qa-badge conceptual">Conceptual</span>
+            <div class="qa-chevron">▼</div>
+          </div>
+          <div class="qa-answer">
+            <p>Yes. The enterprise pattern uses a <strong>Custom Metadata Type</strong> as a kill switch, allowing admins to disable specific triggers without a code deployment — essential during data migrations or emergency fixes.</p>
+            <div class="code-wrap">
+              <div class="code-header"><div class="code-dots"><span></span><span></span><span></span></div><span class="code-lang">Apex — Kill Switch</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+              <pre><code><span class="cmt">// Custom Metadata: Trigger_Control__mdt</span>
+<span class="cmt">// Fields: Object_API_Name__c (Text), Is_Active__c (Checkbox)</span>
+
+<span class="kw">trigger</span> <span class="cls">AccountTrigger</span> <span class="kw">on</span> <span class="cls">Account</span> (<span class="kw2">before insert</span>, <span class="kw2">after update</span>) {
+    <span class="kw">if</span> (!<span class="cls">TriggerControl</span>.<span class="fn">isTriggerEnabled</span>(<span class="str">'Account'</span>)) { <span class="kw">return</span>; }
+    <span class="kw">new</span> <span class="cls">AccountTriggerHandler</span>().<span class="fn">run</span>();
+}</code></pre>
+            </div>
+          </div>
+        </div>
+
+        <!-- Q9 -->
+        <div class="qa-item">
+          <div class="qa-question" onclick="toggleQA(this)">
+            <div class="qa-q-num">9</div>
+            <div class="qa-q-text">What is Trigger.operationType and when would you use it?</div>
+            <span class="qa-badge conceptual">Conceptual</span>
+            <div class="qa-chevron">▼</div>
+          </div>
+          <div class="qa-answer">
+            <p><code>Trigger.operationType</code> returns a <code>System.TriggerOperation</code> enum (<code>BEFORE_INSERT</code>, <code>AFTER_UPDATE</code>, etc.). It is the modern replacement for nested <code>if(Trigger.isBefore && Trigger.isInsert)</code> chains.</p>
+            <p>Use it with <code>switch on</code> in your handler's <code>run()</code> method for clean, exhaustive, and readable routing. The <code>switch</code> statement is exhaustive and significantly reduces the chance of routing errors compared to stacked boolean checks.</p>
+          </div>
+        </div>
+
+        <!-- Q10 -->
+        <div class="qa-item">
+          <div class="qa-question" onclick="toggleQA(this)">
+            <div class="qa-q-num">10</div>
+            <div class="qa-q-text">What is the difference between a before delete and an after delete trigger?</div>
+            <span class="qa-badge conceptual">Conceptual</span>
+            <div class="qa-chevron">▼</div>
+          </div>
+          <div class="qa-answer">
+            <ul>
+              <li><strong>Before Delete</strong> — fires before the record is removed. <code>Trigger.old</code> is available. Use for: preventing deletion (addError), capturing data before permanent removal.</li>
+              <li><strong>After Delete</strong> — fires after the record has been deleted. <code>Trigger.old</code> and <code>Trigger.oldMap</code> still available. Use for: cascading cleanup, archiving data to custom objects, notifying related parties.</li>
+              <li><strong>After Undelete</strong> — fires when a record is restored from the Recycle Bin. Only <code>Trigger.new</code> is available. Use to re-establish relationships or reactivate dependent data.</li>
+            </ul>
+          </div>
+        </div>
+
+      </div><!-- /qa-grid conceptual -->
+
+      <!-- ── PART B ── -->
+      <h2 id="scenario" style="margin-top:56px">Part B — 10 Scenario-Based Questions</h2>
+
+      <div class="qa-grid">
+
+        <!-- S1 -->
+        <div class="qa-item">
+          <div class="qa-question" onclick="toggleQA(this)">
+            <div class="qa-q-num">1</div>
+            <div class="qa-q-text">When an Account's Billing City is updated, sync all related Contacts' Mailing City to match.</div>
+            <span class="qa-badge scenario">Scenario</span>
+            <div class="qa-chevron">▼</div>
+          </div>
+          <div class="qa-answer">
+            <p>This is an <strong>after update</strong> scenario. Use <code>Trigger.oldMap</code> for change detection to avoid updating contacts when BillingCity hasn't actually changed.</p>
+            <div class="code-wrap">
+              <div class="code-header"><div class="code-dots"><span></span><span></span><span></span></div><span class="code-lang">Apex</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+              <pre><code><span class="kw">public static void</span> <span class="fn">syncBillingCityToContacts</span>(
+        <span class="cls">List</span>&lt;<span class="cls">Account</span>&gt; <span class="var">newAccounts</span>,
+        <span class="cls">Map</span>&lt;<span class="cls">Id</span>, <span class="cls">Account</span>&gt; <span class="var">oldMap</span>) {
+
+    <span class="cls">Set</span>&lt;<span class="cls">Id</span>&gt; <span class="var">changedIds</span> = <span class="kw">new</span> <span class="cls">Set</span>&lt;<span class="cls">Id</span>&gt;();
+    <span class="cls">Map</span>&lt;<span class="cls">Id</span>, <span class="cls">String</span>&gt; <span class="var">newCityMap</span> = <span class="kw">new</span> <span class="cls">Map</span>&lt;<span class="cls">Id</span>, <span class="cls">String</span>&gt;();
+
+    <span class="kw">for</span> (<span class="cls">Account</span> <span class="var">acc</span> : <span class="var">newAccounts</span>) {
+        <span class="kw">if</span> (<span class="var">acc</span>.BillingCity != <span class="var">oldMap</span>.<span class="fn">get</span>(<span class="var">acc</span>.Id).BillingCity) {
+            <span class="var">changedIds</span>.<span class="fn">add</span>(<span class="var">acc</span>.Id);
+            <span class="var">newCityMap</span>.<span class="fn">put</span>(<span class="var">acc</span>.Id, <span class="var">acc</span>.BillingCity);
+        }
+    }
+    <span class="kw">if</span> (<span class="var">changedIds</span>.<span class="fn">isEmpty</span>()) { <span class="kw">return</span>; }
+
+    <span class="cls">List</span>&lt;<span class="cls">Contact</span>&gt; <span class="var">toUpdate</span> = [
+        <span class="kw2">SELECT</span> Id, AccountId <span class="kw2">FROM</span> <span class="cls">Contact</span>
+        <span class="kw2">WHERE</span>  AccountId <span class="kw2">IN</span> :<span class="var">changedIds</span>
+    ];
+    <span class="kw">for</span> (<span class="cls">Contact</span> <span class="var">c</span> : <span class="var">toUpdate</span>) {
+        <span class="var">c</span>.MailingCity = <span class="var">newCityMap</span>.<span class="fn">get</span>(<span class="var">c</span>.AccountId);
+    }
+    <span class="kw">if</span> (!<span class="var">toUpdate</span>.<span class="fn">isEmpty</span>()) { <span class="kw2">update</span> <span class="var">toUpdate</span>; }
+}</code></pre>
+            </div>
+          </div>
+        </div>
+
+        <!-- S2 -->
+        <div class="qa-item">
+          <div class="qa-question" onclick="toggleQA(this)">
+            <div class="qa-q-num">2</div>
+            <div class="qa-q-text">Prevent an Opportunity from being deleted if its Stage is 'Closed Won'.</div>
+            <span class="qa-badge scenario">Scenario</span>
+            <div class="qa-chevron">▼</div>
+          </div>
+          <div class="qa-answer">
+            <div class="code-wrap">
+              <div class="code-header"><div class="code-dots"><span></span><span></span><span></span></div><span class="code-lang">Apex — Before Delete</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+              <pre><code><span class="kw">trigger</span> <span class="cls">OpportunityTrigger</span> <span class="kw">on</span> <span class="cls">Opportunity</span> (<span class="kw2">before delete</span>) {
+    <span class="kw">for</span> (<span class="cls">Opportunity</span> <span class="var">opp</span> : <span class="cls">Trigger</span>.old) {
+        <span class="kw">if</span> (<span class="var">opp</span>.StageName == <span class="str">'Closed Won'</span>) {
+            <span class="var">opp</span>.<span class="fn">addError</span>(
+                <span class="str">'Closed Won Opportunities cannot be deleted. '</span> +
+                <span class="str">'Contact your System Administrator.'</span>
+            );
+        }
+    }
+}</code></pre>
+            </div>
+            <p><code>addError()</code> on a delete context marks that record as undeletable. Other records in the batch are unaffected.</p>
+          </div>
+        </div>
+
+        <!-- S3 -->
+        <div class="qa-item">
+          <div class="qa-question" onclick="toggleQA(this)">
+            <div class="qa-q-num">3</div>
+            <div class="qa-q-text">Create an Opportunity when a Contact's 'Is Decision Maker' checkbox is set to true. Prevent duplicates on subsequent saves.</div>
+            <span class="qa-badge scenario">Scenario</span>
+            <div class="qa-chevron">▼</div>
+          </div>
+          <div class="qa-answer">
+            <p>The key is <strong>change detection</strong> — only fire on the transition <code>false → true</code>, not whenever the field happens to be true.</p>
+            <div class="code-wrap">
+              <div class="code-header"><div class="code-dots"><span></span><span></span><span></span></div><span class="code-lang">Apex — Change Detection</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+              <pre><code><span class="kw">for</span> (<span class="cls">Contact</span> <span class="var">c</span> : <span class="var">newContacts</span>) {
+    <span class="cls">Boolean</span> <span class="var">wasDM</span>  = <span class="var">oldMap</span>.<span class="fn">get</span>(<span class="var">c</span>.Id).Is_Decision_Maker__c;
+    <span class="cls">Boolean</span> <span class="var">isDM</span>   = <span class="var">c</span>.Is_Decision_Maker__c;
+
+    <span class="cmt">// ONLY react to false → true transition</span>
+    <span class="kw">if</span> (!<span class="var">wasDM</span> &amp;&amp; <span class="var">isDM</span> &amp;&amp; <span class="var">c</span>.AccountId != <span class="kw">null</span>) {
+        <span class="var">oppsToCreate</span>.<span class="fn">add</span>(<span class="kw">new</span> <span class="cls">Opportunity</span>(
+            Name      = <span class="var">c</span>.LastName + <span class="str">' - Decision Maker Opp'</span>,
+            AccountId = <span class="var">c</span>.AccountId,
+            StageName = <span class="str">'Prospecting'</span>,
+            CloseDate = <span class="cls">Date</span>.<span class="fn">today</span>().<span class="fn">addDays</span>(<span class="num">30</span>)
+        ));
+    }
+}</code></pre>
+            </div>
+          </div>
+        </div>
+
+        <!-- S4 -->
+        <div class="qa-item">
+          <div class="qa-question" onclick="toggleQA(this)">
+            <div class="qa-q-num">4</div>
+            <div class="qa-q-text">Auto-number custom records sequentially (CASE-0001, CASE-0002). How do you prevent race conditions?</div>
+            <span class="qa-badge scenario">Scenario</span>
+            <div class="qa-chevron">▼</div>
+          </div>
+          <div class="qa-answer">
+            <p>Use a dedicated <strong>Counter__c</strong> custom object with <code>FOR UPDATE</code> to obtain a row-level lock, preventing two concurrent transactions from reading the same count value.</p>
+            <div class="code-wrap">
+              <div class="code-header"><div class="code-dots"><span></span><span></span><span></span></div><span class="code-lang">Apex — FOR UPDATE Lock</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+              <pre><code><span class="cmt">// FOR UPDATE locks the row — prevents race condition</span>
+<span class="cls">Counter__c</span> <span class="var">counter</span> = [
+    <span class="kw2">SELECT</span> Id, Last_Count__c
+    <span class="kw2">FROM</span>   <span class="cls">Counter__c</span>
+    <span class="kw2">WHERE</span>  Object_API_Name__c = <span class="str">'Case__c'</span>
+    <span class="kw2">LIMIT</span>  <span class="num">1</span>
+    <span class="kw2">FOR UPDATE</span>  <span class="cmt">// ← Row is locked until this transaction commits</span>
+];
+<span class="cls">Integer</span> <span class="var">count</span> = (<span class="cls">Integer</span>)(<span class="var">counter</span>.Last_Count__c ?? <span class="num">0</span>);
+
+<span class="kw">for</span> (<span class="cls">Case__c</span> <span class="var">c</span> : <span class="var">newCases</span>) {
+    <span class="var">count</span>++;
+    <span class="var">c</span>.Case_Number__c = <span class="str">'CASE-'</span> + <span class="cls">String</span>.<span class="fn">valueOf</span>(<span class="var">count</span>).<span class="fn">leftPad</span>(<span class="num">4</span>, <span class="str">'0'</span>);
+}
+<span class="var">counter</span>.Last_Count__c = <span class="var">count</span>;
+<span class="kw2">update</span> <span class="var">counter</span>;</code></pre>
+            </div>
+          </div>
+        </div>
+
+        <!-- S5 -->
+        <div class="qa-item">
+          <div class="qa-question" onclick="toggleQA(this)">
+            <div class="qa-q-num">5</div>
+            <div class="qa-q-text">Your trigger produces 'Maximum trigger depth exceeded' errors. What is the cause and fix?</div>
+            <span class="qa-badge scenario">Scenario</span>
+            <div class="qa-chevron">▼</div>
+          </div>
+          <div class="qa-answer">
+            <p>This is <strong>recursive trigger execution</strong>. The call stack grows until Salesforce's max trigger depth (16 levels) is hit. Common causes: trigger performs DML on the same object, Workflow Field Update re-evaluates the trigger, or Process Builder fires a DML.</p>
+            <p><strong>Fix:</strong> Implement a static Boolean guard in the handler, reset in a <code>finally</code> block:</p>
+            <div class="code-wrap">
+              <div class="code-header"><div class="code-dots"><span></span><span></span><span></span></div><span class="code-lang">Apex</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+              <pre><code><span class="kw">private static</span> <span class="cls">Boolean</span> <span class="var">hasRun</span> = <span class="kw">false</span>;
+<span class="kw">public void</span> <span class="fn">run</span>() {
+    <span class="kw">if</span> (<span class="var">hasRun</span>) { <span class="kw">return</span>; }
+    <span class="var">hasRun</span> = <span class="kw">true</span>;
+    <span class="kw">try</span> { <span class="cmt">/* logic */</span> } <span class="kw">finally</span> { <span class="var">hasRun</span> = <span class="kw">false</span>; }
+}</code></pre>
+            </div>
+          </div>
+        </div>
+
+        <!-- S6 -->
+        <div class="qa-item">
+          <div class="qa-question" onclick="toggleQA(this)">
+            <div class="qa-q-num">6</div>
+            <div class="qa-q-text">Count the number of related Contacts on an Account and store it in Total_Contacts__c.</div>
+            <span class="qa-badge scenario">Scenario</span>
+            <div class="qa-chevron">▼</div>
+          </div>
+          <div class="qa-answer">
+            <p>Fires on after insert/delete/undelete on Contact. Use an <strong>AggregateResult query with GROUP BY</strong> to get counts for all affected accounts in one SOQL.</p>
+            <div class="code-wrap">
+              <div class="code-header"><div class="code-dots"><span></span><span></span><span></span></div><span class="code-lang">Apex — AggregateResult</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+              <pre><code><span class="cls">Map</span>&lt;<span class="cls">Id</span>, <span class="cls">Integer</span>&gt; <span class="var">countMap</span> = <span class="kw">new</span> <span class="cls">Map</span>&lt;<span class="cls">Id</span>, <span class="cls">Integer</span>&gt;();
+<span class="kw">for</span> (<span class="cls">AggregateResult</span> <span class="var">ar</span> : [
+    <span class="kw2">SELECT</span> AccountId, <span class="fn">COUNT</span>(Id) cnt
+    <span class="kw2">FROM</span>   <span class="cls">Contact</span>
+    <span class="kw2">WHERE</span>  AccountId <span class="kw2">IN</span> :<span class="var">accountIds</span>
+    <span class="kw2">GROUP BY</span> AccountId
+]) {
+    <span class="var">countMap</span>.<span class="fn">put</span>((<span class="cls">Id</span>) <span class="var">ar</span>.<span class="fn">get</span>(<span class="str">'AccountId'</span>), (<span class="cls">Integer</span>) <span class="var">ar</span>.<span class="fn">get</span>(<span class="str">'cnt'</span>));
+}
+
+<span class="cls">List</span>&lt;<span class="cls">Account</span>&gt; <span class="var">toUpdate</span> = <span class="kw">new</span> <span class="cls">List</span>&lt;<span class="cls">Account</span>&gt;();
+<span class="kw">for</span> (<span class="cls">Id</span> <span class="var">accId</span> : <span class="var">accountIds</span>) {
+    <span class="cls">Integer</span> <span class="var">cnt</span> = <span class="var">countMap</span>.<span class="fn">containsKey</span>(<span class="var">accId</span>) ? <span class="var">countMap</span>.<span class="fn">get</span>(<span class="var">accId</span>) : <span class="num">0</span>;
+    <span class="var">toUpdate</span>.<span class="fn">add</span>(<span class="kw">new</span> <span class="cls">Account</span>(Id = <span class="var">accId</span>, Total_Contacts__c = <span class="var">cnt</span>));
+}
+<span class="kw">if</span> (!<span class="var">toUpdate</span>.<span class="fn">isEmpty</span>()) { <span class="kw2">update</span> <span class="var">toUpdate</span>; }</code></pre>
+            </div>
+          </div>
+        </div>
+
+        <!-- S7 -->
+        <div class="qa-item">
+          <div class="qa-question" onclick="toggleQA(this)">
+            <div class="qa-q-num">7</div>
+            <div class="qa-q-text">Route new Leads to owners based on State/Province using a Custom Metadata Type routing table.</div>
+            <span class="qa-badge scenario">Scenario</span>
+            <div class="qa-chevron">▼</div>
+          </div>
+          <div class="qa-answer">
+            <p>Query the entire Custom Metadata routing table <strong>once before the loop</strong>, build a Map, then do O(1) lookups inside the loop.</p>
+            <div class="code-wrap">
+              <div class="code-header"><div class="code-dots"><span></span><span></span><span></span></div><span class="code-lang">Apex</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+              <pre><code><span class="kw">trigger</span> <span class="cls">LeadTrigger</span> <span class="kw">on</span> <span class="cls">Lead</span> (<span class="kw2">before insert</span>) {
+    <span class="cls">Map</span>&lt;<span class="cls">String</span>, <span class="cls">Id</span>&gt; <span class="var">ownerByState</span> = <span class="kw">new</span> <span class="cls">Map</span>&lt;<span class="cls">String</span>, <span class="cls">Id</span>&gt;();
+    <span class="kw">for</span> (<span class="cls">Lead_Routing__mdt</span> <span class="var">rule</span> : [
+        <span class="kw2">SELECT</span> State_Province__c, Assigned_User_Id__c
+        <span class="kw2">FROM</span>   <span class="cls">Lead_Routing__mdt</span>
+    ]) {
+        <span class="var">ownerByState</span>.<span class="fn">put</span>(<span class="var">rule</span>.State_Province__c, (<span class="cls">Id</span>) <span class="var">rule</span>.Assigned_User_Id__c);
+    }
+
+    <span class="kw">for</span> (<span class="cls">Lead</span> <span class="var">ld</span> : <span class="cls">Trigger</span>.new) {
+        <span class="kw">if</span> (<span class="var">ld</span>.State != <span class="kw">null</span> &amp;&amp; <span class="var">ownerByState</span>.<span class="fn">containsKey</span>(<span class="var">ld</span>.State)) {
+            <span class="var">ld</span>.OwnerId = <span class="var">ownerByState</span>.<span class="fn">get</span>(<span class="var">ld</span>.State);
+        }
+    }
+}</code></pre>
+            </div>
+          </div>
+        </div>
+
+        <!-- S8 -->
+        <div class="qa-item">
+          <div class="qa-question" onclick="toggleQA(this)">
+            <div class="qa-q-num">8</div>
+            <div class="qa-q-text">Make an HTTP callout to an external system every time a new Account is inserted.</div>
+            <span class="qa-badge scenario">Scenario</span>
+            <div class="qa-chevron">▼</div>
+          </div>
+          <div class="qa-answer">
+            <p>Callouts are not permitted inside a synchronous DML transaction. Delegate to <code>@future(callout=true)</code>, passing only IDs, then re-query inside the future method.</p>
+            <div class="code-wrap">
+              <div class="code-header"><div class="code-dots"><span></span><span></span><span></span></div><span class="code-lang">Apex</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+              <pre><code><span class="kw">trigger</span> <span class="cls">AccountTrigger</span> <span class="kw">on</span> <span class="cls">Account</span> (<span class="kw2">after insert</span>) {
+    <span class="cls">Set</span>&lt;<span class="cls">Id</span>&gt; <span class="var">ids</span> = <span class="kw">new</span> <span class="cls">Set</span>&lt;<span class="cls">Id</span>&gt;();
+    <span class="kw">for</span> (<span class="cls">Account</span> <span class="var">a</span> : <span class="cls">Trigger</span>.new) <span class="var">ids</span>.<span class="fn">add</span>(<span class="var">a</span>.Id);
+    <span class="cls">AccountCalloutService</span>.<span class="fn">sendToExternal</span>(<span class="kw">new</span> <span class="cls">List</span>&lt;<span class="cls">Id</span>&gt;(<span class="var">ids</span>));
+}
+
+<span class="kw">public class</span> <span class="cls">AccountCalloutService</span> {
+    <span class="kw">@future</span>(callout=<span class="kw">true</span>)
+    <span class="kw">public static void</span> <span class="fn">sendToExternal</span>(<span class="cls">List</span>&lt;<span class="cls">Id</span>&gt; <span class="var">ids</span>) {
+        <span class="cmt">// Re-query — never pass SObjects to @future methods</span>
+        <span class="cls">List</span>&lt;<span class="cls">Account</span>&gt; <span class="var">accs</span> = [<span class="kw2">SELECT</span> Id, Name <span class="kw2">FROM</span> <span class="cls">Account</span>
+                               <span class="kw2">WHERE</span> Id <span class="kw2">IN</span> :<span class="var">ids</span>];
+        <span class="cmt">// ... perform HTTP callout per account ...</span>
+    }
+}</code></pre>
+            </div>
+          </div>
+        </div>
+
+        <!-- S9 -->
+        <div class="qa-item">
+          <div class="qa-question" onclick="toggleQA(this)">
+            <div class="qa-q-num">9</div>
+            <div class="qa-q-text">A trigger runs 10 times for a single record update. How do you debug and resolve this?</div>
+            <span class="qa-badge scenario">Scenario</span>
+            <div class="qa-chevron">▼</div>
+          </div>
+          <div class="qa-answer">
+            <p><strong>Debugging steps:</strong></p>
+            <ol>
+              <li>Enable a Debug Log with Apex Code at <code>FINEST</code> level. Perform the DML. Search the log for <code>ENTERING_EXECUTE_CONTEXT</code> with the trigger name.</li>
+              <li>Check for <code>WF_FIELD_UPDATE</code> entries — a Workflow re-evaluating can re-fire triggers.</li>
+              <li>Check for Process Builder / Flow DML on the same object.</li>
+              <li>In Setup → Apex Triggers, filter by the object to find multiple trigger files.</li>
+            </ol>
+            <p><strong>Resolution:</strong> Implement the static Boolean recursion guard, use change detection (<code>Trigger.oldMap</code>) to exit early when no relevant fields changed, and consolidate multiple triggers into one.</p>
+          </div>
+        </div>
+
+        <!-- S10 -->
+        <div class="qa-item">
+          <div class="qa-question" onclick="toggleQA(this)">
+            <div class="qa-q-num">10</div>
+            <div class="qa-q-text">Automatically share a record with a Public Group when Department__c is set to 'Executive'.</div>
+            <span class="qa-badge scenario">Scenario</span>
+            <div class="qa-chevron">▼</div>
+          </div>
+          <div class="qa-answer">
+            <p>Use the Apex Sharing object (e.g., <code>Custom_Record__Share</code>). Use <code>Database.insert(records, false)</code> to handle pre-existing share records gracefully without a full rollback.</p>
+            <div class="code-wrap">
+              <div class="code-header"><div class="code-dots"><span></span><span></span><span></span></div><span class="code-lang">Apex — Sharing</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+              <pre><code><span class="kw">for</span> (<span class="cls">Custom_Record__c</span> <span class="var">rec</span> : <span class="cls">Trigger</span>.new) {
+    <span class="cls">Boolean</span> <span class="var">isExecNow</span>  = <span class="var">rec</span>.Department__c == <span class="str">'Executive'</span>;
+    <span class="cls">Boolean</span> <span class="var">wasExecPrev</span> = <span class="cls">Trigger</span>.isUpdate
+        ? <span class="cls">Trigger</span>.oldMap.<span class="fn">get</span>(<span class="var">rec</span>.Id).Department__c == <span class="str">'Executive'</span>
+        : <span class="kw">false</span>;
+
+    <span class="kw">if</span> (<span class="var">isExecNow</span> &amp;&amp; !<span class="var">wasExecPrev</span>) {
+        <span class="var">sharesToInsert</span>.<span class="fn">add</span>(<span class="kw">new</span> <span class="cls">Custom_Record__Share</span>(
+            ParentId      = <span class="var">rec</span>.Id,
+            UserOrGroupId = <span class="var">execGroupId</span>,
+            AccessLevel   = <span class="str">'Read'</span>,
+            RowCause      = <span class="cls">Schema</span>.Custom_Record__Share.RowCause.Manual
+        ));
+    }
+}
+<span class="cmt">// false = allow partial success — prevents error if share already exists</span>
+<span class="cls">Database</span>.<span class="fn">insert</span>(<span class="var">sharesToInsert</span>, <span class="kw">false</span>);</code></pre>
+            </div>
+          </div>
+        </div>
+
+      </div><!-- /qa-grid scenario -->
+    </section>
+
+    <div class="divider"></div>
+
+    <!-- ══════════════════ APPENDIX ══════════════════ -->
+    <section id="appendix" class="reveal">
+      <div class="section-header">
+        <div class="section-num">A</div>
+        <div class="section-info">
+          <div class="section-tag">Reference</div>
+          <div class="section-title">Architecture Diagram</div>
+        </div>
+      </div>
+
+      <p>The three-layer framework in visual form. Every DML operation flows down this stack — the trigger never touches business logic directly.</p>
+
+      <div class="framework-diagram" style="margin-top:32px">
+        <div class="fw-layer" style="background:linear-gradient(135deg,rgba(0,229,255,0.12),rgba(0,229,255,0.04));text-align:center;padding:28px">
+          <div style="font-family:var(--mono);font-size:0.7rem;color:var(--cyan);letter-spacing:0.15em;text-transform:uppercase;margin-bottom:8px">DML Operation</div>
+          <div style="font-family:var(--display);font-size:1.3rem;font-weight:800;color:var(--text)">insert / update / delete</div>
+        </div>
+        <div class="fw-arrow" style="padding:14px;font-size:1.5rem;color:var(--cyan)">↓</div>
+        <div class="fw-layer fw-1">
+          <div class="fw-label">Layer 1 — Dispatcher</div>
+          <div class="fw-name">AccountTrigger.trigger</div>
+          <div class="fw-desc" style="margin-top:12px">
+            <span class="tag tag-cyan">Kill Switch Check</span>
+            <span class="tag tag-cyan">new Handler().run()</span>
+          </div>
+          <div style="margin-top:10px;color:var(--text3);font-size:0.78rem;font-family:var(--mono)">Zero business logic. One file per object.</div>
+        </div>
+        <div class="fw-arrow" style="padding:14px;font-size:1.5rem;color:var(--blue)">↓</div>
+        <div class="fw-layer fw-2">
+          <div class="fw-label">Layer 2 — Router</div>
+          <div class="fw-name">AccountTriggerHandler.cls</div>
+          <div class="fw-desc" style="margin-top:12px">
+            <span class="tag tag-blue">Recursion Guard</span>
+            <span class="tag tag-blue">switch on operationType</span>
+            <span class="tag tag-blue">Routes to Helper methods</span>
+          </div>
+        </div>
+        <div class="fw-arrow" style="padding:14px;font-size:1.5rem;color:var(--purple)">↓</div>
+        <div class="fw-layer fw-3">
+          <div class="fw-label">Layer 3 — Business Logic</div>
+          <div class="fw-name">AccountTriggerHelper.cls</div>
+          <div class="fw-desc" style="margin-top:12px">
+            <span class="tag tag-purple">setDefaultValues()</span>
+            <span class="tag tag-purple">validateData()</span>
+            <span class="tag tag-purple">createChildRecords()</span>
+            <span class="tag tag-purple">syncRelatedObjects()</span>
+          </div>
+          <div style="margin-top:12px;font-family:var(--mono);font-size:0.73rem;color:var(--text3)">
+            Collect IDs → Single SOQL → Process Loop → Batch DML
+          </div>
+        </div>
+        <div class="fw-arrow" style="padding:14px;font-size:1.5rem;color:var(--green)">↓</div>
+        <div class="fw-layer" style="background:linear-gradient(135deg,rgba(0,208,132,0.08),rgba(0,208,132,0.03));text-align:center;padding:20px">
+          <div style="font-family:var(--mono);font-size:0.7rem;color:var(--green);letter-spacing:0.15em;text-transform:uppercase;margin-bottom:6px">Transaction Commits</div>
+          <div style="color:var(--text2);font-size:0.85rem">Records saved · Email notifications · Async jobs queued</div>
+        </div>
+      </div>
+
+      <h2>Key Principles Summary</h2>
+      <div class="tbl-wrap">
+        <table>
+          <thead><tr><th>Principle</th><th>Rule</th><th>Why It Matters</th></tr></thead>
+          <tbody>
+            <tr><td>One Trigger Per Object</td><td>One .trigger file, always</td><td>Execution order is deterministic and auditable</td></tr>
+            <tr><td>Logic-less Triggers</td><td>Only dispatch to handler</td><td>Fully testable, maintainable, deployable</td></tr>
+            <tr><td>Bulkification</td><td>Collect → Query → Process → DML</td><td>Prevents governor limit breaches at scale</td></tr>
+            <tr><td>Change Detection</td><td>Use Trigger.oldMap always</td><td>Prevents duplicate operations and runaway triggers</td></tr>
+            <tr><td>Recursion Guard</td><td>Static Boolean + try-finally</td><td>Prevents infinite loops and max depth errors</td></tr>
+            <tr><td>Kill Switch</td><td>Custom Metadata enabled/disabled</td><td>Safe to disable without a code deployment</td></tr>
+            <tr><td>Test at Bulk Scale</td><td>Always test with 200 records</td><td>Exposes SOQL-in-loop bugs that 1-record tests miss</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <div class="divider"></div>
+
+    <!-- ══════════════════ SECTION 5 — TESTING TRIGGERS ══════════════════ -->
+    <section id="s5" class="reveal">
+      <div class="section-header">
+        <div class="section-num">05</div>
+        <div class="section-info">
+          <div class="section-tag">Quality</div>
+          <div class="section-title">Testing Apex Triggers</div>
+        </div>
+      </div>
+
+      <p>Salesforce requires 75% code coverage to deploy to production, but great tests do far more — they prove bulk safety, negative flows, and integration with handler patterns. Writing robust test classes is an art, not a checkbox.</p>
+
+      <h2 id="teststructure">Test Class Anatomy</h2>
+      <p>Every trigger test class should cover four distinct scenarios: single-record insert, bulk insert (200 records), update flow with <code>Trigger.oldMap</code> validation, and negative/error-path assertions.</p>
+
+      <div class="code-wrap">
+        <div class="code-header">
+          <div class="code-dots"><span></span><span></span><span></span></div>
+          <span class="code-lang">Apex — Trigger Test Class (Full Pattern)</span>
+          <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+        </div>
+        <pre><code><span class="kw">@isTest</span>
+<span class="kw">private class</span> <span class="cls">AccountTriggerTest</span> {
+
+  <span class="cmt">// ── Test Data Factory ──────────────────────────────────────────</span>
+  <span class="kw">@TestSetup</span>
+  <span class="kw">static void</span> <span class="fn">makeData</span>() {
+    <span class="cls">List</span>&lt;<span class="cls">Account</span>&gt; accounts = <span class="kw">new</span> <span class="cls">List</span>&lt;<span class="cls">Account</span>&gt;();
+    <span class="kw">for</span> (<span class="cls">Integer</span> i = <span class="num">0</span>; i &lt; <span class="num">200</span>; i++) {
+      accounts.add(<span class="kw">new</span> <span class="cls">Account</span>(
+        Name = <span class="str">'Test Account '</span> + i,
+        Type = <span class="str">'Prospect'</span>
+      ));
+    }
+    insert accounts;
+  }
+
+  <span class="cmt">// ── Single Insert ──────────────────────────────────────────────</span>
+  <span class="kw">@isTest</span>
+  <span class="kw">static void</span> <span class="fn">testSingleInsert</span>() {
+    <span class="cls">Account</span> acc = <span class="kw">new</span> <span class="cls">Account</span>(Name = <span class="str">'Single Test'</span>, Type = <span class="str">'Customer'</span>);
+    Test.startTest();
+    insert acc;
+    Test.stopTest();
+
+    <span class="cls">Account</span> result = [<span class="kw">SELECT</span> Id, Rating <span class="kw">FROM</span> Account <span class="kw">WHERE</span> Id = :acc.Id];
+    <span class="cls">System</span>.assertEquals(<span class="str">'Hot'</span>, result.Rating, <span class="str">'Customer type should set Rating to Hot'</span>);
+  }
+
+  <span class="cmt">// ── Bulk Insert — 200 records ───────────────────────────────────</span>
+  <span class="kw">@isTest</span>
+  <span class="kw">static void</span> <span class="fn">testBulkInsert</span>() {
+    <span class="cls">List</span>&lt;<span class="cls">Account</span>&gt; accs = [<span class="kw">SELECT</span> Id, Rating <span class="kw">FROM</span> Account];
+    <span class="cls">System</span>.assertEquals(<span class="num">200</span>, accs.size(), <span class="str">'Should have 200 accounts from @TestSetup'</span>);
+    <span class="kw">for</span> (<span class="cls">Account</span> a : accs) {
+      <span class="cls">System</span>.assertNotEquals(<span class="kw">null</span>, a.Rating, <span class="str">'Rating should be populated by trigger'</span>);
+    }
+  }
+
+  <span class="cmt">// ── Update — change detection test ─────────────────────────────</span>
+  <span class="kw">@isTest</span>
+  <span class="kw">static void</span> <span class="fn">testStatusChangeDetection</span>() {
+    <span class="cls">Account</span> acc = [<span class="kw">SELECT</span> Id, Type <span class="kw">FROM</span> Account <span class="kw">LIMIT</span> <span class="num">1</span>];
+    acc.Type = <span class="str">'Customer'</span>;
+
+    Test.startTest();
+    update acc;
+    Test.stopTest();
+
+    <span class="cls">Account</span> updated = [<span class="kw">SELECT</span> Id, Rating <span class="kw">FROM</span> Account <span class="kw">WHERE</span> Id = :acc.Id];
+    <span class="cls">System</span>.assertEquals(<span class="str">'Hot'</span>, updated.Rating);
+  }
+
+  <span class="cmt">// ── Negative path — no changes, no DML ────────────────────────</span>
+  <span class="kw">@isTest</span>
+  <span class="kw">static void</span> <span class="fn">testNoChangeNoUpdate</span>() {
+    <span class="cls">Account</span> acc = [<span class="kw">SELECT</span> Id, Type, Rating <span class="kw">FROM</span> Account <span class="kw">LIMIT</span> <span class="num">1</span>];
+    <span class="cls">String</span> ratingBefore = acc.Rating;
+
+    Test.startTest();
+    update acc; <span class="cmt">// No field changes</span>
+    Test.stopTest();
+
+    <span class="cls">Account</span> result = [<span class="kw">SELECT</span> Rating <span class="kw">FROM</span> Account <span class="kw">WHERE</span> Id = :acc.Id];
+    <span class="cls">System</span>.assertEquals(ratingBefore, result.Rating, <span class="str">'Rating should not change if type unchanged'</span>);
+  }
+}</code></pre>
+      </div>
+
+      <h2 id="testbest">Testing Best Practices</h2>
+      <div class="tbl-wrap">
+        <table>
+          <thead><tr><th>Practice</th><th>Implementation</th><th>Why Critical</th></tr></thead>
+          <tbody>
+            <tr><td><strong>Always use @TestSetup</strong></td><td>Create shared test data once</td><td>Faster tests; data rolled back after each method</td></tr>
+            <tr><td><strong>Test.startTest() / stopTest()</strong></td><td>Wrap DML that triggers async</td><td>Resets governor limits and executes async jobs synchronously</td></tr>
+            <tr><td><strong>Bulk test with 200 records</strong></td><td><code>for(int i=0; i&lt;200; i++)</code></td><td>Data Loader sends 200-record batches — only bulk tests catch SOQL-in-loop bugs</td></tr>
+            <tr><td><strong>Assert with messages</strong></td><td><code>System.assertEquals(exp, act, msg)</code></td><td>Failing tests tell you exactly what broke and why</td></tr>
+            <tr><td><strong>Test negative paths</strong></td><td>Assert exceptions with <code>try/catch</code></td><td>Validates error handling; prevents false positives</td></tr>
+            <tr><td><strong>Never use SeeAllData=true</strong></td><td>Use @TestSetup factories instead</td><td>Org data is unpredictable; tests should be hermetic</td></tr>
+            <tr><td><strong>Mock callouts in triggers</strong></td><td>Implement <code>HttpCalloutMock</code></td><td>Apex can't make HTTP calls during tests without mocking</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="callout" style="margin-top:24px">
+        <div class="callout-icon">🧪</div>
+        <div class="callout-body">
+          <div class="callout-label">Coverage ≠ Quality</div>
+          <p>100% code coverage with no assertions is worthless. Every test method must assert the expected outcome. Coverage without assertions is decoration, not quality assurance.</p>
+        </div>
+      </div>
+    </section>
+
+    <div class="divider"></div>
+
+    <!-- ══════════════════ SECTION 6 — ADVANCED PATTERNS ══════════════════ -->
+    <section id="s6" class="reveal">
+      <div class="section-header">
+        <div class="section-num">06</div>
+        <div class="section-info">
+          <div class="section-tag">Production Grade</div>
+          <div class="section-title">Advanced Trigger Patterns</div>
+        </div>
+      </div>
+
+      <p>Once the one-trigger-per-object handler pattern is mastered, senior developers are expected to implement enterprise-grade features: kill switches, Custom Metadata-driven configuration, async offloading, and platform event integration.</p>
+
+      <h2 id="killswitch">Kill Switch Pattern</h2>
+      <p>A kill switch allows any trigger to be disabled in production <em>without a deployment</em>. It uses a Custom Metadata Type record so an admin can flip a toggle in Setup and immediately pause all trigger logic.</p>
+
+      <div class="code-wrap">
+        <div class="code-header">
+          <div class="code-dots"><span></span><span></span><span></span></div>
+          <span class="code-lang">Apex — Kill Switch via Custom Metadata</span>
+          <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+        </div>
+        <pre><code><span class="cmt">// Custom Metadata Type: Trigger_Setting__mdt</span>
+<span class="cmt">// Fields: Object_API_Name__c (Text), Is_Active__c (Checkbox)</span>
+
+<span class="kw">public class</span> <span class="cls">TriggerSettings</span> {
+  <span class="kw">private static</span> <span class="cls">Map</span>&lt;<span class="cls">String</span>, <span class="cls">Boolean</span>&gt; cache = <span class="kw">new</span> <span class="cls">Map</span>&lt;<span class="cls">String</span>, <span class="cls">Boolean</span>&gt;();
+
+  <span class="kw">public static</span> <span class="cls">Boolean</span> <span class="fn">isActive</span>(<span class="cls">String</span> objectName) {
+    <span class="kw">if</span> (!cache.containsKey(objectName)) {
+      <span class="cls">Trigger_Setting__mdt</span>[] settings = [
+        <span class="kw">SELECT</span> Is_Active__c <span class="kw">FROM</span> Trigger_Setting__mdt
+        <span class="kw">WHERE</span> Object_API_Name__c = :objectName <span class="kw">LIMIT</span> <span class="num">1</span>
+      ];
+      cache.put(objectName, settings.isEmpty() ? <span class="kw">true</span> : settings[<span class="num">0</span>].Is_Active__c);
+    }
+    <span class="kw">return</span> cache.get(objectName);
+  }
+}
+
+<span class="cmt">// Usage in trigger dispatcher:</span>
+<span class="kw">trigger</span> <span class="cls">AccountTrigger</span> <span class="kw">on</span> <span class="cls">Account</span> (<span class="kw2">before insert</span>, <span class="kw2">after insert</span>, <span class="kw2">before update</span>, <span class="kw2">after update</span>) {
+  <span class="kw">if</span> (<span class="cls">TriggerSettings</span>.<span class="fn">isActive</span>(<span class="str">'Account'</span>)) {
+    <span class="kw">new</span> <span class="cls">AccountTriggerHandler</span>().<span class="fn">run</span>();
+  }
+}</code></pre>
+      </div>
+
+      <h2 id="asyncoffload">Async Offloading with Queueable</h2>
+      <p>When trigger logic involves callouts, heavy computation, or chained DML beyond the transaction limit, offload it to a <code>Queueable</code> job. This keeps the synchronous trigger lean and moves expensive work to an async context.</p>
+
+      <div class="code-wrap">
+        <div class="code-header">
+          <div class="code-dots"><span></span><span></span><span></span></div>
+          <span class="code-lang">Apex — Queueable Offload from Trigger</span>
+          <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+        </div>
+        <pre><code><span class="kw">public class</span> <span class="cls">AccountSyncQueueable</span> <span class="kw">implements</span> <span class="cls">Queueable</span>, <span class="cls">Database</span>.<span class="cls">AllowsCallouts</span> {
+  <span class="kw">private</span> <span class="cls">Set</span>&lt;<span class="cls">Id</span>&gt; accountIds;
+
+  <span class="kw">public</span> <span class="fn">AccountSyncQueueable</span>(<span class="cls">Set</span>&lt;<span class="cls">Id</span>&gt; ids) {
+    <span class="kw">this</span>.accountIds = ids;
+  }
+
+  <span class="kw">public void</span> <span class="fn">execute</span>(<span class="cls">QueueableContext</span> ctx) {
+    <span class="cls">List</span>&lt;<span class="cls">Account</span>&gt; accounts = [<span class="kw">SELECT</span> Id, Name, Type <span class="kw">FROM</span> Account <span class="kw">WHERE</span> Id <span class="kw">IN</span> :accountIds];
+    <span class="cmt">// Safe to make HTTP callouts here</span>
+    <span class="kw">for</span> (<span class="cls">Account</span> a : accounts) {
+      ExternalService.<span class="fn">syncAccount</span>(a);
+    }
+  }
+}
+
+<span class="cmt">// In After Insert trigger handler:</span>
+<span class="kw">public void</span> <span class="fn">afterInsert</span>(<span class="cls">Map</span>&lt;<span class="cls">Id</span>, <span class="cls">Account</span>&gt; newMap) {
+  <span class="kw">if</span> (!<span class="cls">System</span>.<span class="fn">isFuture</span>() &amp;&amp; !<span class="cls">System</span>.<span class="fn">isBatch</span>()) {
+    <span class="cls">System</span>.<span class="fn">enqueueJob</span>(<span class="kw">new</span> <span class="cls">AccountSyncQueueable</span>(newMap.keySet()));
+  }
+}</code></pre>
+      </div>
+
+      <h2 id="platformevents">Platform Events Integration</h2>
+      <p>Platform Events decouple trigger logic from downstream consumers. Instead of calling external services directly, the trigger publishes an event. Subscribers (Flows, external apps, other Apex) react independently.</p>
+
+      <div class="code-wrap">
+        <div class="code-header">
+          <div class="code-dots"><span></span><span></span><span></span></div>
+          <span class="code-lang">Apex — Publish Platform Event from Trigger</span>
+          <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+        </div>
+        <pre><code><span class="cmt">// Platform Event: Account_Changed__e</span>
+<span class="cmt">// Fields: Account_Id__c, Change_Type__c, Timestamp__c</span>
+
+<span class="kw">public void</span> <span class="fn">afterUpdate</span>(<span class="cls">Map</span>&lt;<span class="cls">Id</span>, <span class="cls">Account</span>&gt; newMap, <span class="cls">Map</span>&lt;<span class="cls">Id</span>, <span class="cls">Account</span>&gt; oldMap) {
+  <span class="cls">List</span>&lt;<span class="cls">Account_Changed__e</span>&gt; events = <span class="kw">new</span> <span class="cls">List</span>&lt;<span class="cls">Account_Changed__e</span>&gt;();
+
+  <span class="kw">for</span> (<span class="cls">Account</span> newAcc : newMap.values()) {
+    <span class="cls">Account</span> oldAcc = oldMap.get(newAcc.Id);
+    <span class="kw">if</span> (newAcc.Type != oldAcc.Type) {
+      events.add(<span class="kw">new</span> <span class="cls">Account_Changed__e</span>(
+        Account_Id__c  = newAcc.Id,
+        Change_Type__c = <span class="str">'TypeChanged'</span>,
+        Timestamp__c   = <span class="cls">Datetime</span>.<span class="fn">now</span>()
+      ));
+    }
+  }
+
+  <span class="kw">if</span> (!events.isEmpty()) {
+    <span class="cls">List</span>&lt;<span class="cls">Database</span>.<span class="cls">SaveResult</span>&gt; results = <span class="cls">EventBus</span>.<span class="fn">publish</span>(events);
+    <span class="kw">for</span> (<span class="cls">Database</span>.<span class="cls">SaveResult</span> sr : results) {
+      <span class="kw">if</span> (!sr.isSuccess()) {
+        <span class="cls">System</span>.<span class="fn">debug</span>(<span class="str">'Event publish failed: '</span> + sr.getErrors());
+      }
+    }
+  }
+}</code></pre>
+      </div>
+
+      <h2>Advanced Patterns Comparison</h2>
+      <div class="tbl-wrap">
+        <table>
+          <thead><tr><th>Pattern</th><th>Use When</th><th>Benefit</th><th>Caution</th></tr></thead>
+          <tbody>
+            <tr><td><strong>Kill Switch (CMDT)</strong></td><td>Any production trigger</td><td>Zero-deployment disable</td><td>Query overhead — cache in static var</td></tr>
+            <tr><td><strong>Queueable Offload</strong></td><td>Callouts, heavy processing</td><td>Async, chainable, named job</td><td>Max 50 enqueued jobs per transaction</td></tr>
+            <tr><td><strong>Platform Events</strong></td><td>Fan-out to multiple systems</td><td>Full decoupling</td><td>Eventual consistency only</td></tr>
+            <tr><td><strong>Change Data Capture</strong></td><td>External real-time sync</td><td>No trigger code needed</td><td>CDC fields limited vs full record</td></tr>
+            <tr><td><strong>Batch Apex</strong></td><td>Mass data migrations</td><td>Processes millions of records</td><td>Triggers fire per batch chunk</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="callout" style="border-color:var(--purple);background:rgba(124,58,237,0.05)">
+        <div class="callout-icon">🏆</div>
+        <div class="callout-body">
+          <div class="callout-label" style="color:var(--purple)">Senior Developer Mindset</div>
+          <p>A production-grade trigger architecture is invisible — it runs silently, handles 200 records as gracefully as 1, never hard-codes, never calls out synchronously, and can be disabled by any admin at 3 AM without touching code.</p>
+        </div>
+      </div>
+    </section>
+
+
+    <!-- ══════════════════ SECTION 5: TESTING TRIGGERS ══════════════════ -->
+    <section id="s5" class="reveal">
+      <div class="section-header">
+        <div class="section-num">05</div>
+        <div class="section-info">
+          <div class="section-tag">Quality</div>
+          <div class="section-title">Writing Bulletproof Test Classes</div>
+        </div>
+      </div>
+
+      <p>Every trigger must have a corresponding test class with ≥75% code coverage. But coverage alone is not quality — you must validate logic, not just exercise lines.</p>
+
+      <h2 id="teststructure">Test Class Structure</h2>
+      <div class="code-wrap">
+        <div class="code-header">
+          <div class="code-dots"><span></span><span></span><span></span></div>
+          <span class="code-lang">Apex — Test Class Pattern</span>
+          <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+        </div>
+        <pre><code><span class="cmt">// ── Trigger Test: AccountTriggerTest ────────────────────────────</span>
+<span class="kw">@isTest</span>
+<span class="kw">private class</span> <span class="cls">AccountTriggerTest</span> {
+
+  <span class="cmt">// Shared setup — runs once, data is rolled back after each test</span>
+  <span class="kw">@TestSetup</span>
+  <span class="kw">static void</span> <span class="fn">makeData</span>() {
+    <span class="cls">List</span>&lt;<span class="cls">Account</span>&gt; accts = <span class="kw">new</span> <span class="cls">List</span>&lt;<span class="cls">Account</span>&gt;();
+    <span class="kw">for</span> (<span class="cls">Integer</span> i = <span class="num">0</span>; i &lt; <span class="num">200</span>; i++) {
+      accts.add(<span class="kw">new</span> <span class="cls">Account</span>(
+        <span class="prop">Name</span>      = <span class="str">'Test Account '</span> + i,
+        <span class="prop">Industry</span>  = <span class="str">'Technology'</span>,
+        <span class="prop">AnnualRevenue</span> = <span class="num">100000</span>
+      ));
+    }
+    insert accts;
+  }
+
+  <span class="cmt">// ── Test 1: Bulk insert ──────────────────────────────────────────</span>
+  <span class="kw">@isTest</span>
+  <span class="kw">static void</span> <span class="fn">testBulkInsert</span>() {
+    <span class="cls">List</span>&lt;<span class="cls">Account</span>&gt; accts = [<span class="kw">SELECT</span> Id, Name, <span class="cls">Rating</span> <span class="kw">FROM</span> <span class="cls">Account</span>];
+    <span class="cls">System</span>.<span class="fn">assertEquals</span>(<span class="num">200</span>, accts.size(), <span class="str">'Should have 200 accounts'</span>);
+    <span class="kw">for</span> (<span class="cls">Account</span> a : accts) {
+      <span class="cls">System</span>.<span class="fn">assertNotEquals</span>(<span class="kw">null</span>, a.<span class="prop">Rating</span>, <span class="str">'Rating should be set by trigger'</span>);
+    }
+  }
+
+  <span class="cmt">// ── Test 2: Negative / edge case ────────────────────────────────</span>
+  <span class="kw">@isTest</span>
+  <span class="kw">static void</span> <span class="fn">testNullIndustry</span>() {
+    <span class="cls">Account</span> a = <span class="kw">new</span> <span class="cls">Account</span>(<span class="prop">Name</span> = <span class="str">'No Industry'</span>);
+    <span class="cls">Test</span>.<span class="fn">startTest</span>();
+    insert a;
+    <span class="cls">Test</span>.<span class="fn">stopTest</span>();
+    <span class="cls">Account</span> result = [<span class="kw">SELECT</span> Id, <span class="cls">Rating</span> <span class="kw">FROM</span> <span class="cls">Account</span> <span class="kw">WHERE</span> Id = :a.<span class="prop">Id</span>];
+    <span class="cls">System</span>.<span class="fn">assertEquals</span>(<span class="kw">null</span>, result.<span class="prop">Rating</span>, <span class="str">'Rating should stay null without industry'</span>);
+  }
+}</code></pre>
+      </div>
+
+      <div class="tbl-wrap">
+        <table>
+          <thead><tr><th>Annotation / Method</th><th>Purpose</th><th>Best Practice</th></tr></thead>
+          <tbody>
+            <tr><td><span class="tag tag-cyan">@isTest</span></td><td>Marks class / method as test code; excluded from production</td><td>Always required</td></tr>
+            <tr><td><span class="tag tag-cyan">@TestSetup</span></td><td>Runs once per class; data shared across methods</td><td>Use for shared data to avoid repetition</td></tr>
+            <tr><td><span class="tag tag-blue">Test.startTest()</span></td><td>Resets governor limits; marks DML for async jobs</td><td>Wrap DML under test here</td></tr>
+            <tr><td><span class="tag tag-blue">Test.stopTest()</span></td><td>Executes queued async jobs synchronously</td><td>Required for Queueable / Future tests</td></tr>
+            <tr><td><span class="tag tag-orange">System.assertEquals()</span></td><td>Validates expected vs actual with message</td><td>Always include failure message</td></tr>
+            <tr><td><span class="tag tag-green">Test.isRunningTest()</span></td><td>Skip callout / external logic in test context</td><td>Use sparingly; prefer mock patterns</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h2 id="mockcallouts">Mocking Callouts in Tests</h2>
+      <p>Triggers that fire Queueable or Future jobs with callouts require a mock HTTP response. Salesforce blocks real callouts in test context.</p>
+      <div class="code-wrap">
+        <div class="code-header">
+          <div class="code-dots"><span></span><span></span><span></span></div>
+          <span class="code-lang">Apex — HttpCalloutMock</span>
+          <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+        </div>
+        <pre><code><span class="kw">@isTest</span>
+<span class="kw">global class</span> <span class="cls">MockHttpResponse</span> <span class="kw">implements</span> <span class="cls">HttpCalloutMock</span> {
+  <span class="kw">global</span> <span class="cls">HTTPResponse</span> <span class="fn">respond</span>(<span class="cls">HTTPRequest</span> req) {
+    <span class="cls">HTTPResponse</span> res = <span class="kw">new</span> <span class="cls">HTTPResponse</span>();
+    res.<span class="fn">setStatusCode</span>(<span class="num">200</span>);
+    res.<span class="fn">setBody</span>(<span class="str">'{"status":"ok"}'</span>);
+    <span class="kw">return</span> res;
+  }
+}
+
+<span class="cmt">// In your test method:</span>
+<span class="cls">Test</span>.<span class="fn">setMock</span>(<span class="cls">HttpCalloutMock</span>.<span class="kw">class</span>, <span class="kw">new</span> <span class="cls">MockHttpResponse</span>());
+<span class="cls">Test</span>.<span class="fn">startTest</span>();
+  insert record;  <span class="cmt">// fires trigger → Queueable → callout (mocked)</span>
+<span class="cls">Test</span>.<span class="fn">stopTest</span>();</code></pre>
+      </div>
+    </section>
+
+    <!-- ══════════════════ SECTION 6: GOVERNOR LIMITS ══════════════════ -->
+    <section id="s6" class="reveal">
+      <div class="section-header">
+        <div class="section-num">06</div>
+        <div class="section-info">
+          <div class="section-tag">Performance</div>
+          <div class="section-title">Governor Limits &amp; Trigger Safety</div>
+        </div>
+      </div>
+
+      <p>Salesforce enforces governor limits per transaction. A trigger that handles 1 record in dev will fail in production with 200 records if not designed carefully.</p>
+
+      <div class="tbl-wrap">
+        <table>
+          <thead><tr><th>Limit</th><th>Per Transaction</th><th>Common Trigger Violation</th><th>Fix</th></tr></thead>
+          <tbody>
+            <tr><td>SOQL Queries</td><td>100</td><td>SOQL inside <code>for</code> loop</td><td>Collect IDs → query once outside loop</td></tr>
+            <tr><td>DML Statements</td><td>150</td><td>DML inside loop</td><td>Build List → single DML after loop</td></tr>
+            <tr><td>DML Rows</td><td>10,000</td><td>Trigger on Batch chunk that re-inserts</td><td>Filter already-processed records</td></tr>
+            <tr><td>CPU Time</td><td>10,000ms (sync)</td><td>Complex nested logic per record</td><td>Offload to Queueable / Batch</td></tr>
+            <tr><td>Heap Size</td><td>6MB (sync)</td><td>Holding large SOQL results in memory</td><td>Process and null out references</td></tr>
+            <tr><td>Callouts</td><td>100</td><td>HTTP call inside trigger body</td><td>Use <code>@future(callout=true)</code> or Queueable</td></tr>
+            <tr><td>Future Calls</td><td>50</td><td>Firing future per record</td><td>Collect IDs → single future with list</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h2>The Golden Rules of Trigger Safety</h2>
+      <ul class="checklist">
+        <li><span class="check-icon">✅</span><span><strong>Bulkify everything.</strong> Every trigger fires with up to 200 records in Trigger.new. Write for 200, not 1.</span></li>
+        <li><span class="check-icon">✅</span><span><strong>No SOQL or DML inside loops.</strong> Collect records → execute outside the loop. Zero exceptions.</span></li>
+        <li><span class="check-icon">✅</span><span><strong>No synchronous callouts.</strong> Always offload to <code>@future(callout=true)</code>, Queueable, or Platform Events.</span></li>
+        <li><span class="check-icon">✅</span><span><strong>Use a recursion guard.</strong> A static Boolean in a utility class prevents infinite re-trigger chains.</span></li>
+        <li><span class="check-icon">✅</span><span><strong>One trigger per object.</strong> Control execution order explicitly in the handler class.</span></li>
+        <li><span class="check-icon">✅</span><span><strong>Use old map for comparisons.</strong> Always check <code>Trigger.newMap.get(id).Field != Trigger.oldMap.get(id).Field</code> before processing updates.</span></li>
+        <li><span class="check-icon">✅</span><span><strong>Null-safe field access.</strong> Always guard against null before reading related fields.</span></li>
+      </ul>
+
+      <div class="callout warn">
+        <div class="callout-icon">⚠️</div>
+        <div class="callout-body">
+          <div class="callout-label">CPU Limit Exceeded — Common Scenario</div>
+          <p>A trigger on Opportunity fires on update → calls a Future method → the Future runs another SOQL + complex logic. If 200 Opportunities update at once and each Future takes ~50ms, the transaction may tip over 10,000ms. Solution: batch the Future to accept a <code>List&lt;Id&gt;</code>, not a single Id.</p>
+        </div>
+      </div>
+    </section>
+
+  </main>
+</div>
+
+<footer>
+  <div class="footer-logo">⚡ SF Triggers</div>
+  <p>Salesforce Triggers: Mastery &amp; Implementation Guide &nbsp;·&nbsp; Version 2.1 &nbsp;·&nbsp; 2025</p>
+  <p style="margin-top:6px">For team training and interview preparation &nbsp;·&nbsp; Senior Salesforce Developer &amp; Technical Architect</p>
+</footer>
+
+<script>
+// ── Progress Bar ──────────────────────────────────────────────────────────────
+const prog = document.getElementById('progress');
+window.addEventListener('scroll', () => {
+  const scrolled = window.scrollY;
+  const total    = document.documentElement.scrollHeight - window.innerHeight;
+  prog.style.width = Math.min(100, (scrolled / total) * 100) + '%';
+});
+
+// ── Reveal on Scroll ─────────────────────────────────────────────────────────
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); } });
+}, { threshold: 0.07 });
+document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+// ── Q&A Toggle ────────────────────────────────────────────────────────────────
+function toggleQA(btn) {
+  const item = btn.closest('.qa-item');
+  item.classList.toggle('open');
+}
+
+// ── Copy Code ─────────────────────────────────────────────────────────────────
+function copyCode(btn) {
+  const pre  = btn.closest('.code-wrap').querySelector('pre');
+  const text = pre.innerText;
+  navigator.clipboard.writeText(text).then(() => {
+    const orig = btn.textContent;
+    btn.textContent = 'Copied!';
+    btn.style.color = 'var(--green)';
+    btn.style.borderColor = 'var(--green)';
+    setTimeout(() => {
+      btn.textContent = orig;
+      btn.style.color = '';
+      btn.style.borderColor = '';
+    }, 1800);
+  });
+}
+
+// ── Active Nav Link ───────────────────────────────────────────────────────────
+const sections = document.querySelectorAll('section[id], h2[id]');
+const navLinks  = document.querySelectorAll('.nav-link');
+const io = new IntersectionObserver((entries) => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      navLinks.forEach(l => l.classList.remove('active'));
+      const link = document.querySelector(`.nav-link[href="#${e.target.id}"]`);
+      if (link) link.classList.add('active');
+    }
+  });
+}, { rootMargin: '-20% 0px -70% 0px' });
+sections.forEach(s => io.observe(s));
+</script>
+</body>
+</html>

@@ -1,0 +1,1526 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>StellerSync Labs — Apex Developer Guide</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,700;0,9..144,900;1,9..144,400&family=DM+Sans:wght@400;500;600&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #FAFAF7;
+    --surface: #FFFFFF;
+    --ink: #1A1A2E;
+    --ink-muted: #5A5A7A;
+    --c1: #FF6B6B;   /* coral */
+    --c2: #4ECDC4;   /* teal */
+    --c3: #FFE66D;   /* yellow */
+    --c4: #A8E6CF;   /* mint */
+    --c5: #FF8B94;   /* pink */
+    --c6: #B8B8FF;   /* lavender */
+    --c7: #FFA07A;   /* salmon */
+    --c8: #87CEEB;   /* sky */
+    --border: #E8E8F0;
+    --radius: 16px;
+    --shadow: 0 4px 24px rgba(26,26,46,0.08);
+    --shadow-lg: 0 12px 48px rgba(26,26,46,0.12);
+  }
+
+  * { margin:0; padding:0; box-sizing:border-box; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--bg);
+    color: var(--ink);
+    line-height: 1.7;
+    overflow-x: hidden;
+  }
+
+  /* ── NAV ── */
+  nav {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background: rgba(250,250,247,0.92);
+    backdrop-filter: blur(16px);
+    border-bottom: 1px solid var(--border);
+    padding: 0 2rem;
+  }
+  .nav-inner {
+    max-width: 1280px;
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    gap: 2rem;
+    height: 64px;
+    overflow-x: auto;
+    scrollbar-width: none;
+  }
+  .nav-inner::-webkit-scrollbar { display:none; }
+  .nav-logo {
+    font-family: 'Fraunces', serif;
+    font-weight: 900;
+    font-size: 1.15rem;
+    color: var(--ink);
+    white-space: nowrap;
+    text-decoration: none;
+  }
+  .nav-logo span { color: var(--c1); }
+  .nav-links {
+    display: flex;
+    gap: 0.25rem;
+    list-style: none;
+    flex-shrink: 0;
+  }
+  .nav-links a {
+    padding: 6px 14px;
+    border-radius: 100px;
+    font-size: 0.82rem;
+    font-weight: 500;
+    color: var(--ink-muted);
+    text-decoration: none;
+    white-space: nowrap;
+    transition: all 0.2s;
+  }
+  .nav-links a:hover { background: var(--ink); color: #fff; }
+
+  /* ── HERO ── */
+  .hero {
+    max-width: 1280px;
+    margin: 0 auto;
+    padding: 80px 2rem 64px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 4rem;
+    align-items: center;
+  }
+  @media(max-width:768px){
+    .hero { grid-template-columns:1fr; padding:40px 1.25rem; }
+    .hero-art { display:none; }
+  }
+  .hero-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: var(--c3);
+    color: var(--ink);
+    padding: 6px 14px;
+    border-radius: 100px;
+    font-size: 0.8rem;
+    font-weight: 600;
+    margin-bottom: 1.5rem;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+  }
+  .hero h1 {
+    font-family: 'Fraunces', serif;
+    font-size: clamp(2.8rem, 5vw, 4.5rem);
+    font-weight: 900;
+    line-height: 1.05;
+    letter-spacing: -0.02em;
+    margin-bottom: 1.25rem;
+  }
+  .hero h1 em { font-style: italic; color: var(--c1); }
+  .hero p {
+    font-size: 1.05rem;
+    color: var(--ink-muted);
+    max-width: 480px;
+    margin-bottom: 2rem;
+  }
+  .hero-stats {
+    display: flex;
+    gap: 2rem;
+    flex-wrap: wrap;
+  }
+  .stat { }
+  .stat-num {
+    font-family: 'Fraunces', serif;
+    font-size: 2rem;
+    font-weight: 700;
+    color: var(--ink);
+    line-height: 1;
+  }
+  .stat-label {
+    font-size: 0.8rem;
+    color: var(--ink-muted);
+    font-weight: 500;
+  }
+
+  .hero-art {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+  }
+  .art-card {
+    border-radius: var(--radius);
+    padding: 1.5rem;
+    font-size: 0.85rem;
+    font-weight: 600;
+    animation: float 4s ease-in-out infinite;
+  }
+  .art-card:nth-child(2) { animation-delay: -1s; }
+  .art-card:nth-child(3) { animation-delay: -2s; }
+  .art-card:nth-child(4) { animation-delay: -3s; }
+  .art-card .art-icon { font-size: 2rem; margin-bottom: 0.5rem; display:block; }
+  @keyframes float {
+    0%,100%{transform:translateY(0)} 50%{transform:translateY(-8px)}
+  }
+
+  /* ── MAIN LAYOUT ── */
+  .container {
+    max-width: 1280px;
+    margin: 0 auto;
+    padding: 0 2rem 4rem;
+  }
+
+  /* ── SECTION HEADER ── */
+  .section-header {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    margin-bottom: 2rem;
+    padding-bottom: 1rem;
+    border-bottom: 2px solid var(--border);
+  }
+  .section-title {
+    font-family: 'Fraunces', serif;
+    font-size: 2rem;
+    font-weight: 700;
+    line-height: 1.1;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+  }
+  .section-title .dot {
+    width: 14px; height: 14px;
+    border-radius: 50%;
+    flex-shrink: 0;
+  }
+  .section-count {
+    font-size: 0.82rem;
+    font-weight: 600;
+    color: var(--ink-muted);
+    background: var(--border);
+    padding: 4px 12px;
+    border-radius: 100px;
+  }
+  .section-wrap { margin-bottom: 4rem; }
+
+  /* ── GRID ── */
+  .grid-2 { display:grid; grid-template-columns:1fr 1fr; gap:1rem; }
+  .grid-3 { display:grid; grid-template-columns:repeat(3,1fr); gap:1rem; }
+  @media(max-width:900px){ .grid-3{grid-template-columns:1fr 1fr;} }
+  @media(max-width:600px){ .grid-2,.grid-3{grid-template-columns:1fr;} }
+
+  /* ── CARD ── */
+  .card {
+    background: var(--surface);
+    border-radius: var(--radius);
+    padding: 1.5rem;
+    border: 1.5px solid var(--border);
+    transition: all 0.25s;
+    position: relative;
+    overflow: hidden;
+  }
+  .card::before {
+    content:'';
+    position:absolute;
+    top:0; left:0; right:0;
+    height: 4px;
+    background: var(--accent, var(--c1));
+  }
+  .card:hover {
+    border-color: transparent;
+    box-shadow: var(--shadow-lg);
+    transform: translateY(-2px);
+  }
+  .card-label {
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--accent, var(--c1));
+    margin-bottom: 0.5rem;
+  }
+  .card h3 {
+    font-family: 'Fraunces', serif;
+    font-size: 1.05rem;
+    font-weight: 700;
+    margin-bottom: 0.5rem;
+    line-height: 1.3;
+  }
+  .card p {
+    font-size: 0.9rem;
+    color: var(--ink-muted);
+    line-height: 1.6;
+  }
+
+  /* ── Q&A CARD ── */
+  .qa-card {
+    background: var(--surface);
+    border-radius: var(--radius);
+    border: 1.5px solid var(--border);
+    overflow: hidden;
+    transition: box-shadow 0.2s;
+  }
+  .qa-card:hover { box-shadow: var(--shadow); }
+  .qa-q {
+    padding: 1.15rem 1.5rem;
+    font-weight: 600;
+    font-size: 0.92rem;
+    display: flex;
+    align-items: flex-start;
+    gap: 0.75rem;
+    cursor: pointer;
+    user-select: none;
+  }
+  .qa-q .qnum {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.75rem;
+    font-weight: 600;
+    background: var(--accent, var(--c2));
+    color: #fff;
+    padding: 2px 8px;
+    border-radius: 6px;
+    flex-shrink: 0;
+    margin-top: 2px;
+  }
+  .qa-a {
+    padding: 0 1.5rem 1.15rem 3.5rem;
+    font-size: 0.88rem;
+    color: var(--ink-muted);
+    border-top: 1px solid var(--border);
+    padding-top: 0.75rem;
+    line-height: 1.65;
+  }
+
+  /* ── CODE BLOCK ── */
+  .code-block {
+    background: #1A1A2E;
+    color: #E8E8F0;
+    border-radius: var(--radius);
+    padding: 1.5rem;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.82rem;
+    line-height: 1.8;
+    overflow-x: auto;
+    position: relative;
+    margin: 1rem 0;
+  }
+  .code-block .lang-tag {
+    position: absolute;
+    top: 0.75rem;
+    right: 1rem;
+    font-size: 0.7rem;
+    font-weight: 600;
+    color: var(--c3);
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+  }
+  .kw { color: #FF6B6B; font-weight: 600; }
+  .ty { color: #4ECDC4; }
+  .cm { color: #6C7A89; font-style: italic; }
+  .str { color: #FFE66D; }
+  .fn { color: #B8B8FF; }
+
+  /* ── TOPIC PILL ── */
+  .pills { display:flex; flex-wrap:wrap; gap:0.5rem; margin-bottom:1.5rem; }
+  .pill {
+    padding: 5px 14px;
+    border-radius: 100px;
+    font-size: 0.78rem;
+    font-weight: 600;
+    border: 1.5px solid;
+    cursor: default;
+  }
+
+  /* ── HIGHLIGHT BOX ── */
+  .highlight-box {
+    border-radius: var(--radius);
+    padding: 1.5rem 2rem;
+    margin-bottom: 1.5rem;
+    position: relative;
+  }
+  .highlight-box .hl-icon {
+    font-size: 1.5rem;
+    margin-bottom: 0.5rem;
+    display: block;
+  }
+  .highlight-box h4 {
+    font-family: 'Fraunces', serif;
+    font-size: 1.1rem;
+    margin-bottom: 0.5rem;
+  }
+  .highlight-box p, .highlight-box li {
+    font-size: 0.9rem;
+    line-height: 1.6;
+  }
+  .highlight-box ul { padding-left: 1.25rem; }
+  .highlight-box li { margin-bottom: 0.25rem; }
+
+  /* ── TRIGGER TABLE ── */
+  .styled-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.88rem;
+    background: var(--surface);
+    border-radius: var(--radius);
+    overflow: hidden;
+    box-shadow: var(--shadow);
+  }
+  .styled-table th {
+    background: var(--ink);
+    color: #fff;
+    padding: 12px 16px;
+    text-align: left;
+    font-size: 0.78rem;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+  }
+  .styled-table td {
+    padding: 12px 16px;
+    border-bottom: 1px solid var(--border);
+    color: var(--ink-muted);
+  }
+  .styled-table tr:last-child td { border-bottom: none; }
+  .styled-table tr:hover td { background: var(--bg); }
+
+  /* ── ASSIGNMENT CARD ── */
+  .assign-card {
+    background: var(--surface);
+    border-radius: var(--radius);
+    border: 1.5px solid var(--border);
+    padding: 1.5rem;
+    position: relative;
+    overflow: hidden;
+    transition: all 0.2s;
+  }
+  .assign-card:hover { box-shadow: var(--shadow); transform: translateY(-2px); }
+  .assign-num {
+    position: absolute;
+    top: 1rem; right: 1.25rem;
+    font-family: 'Fraunces', serif;
+    font-size: 3rem;
+    font-weight: 900;
+    color: var(--border);
+    line-height: 1;
+  }
+  .assign-card h4 {
+    font-family: 'Fraunces', serif;
+    font-size: 1rem;
+    font-weight: 700;
+    margin-bottom: 0.5rem;
+    padding-right: 3rem;
+  }
+  .assign-card p {
+    font-size: 0.85rem;
+    color: var(--ink-muted);
+    line-height: 1.55;
+  }
+  .assign-tag {
+    display: inline-block;
+    margin-top: 0.75rem;
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    padding: 3px 10px;
+    border-radius: 6px;
+    color: #fff;
+  }
+
+  /* ── FOOTER ── */
+  footer {
+    background: var(--ink);
+    color: rgba(255,255,255,0.55);
+    text-align: center;
+    padding: 2.5rem 2rem;
+    font-size: 0.85rem;
+  }
+  footer strong { color: #fff; font-family: 'Fraunces', serif; }
+
+  /* ── DIVIDER ── */
+  .wave-divider { margin: 0; line-height: 0; }
+  .wave-divider svg { display:block; width:100%; }
+
+  /* ── SCROLL REVEAL ── */
+  .reveal {
+    opacity: 0;
+    transform: translateY(24px);
+    transition: opacity 0.5s, transform 0.5s;
+  }
+  .reveal.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  /* ── COLORED SECTIONS ── */
+  .section-band {
+    padding: 3rem 0;
+    margin: 2rem 0;
+  }
+
+  /* ── INTRO STRIP ── */
+  .intro-strip {
+    background: linear-gradient(135deg, #1A1A2E 0%, #16213E 100%);
+    color: #fff;
+    border-radius: 24px;
+    padding: 3rem 3.5rem;
+    margin-bottom: 4rem;
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: 2rem;
+    align-items: center;
+  }
+  @media(max-width:700px){ .intro-strip{grid-template-columns:1fr;padding:2rem;} }
+  .intro-strip h2 {
+    font-family: 'Fraunces', serif;
+    font-size: 1.6rem;
+    margin-bottom: 0.75rem;
+  }
+  .intro-strip p { font-size: 0.92rem; opacity: 0.75; line-height: 1.7; }
+  .intro-strip .tag-cloud {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    align-items: flex-end;
+  }
+  .intro-strip .tag-cloud span {
+    background: rgba(255,255,255,0.1);
+    color: rgba(255,255,255,0.85);
+    padding: 5px 14px;
+    border-radius: 100px;
+    font-size: 0.78rem;
+    font-weight: 600;
+    white-space: nowrap;
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-inner">
+    <a class="nav-logo" href="#top">Steller<span>Sync</span> Labs</a>
+    <a href="index.html" style="display:inline-flex;align-items:center;gap:5px;padding:5px 12px;background:rgba(255,107,107,0.08);border:1px solid rgba(255,107,107,0.25);border-radius:100px;font-size:0.76rem;font-weight:600;color:#cc4444;text-decoration:none;white-space:nowrap;transition:all 0.2s;flex-shrink:0" onmouseover="this.style.background='rgba(255,107,107,0.16)'" onmouseout="this.style.background='rgba(255,107,107,0.08)'">← Dev Guide</a>
+    <ul class="nav-links">
+      <li><a href="#oops">OOPs</a></li>
+      <li><a href="#collections">Collections</a></li>
+      <li><a href="#soql">SOQL</a></li>
+      <li><a href="#triggers">Triggers</a></li>
+      <li><a href="#testclass">Test Classes</a></li>
+      <li><a href="#async">Async Apex</a></li>
+      <li><a href="#interviewqa">Interview Q&A</a></li>
+      <li><a href="#assignments">Assignments</a></li>
+    </ul>
+  </div>
+</nav>
+
+<!-- HERO -->
+<div id="top" class="hero">
+  <div>
+    <a href="index.html" style="display:inline-flex;align-items:center;gap:6px;margin-bottom:1.2rem;padding:5px 14px;background:rgba(26,26,46,0.06);border:1px solid rgba(26,26,46,0.15);border-radius:100px;font-size:0.75rem;font-weight:600;color:#5A5A7A;text-decoration:none;letter-spacing:0.04em;transition:all 0.2s" onmouseover="this.style.background='rgba(26,26,46,0.1)'" onmouseout="this.style.background='rgba(26,26,46,0.06)'">← Back to Dev Guide</a>
+    <div class="hero-badge">⚡ StellerSync Labs · Apex Developer Series</div>
+    <h1>Master<br><em>Salesforce</em><br>Apex.</h1>
+    <p>Your complete developer guide — from core OOP concepts to async patterns, triggers, test classes, and real-world assignments.</p>
+    <div class="hero-stats">
+      <div class="stat">
+        <div class="stat-num">104+</div>
+        <div class="stat-label">Interview Questions</div>
+      </div>
+      <div class="stat">
+        <div class="stat-num">52</div>
+        <div class="stat-label">Trigger Assignments</div>
+      </div>
+      <div class="stat">
+        <div class="stat-num">8</div>
+        <div class="stat-label">Core Topics</div>
+      </div>
+    </div>
+  </div>
+  <div class="hero-art">
+    <div class="art-card" style="background:#FFE66D;color:#1A1A2E;">
+      <span class="art-icon">🧱</span>
+      OOP Concepts
+    </div>
+    <div class="art-card" style="background:#FF6B6B;color:#fff;">
+      <span class="art-icon">⚡</span>
+      Apex Triggers
+    </div>
+    <div class="art-card" style="background:#4ECDC4;color:#fff;">
+      <span class="art-icon">🔍</span>
+      SOQL Queries
+    </div>
+    <div class="art-card" style="background:#B8B8FF;color:#1A1A2E;">
+      <span class="art-icon">🚀</span>
+      Async Apex
+    </div>
+  </div>
+</div>
+
+<!-- MAIN CONTENT -->
+<div class="container">
+
+  <!-- INTRO STRIP -->
+  <div class="intro-strip reveal">
+    <div>
+      <h2>What is Apex?</h2>
+      <p>Apex is an object-oriented, strongly-typed programming language that enables developers to implement flow and transaction control statements on Salesforce servers. Its syntax closely resembles Java, and it works like database stored procedures. Apex lets you implement business logic for most system events — including button clicks, related record updates, and Visualforce pages.</p>
+    </div>
+    <div class="tag-cloud">
+      <span>Object-Oriented</span>
+      <span>Strongly Typed</span>
+      <span>Server-Side</span>
+      <span>Java-Like Syntax</span>
+      <span>Governor Limits</span>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════════
+       OOP CONCEPTS
+  ══════════════════════════════════════════ -->
+  <div id="oops" class="section-wrap reveal">
+    <div class="section-header">
+      <h2 class="section-title">
+        <span class="dot" style="background:var(--c1)"></span>
+        OOP Concepts
+      </h2>
+      <span class="section-count">17 Questions</span>
+    </div>
+
+    <div class="grid-3" style="margin-bottom:1.5rem;">
+      <div class="card" style="--accent:var(--c1);">
+        <div class="card-label">Pillar 1</div>
+        <h3>Encapsulation</h3>
+        <p>Bundling data and methods that operate on that data within one unit (class), restricting direct access to internal state using access modifiers.</p>
+      </div>
+      <div class="card" style="--accent:var(--c2);">
+        <div class="card-label">Pillar 2</div>
+        <h3>Inheritance</h3>
+        <p>Allows a class to inherit properties and methods from a parent class using the <code>extends</code> keyword. Parent must be marked <code>virtual</code> or <code>abstract</code>.</p>
+      </div>
+      <div class="card" style="--accent:var(--c3); color:var(--ink);">
+        <div class="card-label">Pillar 3</div>
+        <h3>Polymorphism</h3>
+        <p>The ability for objects of different classes to be treated as objects of a common parent class — through method overriding and overloading.</p>
+      </div>
+      <div class="card" style="--accent:var(--c5);">
+        <div class="card-label">Pillar 4</div>
+        <h3>Abstraction</h3>
+        <p>Hiding complex implementation details and showing only essential features of an object. Achieved via abstract classes and interfaces in Apex.</p>
+      </div>
+      <div class="card" style="--accent:var(--c6);">
+        <div class="card-label">Keywords</div>
+        <h3>virtual & abstract</h3>
+        <p><strong>virtual</strong>: allows a method/class to be overridden in subclass. <strong>abstract</strong>: cannot be instantiated; must be extended.</p>
+      </div>
+      <div class="card" style="--accent:var(--c4);">
+        <div class="card-label">Modifiers</div>
+        <h3>Access Modifiers</h3>
+        <p><strong>private</strong> · <strong>protected</strong> · <strong>public</strong> · <strong>global</strong>. Global is accessible from outside the namespace (e.g. managed packages).</p>
+      </div>
+    </div>
+
+    <div class="code-block reveal">
+      <span class="lang-tag">Apex</span>
+<span class="kw">public virtual class</span> <span class="ty">Vehicle</span> {
+    <span class="kw">public</span> <span class="ty">String</span> brand;
+
+    <span class="cm">// Constructor</span>
+    <span class="kw">public</span> <span class="fn">Vehicle</span>(<span class="ty">String</span> brand) {
+        <span class="kw">this</span>.brand = brand;
+    }
+
+    <span class="kw">public virtual</span> <span class="ty">String</span> <span class="fn">getType</span>() {
+        <span class="kw">return</span> <span class="str">'Generic Vehicle'</span>;
+    }
+}
+
+<span class="kw">public class</span> <span class="ty">Car</span> <span class="kw">extends</span> <span class="ty">Vehicle</span> {
+    <span class="kw">public</span> <span class="fn">Car</span>(<span class="ty">String</span> brand) {
+        <span class="kw">super</span>(brand); <span class="cm">// calls parent constructor</span>
+    }
+
+    <span class="kw">public override</span> <span class="ty">String</span> <span class="fn">getType</span>() {
+        <span class="kw">return</span> <span class="str">'Car: '</span> + brand;
+    }
+}
+
+<span class="cm">// Usage: Car Mercedes = new Car('Mercedes');</span>
+    </div>
+
+    <div class="highlight-box reveal" style="background:#FFF5F5;border-left:4px solid var(--c1);">
+      <span class="hl-icon">🧠</span>
+      <h4>SOLID Principles in Apex</h4>
+      <ul>
+        <li><strong>S</strong>ingle Responsibility — Each class should have one reason to change</li>
+        <li><strong>O</strong>pen/Closed — Open for extension, closed for modification</li>
+        <li><strong>L</strong>iskov Substitution — Subclasses must be substitutable for parent</li>
+        <li><strong>I</strong>nterface Segregation — Many specific interfaces over one general</li>
+        <li><strong>D</strong>ependency Inversion — Depend on abstractions, not concretions</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════════
+       COLLECTIONS
+  ══════════════════════════════════════════ -->
+  <div id="collections" class="section-wrap reveal">
+    <div class="section-header">
+      <h2 class="section-title">
+        <span class="dot" style="background:var(--c2)"></span>
+        Collections in Salesforce
+      </h2>
+      <span class="section-count">3 Types</span>
+    </div>
+
+    <div class="grid-3" style="margin-bottom:1.5rem;">
+      <div class="card" style="--accent:var(--c2);">
+        <div class="card-label">Collection Type 1</div>
+        <h3>List</h3>
+        <p>An ordered, index-based collection. <strong>Allows duplicates.</strong> Best when order matters or you need to access elements by position.</p>
+        <div style="margin-top:0.75rem;font-family:'JetBrains Mono',monospace;font-size:0.78rem;background:var(--bg);padding:8px 12px;border-radius:8px;">
+          List&lt;String&gt; names = new List&lt;String&gt;();
+        </div>
+      </div>
+      <div class="card" style="--accent:var(--c5);">
+        <div class="card-label">Collection Type 2</div>
+        <h3>Set</h3>
+        <p>An unordered collection. <strong>No duplicates.</strong> Ideal for storing unique values and fast membership checks.</p>
+        <div style="margin-top:0.75rem;font-family:'JetBrains Mono',monospace;font-size:0.78rem;background:var(--bg);padding:8px 12px;border-radius:8px;">
+          Set&lt;Id&gt; accountIds = new Set&lt;Id&gt;();
+        </div>
+      </div>
+      <div class="card" style="--accent:var(--c7);">
+        <div class="card-label">Collection Type 3</div>
+        <h3>Map</h3>
+        <p>A key-value pair collection. <strong>Keys must be unique.</strong> Perfect for relating records by Id or grouping data.</p>
+        <div style="margin-top:0.75rem;font-family:'JetBrains Mono',monospace;font-size:0.78rem;background:var(--bg);padding:8px 12px;border-radius:8px;">
+          Map&lt;Id,Account&gt; accMap = new Map&lt;Id,Account&gt;();
+        </div>
+      </div>
+    </div>
+
+    <div class="highlight-box reveal" style="background:#E8FFF9;border-left:4px solid var(--c2);">
+      <span class="hl-icon">💡</span>
+      <h4>Key Methods to Remember</h4>
+      <ul>
+        <li><strong>List:</strong> add(), get(index), size(), remove(), contains(), sort(), clear()</li>
+        <li><strong>Set:</strong> add(), contains(), remove(), size(), isEmpty(), addAll()</li>
+        <li><strong>Map:</strong> put(), get(key), containsKey(), keySet(), values(), remove(), size()</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════════
+       LOOPS
+  ══════════════════════════════════════════ -->
+  <div class="section-wrap reveal">
+    <div class="section-header">
+      <h2 class="section-title">
+        <span class="dot" style="background:var(--c3)"></span>
+        Loops in Apex
+      </h2>
+      <span class="section-count">4 Types</span>
+    </div>
+    <div class="grid-2">
+      <div>
+        <div class="card" style="--accent:var(--c3);margin-bottom:1rem;">
+          <div class="card-label">Traditional</div>
+          <h3>For Loop</h3>
+          <p>Use when you know the exact number of iterations. Has an initializer, condition, and iterator.</p>
+        </div>
+        <div class="card" style="--accent:var(--c8);">
+          <div class="card-label">List/Set Iteration</div>
+          <h3>Enhanced For Loop</h3>
+          <p>Iterates over each element in a list or set. Cleaner syntax; preferred for Salesforce collections.</p>
+        </div>
+      </div>
+      <div>
+        <div class="card" style="--accent:var(--c4);margin-bottom:1rem;">
+          <div class="card-label">Condition-Based</div>
+          <h3>While Loop</h3>
+          <p>Checks condition before execution. Use when you don't know how many times to iterate up front.</p>
+        </div>
+        <div class="card" style="--accent:var(--c6);">
+          <div class="card-label">Execute-First</div>
+          <h3>Do-While Loop</h3>
+          <p>Executes the body at least once before checking the condition. Rarely used in Apex but valid.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════════
+       SOQL
+  ══════════════════════════════════════════ -->
+  <div id="soql" class="section-wrap reveal">
+    <div class="section-header">
+      <h2 class="section-title">
+        <span class="dot" style="background:var(--c7)"></span>
+        SOQL — Salesforce Object Query Language
+      </h2>
+      <span class="section-count">24 Queries</span>
+    </div>
+
+    <div class="grid-2" style="margin-bottom:1.5rem;">
+      <div class="code-block">
+        <span class="lang-tag">SOQL</span>
+<span class="cm">-- Basic Queries</span>
+<span class="kw">SELECT</span> Id, Name, Email <span class="kw">FROM</span> Contact
+<span class="kw">WHERE</span> Email != <span class="kw">null</span>
+
+<span class="kw">SELECT</span> Id, Name <span class="kw">FROM</span> Contact
+<span class="kw">WHERE</span> Title <span class="kw">LIKE</span> <span class="str">'%Developer%'</span>
+
+<span class="kw">SELECT</span> Id, Name <span class="kw">FROM</span> Contact
+<span class="kw">WHERE</span> Title <span class="kw">LIKE</span> <span class="str">'Manager%'</span>
+
+<span class="kw">SELECT</span> Id, Name, Amount <span class="kw">FROM</span> Opportunity
+<span class="kw">WHERE</span> Amount > <span class="str">29000</span>
+      </div>
+      <div class="code-block">
+        <span class="lang-tag">SOQL</span>
+<span class="cm">-- Aggregate & Grouping</span>
+<span class="kw">SELECT</span> <span class="fn">COUNT</span>(Id), BillingState
+<span class="kw">FROM</span> Opportunity
+<span class="kw">GROUP BY</span> BillingState
+
+<span class="kw">SELECT</span> StageName, <span class="fn">SUM</span>(Amount)
+<span class="kw">FROM</span> Opportunity
+<span class="kw">GROUP BY</span> StageName
+
+<span class="kw">SELECT MAX</span>(Amount) <span class="kw">FROM</span> Opportunity
+
+<span class="kw">SELECT</span> Industry, <span class="fn">COUNT</span>(Id)
+<span class="kw">FROM</span> Account
+<span class="kw">GROUP BY</span> Industry
+      </div>
+    </div>
+
+    <div class="code-block reveal">
+      <span class="lang-tag">SOQL — Relationships</span>
+<span class="cm">-- Child-to-Parent (Account from Contact)</span>
+<span class="kw">SELECT</span> Id, Name, Account.Name, Account.Rating, Account.Industry
+<span class="kw">FROM</span> Contact
+
+<span class="cm">-- Parent-to-Child (Sub-query / Inner Query)</span>
+<span class="kw">SELECT</span> Id, Name,
+  (<span class="kw">SELECT</span> Id, LastName <span class="kw">FROM</span> Contacts),
+  (<span class="kw">SELECT</span> Id, CaseNumber <span class="kw">FROM</span> Cases),
+  (<span class="kw">SELECT</span> Id, Name, Amount <span class="kw">FROM</span> Opportunities)
+<span class="kw">FROM</span> Account
+
+<span class="cm">-- Contacts WITHOUT an Account (Semi-join)</span>
+<span class="kw">SELECT</span> Id, Name <span class="kw">FROM</span> Contact
+<span class="kw">WHERE</span> AccountId = <span class="kw">null</span>
+
+<span class="cm">-- Accounts WITH at least one Contact (Anti-join)</span>
+<span class="kw">SELECT</span> Id, Name <span class="kw">FROM</span> Account
+<span class="kw">WHERE</span> Id <span class="kw">IN</span> (<span class="kw">SELECT</span> AccountId <span class="kw">FROM</span> Contact)
+
+<span class="cm">-- Duplicate detection by Name & Email</span>
+<span class="kw">SELECT</span> Name, Email, <span class="fn">COUNT</span>(Id)
+<span class="kw">FROM</span> Contact
+<span class="kw">GROUP BY</span> Name, Email
+<span class="kw">HAVING COUNT</span>(Id) > <span class="str">1</span>
+
+<span class="cm">-- Secure Queries</span>
+<span class="kw">SELECT</span> Id, Name <span class="kw">FROM</span> Account <span class="kw">WITH</span> SECURITY_ENFORCED
+<span class="kw">SELECT</span> Id, Name <span class="kw">FROM</span> Account <span class="kw">WITH</span> USER_MODE <span class="cm">// Better performance</span>
+    </div>
+
+    <div class="highlight-box reveal" style="background:#FFF8EC;border-left:4px solid var(--c7);">
+      <span class="hl-icon">⚖️</span>
+      <h4>WITH USER_MODE vs WITH SECURITY_ENFORCED</h4>
+      <ul>
+        <li><strong>SECURITY_ENFORCED</strong>: Enforces FLS and object permissions; throws <code>System.QueryException</code> if a field is inaccessible</li>
+        <li><strong>USER_MODE</strong>: Enforces running user permissions; throws <code>System.QueryException</code> on access violation — performs <em>better</em> and is more flexible</li>
+        <li><strong>AccessLevel class</strong>: Use <code>insert as user</code> / <code>insert as system</code> for DML with explicit access levels</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════════
+       TRIGGERS
+  ══════════════════════════════════════════ -->
+  <div id="triggers" class="section-wrap reveal">
+    <div class="section-header">
+      <h2 class="section-title">
+        <span class="dot" style="background:var(--c1)"></span>
+        Apex Triggers
+      </h2>
+      <span class="section-count">Core Concepts</span>
+    </div>
+
+    <div class="grid-2" style="margin-bottom:1.5rem;">
+      <div>
+        <div class="highlight-box" style="background:#FFF0F0;border-left:4px solid var(--c1);">
+          <span class="hl-icon">⏮️</span>
+          <h4>Before Triggers</h4>
+          <p>Run <em>before</em> the record is saved. Use to validate or modify field values on the record itself. Record is <strong>not</strong> yet in the database.</p>
+          <ul style="margin-top:0.5rem;">
+            <li>before insert</li>
+            <li>before update</li>
+            <li>before delete</li>
+          </ul>
+        </div>
+      </div>
+      <div>
+        <div class="highlight-box" style="background:#F0FFF8;border-left:4px solid var(--c2);">
+          <span class="hl-icon">⏭️</span>
+          <h4>After Triggers</h4>
+          <p>Run <em>after</em> the record has been saved. Record is <strong>read-only</strong> here. Use to access system fields (Id, LastModifiedDate) or update related records.</p>
+          <ul style="margin-top:0.5rem;">
+            <li>after insert</li>
+            <li>after update</li>
+            <li>after delete · after undelete</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div style="overflow-x:auto;margin-bottom:1.5rem;">
+      <table class="styled-table reveal">
+        <thead>
+          <tr>
+            <th>Context Variable</th>
+            <th>Type</th>
+            <th>Available In</th>
+            <th>Description</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td><code>Trigger.new</code></td><td>List&lt;sObject&gt;</td><td>insert, update, undelete</td><td>New versions of the records</td></tr>
+          <tr><td><code>Trigger.old</code></td><td>List&lt;sObject&gt;</td><td>update, delete</td><td>Old versions of the records</td></tr>
+          <tr><td><code>Trigger.newMap</code></td><td>Map&lt;Id,sObject&gt;</td><td>update, after insert</td><td>Map of new record versions by Id</td></tr>
+          <tr><td><code>Trigger.oldMap</code></td><td>Map&lt;Id,sObject&gt;</td><td>update, delete</td><td>Map of old record versions by Id</td></tr>
+          <tr><td><code>Trigger.isInsert</code></td><td>Boolean</td><td>All events</td><td>True if insert operation</td></tr>
+          <tr><td><code>Trigger.isUpdate</code></td><td>Boolean</td><td>All events</td><td>True if update operation</td></tr>
+          <tr><td><code>Trigger.isDelete</code></td><td>Boolean</td><td>All events</td><td>True if delete operation</td></tr>
+          <tr><td><code>Trigger.isBefore</code></td><td>Boolean</td><td>All events</td><td>True if before context</td></tr>
+          <tr><td><code>Trigger.isAfter</code></td><td>Boolean</td><td>All events</td><td>True if after context</td></tr>
+          <tr><td><code>Trigger.size</code></td><td>Integer</td><td>All events</td><td>Total records in trigger batch</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="code-block reveal">
+      <span class="lang-tag">Trigger Pattern</span>
+<span class="cm">// Best Practice: Logic-less trigger + Handler class</span>
+
+<span class="kw">trigger</span> <span class="ty">AccountTrigger</span> <span class="kw">on</span> Account (before insert, before update,
+                                   after insert, after update,
+                                   before delete, after delete, after undelete) {
+    AccountTriggerHandler.<span class="fn">handle</span>(Trigger.operationType, Trigger.new,
+                                   Trigger.old, Trigger.newMap, Trigger.oldMap);
+}
+
+<span class="kw">public class</span> <span class="ty">AccountTriggerHandler</span> {
+    <span class="kw">private static</span> <span class="ty">Boolean</span> isRunning = <span class="kw">false</span>; <span class="cm">// Prevent recursion</span>
+
+    <span class="kw">public static void</span> <span class="fn">handle</span>(TriggerOperation opType,
+                               List&lt;Account&gt; newList, List&lt;Account&gt; oldList,
+                               Map&lt;Id,Account&gt; newMap, Map&lt;Id,Account&gt; oldMap) {
+        <span class="kw">if</span>(isRunning) <span class="kw">return</span>;
+        isRunning = <span class="kw">true</span>;
+        <span class="kw">switch on</span> opType {
+            <span class="kw">when</span> BEFORE_INSERT { <span class="fn">onBeforeInsert</span>(newList); }
+            <span class="kw">when</span> AFTER_INSERT  { <span class="fn">onAfterInsert</span>(newList, newMap); }
+            <span class="kw">when</span> BEFORE_UPDATE { <span class="fn">onBeforeUpdate</span>(newList, oldMap); }
+        }
+    }
+}
+    </div>
+
+    <div class="highlight-box reveal" style="background:#F5F0FF;border-left:4px solid var(--c6);">
+      <span class="hl-icon">🚨</span>
+      <h4>Common Trigger Errors & Solutions</h4>
+      <ul>
+        <li><strong>Maximum Trigger Depth Exceeded</strong>: Occurs when a trigger fires itself recursively more than 16 times. Fix: use a static Boolean flag.</li>
+        <li><strong>Record is Read-Only</strong>: In after triggers, you cannot modify Trigger.new records directly. Use a separate list and DML.</li>
+        <li><strong>MIXED_DML Error</strong>: Occurs when setup objects (User, Profile) and non-setup objects are mixed in one transaction. Fix: use @future method.</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════════
+       TEST CLASSES
+  ══════════════════════════════════════════ -->
+  <div id="testclass" class="section-wrap reveal">
+    <div class="section-header">
+      <h2 class="section-title">
+        <span class="dot" style="background:var(--c4)"></span>
+        Test Classes
+      </h2>
+      <span class="section-count">Best Practices</span>
+    </div>
+
+    <div class="grid-3" style="margin-bottom:1.5rem;">
+      <div class="card" style="--accent:var(--c4);">
+        <div class="card-label">Requirement</div>
+        <h3>75% Coverage</h3>
+        <p>Minimum code coverage required to deploy Apex classes and triggers to production. Aim for 90%+.</p>
+      </div>
+      <div class="card" style="--accent:var(--c2);">
+        <div class="card-label">Annotation</div>
+        <h3>@isTest</h3>
+        <p>Marks a class or method as a test. Test classes don't count toward code limits and are not deployed to production.</p>
+      </div>
+      <div class="card" style="--accent:var(--c8);">
+        <div class="card-label">Setup Data</div>
+        <h3>@testSetup</h3>
+        <p>Creates shared test data once per class run, reused by all test methods. Rolls back after each test automatically.</p>
+      </div>
+    </div>
+
+    <div class="code-block reveal">
+      <span class="lang-tag">Test Class</span>
+<span class="kw">@isTest</span>
+<span class="kw">public class</span> <span class="ty">AccountTriggerTest</span> {
+
+    <span class="kw">@testSetup</span>
+    <span class="kw">static void</span> <span class="fn">setupData</span>() {
+        <span class="cm">// Create shared test data — runs once for all test methods</span>
+        List&lt;Account&gt; accs = <span class="kw">new</span> List&lt;Account&gt;{
+            <span class="kw">new</span> Account(Name=<span class="str">'Test Corp'</span>, Phone=<span class="str">'1234567890'</span>)
+        };
+        insert accs;
+    }
+
+    <span class="kw">@isTest</span>
+    <span class="kw">static void</span> <span class="fn">testIndustryDefault</span>() {
+        User adminUser = [<span class="kw">SELECT</span> Id <span class="kw">FROM</span> User <span class="kw">WHERE</span> Profile.Name=<span class="str">'System Administrator'</span> LIMIT 1];
+
+        <span class="ty">Test</span>.<span class="fn">startTest</span>();
+        <span class="ty">System</span>.<span class="fn">runAs</span>(adminUser) {
+            Account acc = <span class="kw">new</span> Account(Name=<span class="str">'StellerSync Labs'</span>);
+            insert acc;
+        }
+        <span class="ty">Test</span>.<span class="fn">stopTest</span>();
+
+        Account result = [<span class="kw">SELECT</span> Industry <span class="kw">FROM</span> Account <span class="kw">WHERE</span> Name=<span class="str">'StellerSync Labs'</span>];
+        <span class="ty">System</span>.<span class="fn">assertEquals</span>(<span class="str">'Education'</span>, result.Industry, <span class="str">'Industry should default to Education'</span>);
+    }
+}
+    </div>
+
+    <div class="highlight-box reveal" style="background:#F0FFF0;border-left:4px solid var(--c4);">
+      <span class="hl-icon">✅</span>
+      <h4>Test Class Best Practices</h4>
+      <ul>
+        <li>Always use <code>@testSetup</code> to create reusable test data</li>
+        <li>Use <code>Test.startTest()</code> and <code>Test.stopTest()</code> to reset governor limits and run async jobs</li>
+        <li>Use <code>System.runAs(user)</code> to test behavior for different profiles</li>
+        <li>Add <code>System.assert</code>, <code>System.assertEquals</code>, and <code>System.assertNotEquals</code> in every method</li>
+        <li>Test both positive (success) and negative (error/validation) scenarios</li>
+        <li>Never use <code>SeeAllData=true</code> unless absolutely necessary</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════════
+       EXCEPTION HANDLING
+  ══════════════════════════════════════════ -->
+  <div class="section-wrap reveal">
+    <div class="section-header">
+      <h2 class="section-title">
+        <span class="dot" style="background:var(--c5)"></span>
+        Exception Handling
+      </h2>
+    </div>
+    <div class="grid-2">
+      <div>
+        <div class="code-block">
+          <span class="lang-tag">Apex</span>
+<span class="kw">try</span> {
+    Account acc = <span class="kw">new</span> Account(); <span class="cm">// Missing Name!</span>
+    insert acc;
+} <span class="kw">catch</span> (<span class="ty">DmlException</span> e) {
+    <span class="ty">System</span>.<span class="fn">debug</span>(<span class="str">'DML Error: '</span> + e.<span class="fn">getMessage</span>());
+    <span class="ty">System</span>.<span class="fn">debug</span>(<span class="str">'Line: '</span> + e.<span class="fn">getLineNumber</span>());
+} <span class="kw">catch</span> (<span class="ty">Exception</span> e) {
+    <span class="ty">System</span>.<span class="fn">debug</span>(<span class="str">'General Error: '</span> + e.<span class="fn">getMessage</span>());
+} <span class="kw">finally</span> {
+    <span class="ty">System</span>.<span class="fn">debug</span>(<span class="str">'Always runs!'</span>);
+}
+
+<span class="cm">// Custom Exception</span>
+<span class="kw">public class</span> <span class="ty">OpportunityException</span> <span class="kw">extends</span> <span class="ty">Exception</span> {}
+
+<span class="cm">// Throwing custom exception</span>
+<span class="kw">if</span>(opp.Amount &lt; <span class="str">50000</span>) {
+    <span class="kw">throw new</span> <span class="ty">OpportunityException</span>(<span class="str">'Amount must be ≥ 50K'</span>);
+}
+        </div>
+      </div>
+      <div>
+        <div class="highlight-box" style="background:#FFF0F5;border-left:4px solid var(--c5);">
+          <span class="hl-icon">🔥</span>
+          <h4>Common Exception Types</h4>
+          <ul>
+            <li><strong>DmlException</strong> — Insert/Update/Delete failures</li>
+            <li><strong>NullPointerException</strong> — Accessing null object</li>
+            <li><strong>QueryException</strong> — SOQL returns no rows or multiple rows</li>
+            <li><strong>LimitException</strong> — Governor limit exceeded</li>
+            <li><strong>CalloutException</strong> — HTTP callout failure</li>
+            <li><strong>JSONException</strong> — JSON parse error</li>
+            <li><strong>TypeException</strong> — Invalid type cast</li>
+          </ul>
+        </div>
+        <div class="highlight-box" style="background:#F5F5FF;border-left:4px solid var(--c6);">
+          <span class="hl-icon">🛠️</span>
+          <h4>Exception Methods</h4>
+          <ul>
+            <li><code>getMessage()</code> — Error message string</li>
+            <li><code>getTypeName()</code> — Exception class name</li>
+            <li><code>getLineNumber()</code> — Line where it occurred</li>
+            <li><code>getStackTraceString()</code> — Full stack trace</li>
+            <li><code>getCause()</code> — Inner exception</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════════
+       ASYNC APEX
+  ══════════════════════════════════════════ -->
+  <div id="async" class="section-wrap reveal">
+    <div class="section-header">
+      <h2 class="section-title">
+        <span class="dot" style="background:var(--c6)"></span>
+        Asynchronous Apex
+      </h2>
+      <span class="section-count">4 Patterns</span>
+    </div>
+
+    <div class="grid-2" style="margin-bottom:1.5rem;">
+      <div class="card" style="--accent:var(--c6);">
+        <div class="card-label">Pattern 1</div>
+        <h3>@future Methods</h3>
+        <p>Simple async execution. Cannot pass non-primitive parameters (use IDs instead). Cannot track. Cannot chain. Use for callouts from triggers.</p>
+        <div style="margin-top:0.75rem;font-family:'JetBrains Mono',monospace;font-size:0.76rem;background:var(--bg);padding:8px 12px;border-radius:8px;">
+          @future(callout=true)<br>
+          static void doCallout(Set&lt;Id&gt; ids) { ... }
+        </div>
+      </div>
+      <div class="card" style="--accent:var(--c2);">
+        <div class="card-label">Pattern 2</div>
+        <h3>Queueable Apex</h3>
+        <p>More powerful than @future. Supports non-primitive types. <strong>Chainable</strong>. <strong>Trackable</strong> via AsyncApexJob. Implements <code>Queueable</code> interface.</p>
+        <div style="margin-top:0.75rem;font-family:'JetBrains Mono',monospace;font-size:0.76rem;background:var(--bg);padding:8px 12px;border-radius:8px;">
+          System.enqueueJob(new MyQueueable());
+        </div>
+      </div>
+      <div class="card" style="--accent:var(--c1);">
+        <div class="card-label">Pattern 3</div>
+        <h3>Batch Apex</h3>
+        <p>Process millions of records in chunks. Default batch size: 200. Implements <code>Database.Batchable</code>. Methods: start(), execute(), finish(). Max 50M records via QueryLocator.</p>
+        <div style="margin-top:0.75rem;font-family:'JetBrains Mono',monospace;font-size:0.76rem;background:var(--bg);padding:8px 12px;border-radius:8px;">
+          Database.executeBatch(new MyBatch(), 200);
+        </div>
+      </div>
+      <div class="card" style="--accent:var(--c4);">
+        <div class="card-label">Pattern 4</div>
+        <h3>Scheduled Apex</h3>
+        <p>Runs at a specific time/interval using cron expressions. Implements <code>Schedulable</code> interface and the <code>execute()</code> method.</p>
+        <div style="margin-top:0.75rem;font-family:'JetBrains Mono',monospace;font-size:0.76rem;background:var(--bg);padding:8px 12px;border-radius:8px;">
+          System.schedule('Job', cronExp, new MyScheduler());
+        </div>
+      </div>
+    </div>
+
+    <div style="overflow-x:auto;">
+      <table class="styled-table reveal">
+        <thead>
+          <tr>
+            <th>Feature</th>
+            <th>@future</th>
+            <th>Queueable</th>
+            <th>Batch</th>
+            <th>Scheduled</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td>Non-primitive params</td><td>❌</td><td>✅</td><td>✅</td><td>✅</td></tr>
+          <tr><td>Chainable</td><td>❌</td><td>✅</td><td>✅ (finish)</td><td>—</td></tr>
+          <tr><td>Trackable via AsyncApexJob</td><td>❌</td><td>✅</td><td>✅</td><td>✅</td></tr>
+          <tr><td>Callouts</td><td>✅ (flag)</td><td>✅</td><td>✅ (interface)</td><td>❌</td></tr>
+          <tr><td>Max records per run</td><td>—</td><td>—</td><td>50M (QueryLocator)</td><td>—</td></tr>
+          <tr><td>Max 24-hr jobs</td><td colspan="4" style="text-align:center;">250,000 OR Licences × 200 (whichever greater)</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="code-block reveal" style="margin-top:1.5rem;">
+      <span class="lang-tag">Batch Apex</span>
+<span class="kw">global class</span> <span class="ty">ContactBatch</span> <span class="kw">implements</span> Database.Batchable&lt;SObject&gt;, Database.Stateful {
+
+    <span class="kw">global</span> Integer successCount = <span class="str">0</span>; <span class="cm">// Stateful — persists across batches</span>
+
+    <span class="kw">global</span> Database.QueryLocator <span class="fn">start</span>(Database.BatchableContext bc) {
+        <span class="kw">return</span> Database.<span class="fn">getQueryLocator</span>(<span class="str">'SELECT Id, AccountId FROM Contact WHERE AccountId = null'</span>);
+    }
+
+    <span class="kw">global void</span> <span class="fn">execute</span>(Database.BatchableContext bc, List&lt;Contact&gt; scope) {
+        <span class="cm">// Process each batch of 200 records</span>
+        <span class="kw">for</span>(Contact c : scope) { successCount++; }
+        update scope;
+    }
+
+    <span class="kw">global void</span> <span class="fn">finish</span>(Database.BatchableContext bc) {
+        <span class="cm">// Send email to admin with results</span>
+        Messaging.SingleEmailMessage mail = <span class="kw">new</span> Messaging.SingleEmailMessage();
+        mail.<span class="fn">setSubject</span>(<span class="str">'Batch Complete: '</span> + successCount + <span class="str">' records processed'</span>);
+        Messaging.<span class="fn">sendEmail</span>(<span class="kw">new</span> List&lt;Messaging.SingleEmailMessage&gt;{ mail });
+    }
+}
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════════
+       INTERVIEW Q&A
+  ══════════════════════════════════════════ -->
+  <div id="interviewqa" class="section-wrap reveal">
+    <div class="section-header">
+      <h2 class="section-title">
+        <span class="dot" style="background:var(--c8)"></span>
+        Interview Q&A
+      </h2>
+      <span class="section-count">Top Questions</span>
+    </div>
+
+    <div class="grid-2">
+      <!-- Column 1 -->
+      <div style="display:flex;flex-direction:column;gap:0.75rem;">
+        <div class="qa-card" style="--accent:#4ECDC4;">
+          <div class="qa-q"><span class="qnum">Q1</span> What is Apex?</div>
+          <div class="qa-a">Apex is an object-oriented, strongly typed programming language that runs on Salesforce servers. It resembles Java in syntax and is used to implement business logic, triggers, batch jobs, and web service integrations on the Salesforce platform.</div>
+        </div>
+        <div class="qa-card" style="--accent:#4ECDC4;">
+          <div class="qa-q"><span class="qnum">Q2</span> What is the difference between standard and custom controller?</div>
+          <div class="qa-a">A <strong>standard controller</strong> is auto-generated by Salesforce for all objects. A <strong>custom controller</strong> is written by the developer and executes whatever logic the developer defines, giving full control over the behavior of a Visualforce page.</div>
+        </div>
+        <div class="qa-card" style="--accent:#4ECDC4;">
+          <div class="qa-q"><span class="qnum">Q3</span> What is a wrapper class?</div>
+          <div class="qa-a">A wrapper (or container) class is a custom class where instances are collections of other objects. Developers use it to bundle multiple different sObject types or data types into a single list for display in a Visualforce page or Lightning component.</div>
+        </div>
+        <div class="qa-card" style="--accent:#4ECDC4;">
+          <div class="qa-q"><span class="qnum">Q4</span> What is OWD?</div>
+          <div class="qa-a">Organization-Wide Defaults define the baseline access level for records. Options: <strong>Private</strong>, <strong>Public Read Only</strong>, <strong>Public Read/Write</strong>, <strong>Controlled by Parent</strong>. Restricting access first, then opening with Sharing Rules is the recommended approach.</div>
+        </div>
+        <div class="qa-card" style="--accent:#4ECDC4;">
+          <div class="qa-q"><span class="qnum">Q5</span> What is Database.QueryLocator?</div>
+          <div class="qa-a">Using <code>Database.QueryLocator</code> in Batch Apex overrides the standard 50,000 record SOQL governor limit and allows processing up to <strong>50 million records</strong>. It is only available in the start() method of Batch Apex.</div>
+        </div>
+        <div class="qa-card" style="--accent:#4ECDC4;">
+          <div class="qa-q"><span class="qnum">Q6</span> What is Rollup Summary?</div>
+          <div class="qa-a">A Roll-Up Summary field performs an aggregate function (COUNT, SUM, MIN, MAX) on child records and displays the result on the parent record. Only available on Master-Detail relationships natively; for Lookup relationships, you need a custom Rollup trigger.</div>
+        </div>
+      </div>
+      <!-- Column 2 -->
+      <div style="display:flex;flex-direction:column;gap:0.75rem;">
+        <div class="qa-card" style="--accent:#FF6B6B;">
+          <div class="qa-q"><span class="qnum">Q7</span> What is MIXED_DML and how do you fix it?</div>
+          <div class="qa-a">MIXED_DML occurs when you insert/update a Setup object (User, Profile, PermissionSet) and a non-Setup object in the same transaction. Fix: move the Setup DML into a <code>@future</code> method to separate the transaction contexts.</div>
+        </div>
+        <div class="qa-card" style="--accent:#FF6B6B;">
+          <div class="qa-q"><span class="qnum">Q8</span> How do you make a callout from a trigger?</div>
+          <div class="qa-a">Callouts cannot be made synchronously from triggers. You must create an <code>@future(callout=true)</code> method and call it from the trigger, or use Queueable Apex implementing <code>Database.AllowsCallouts</code>.</div>
+        </div>
+        <div class="qa-card" style="--accent:#FF6B6B;">
+          <div class="qa-q"><span class="qnum">Q9</span> What is Database.Stateful?</div>
+          <div class="qa-a">Implementing <code>Database.Stateful</code> in Batch Apex preserves the state of instance variables between execute() calls. Without it, all instance variables are reset after each batch. Useful for counting totals across all batches.</div>
+        </div>
+        <div class="qa-card" style="--accent:#FF6B6B;">
+          <div class="qa-q"><span class="qnum">Q10</span> What are Sharing Rules?</div>
+          <div class="qa-a">Sharing Rules automatically extend access defined by OWD to additional users. They can be <strong>Criteria-Based</strong> (based on field values) or <strong>Owner-Based</strong> (based on who owns the record). They can only expand, never restrict, access.</div>
+        </div>
+        <div class="qa-card" style="--accent:#FF6B6B;">
+          <div class="qa-q"><span class="qnum">Q11</span> What is the transient keyword?</div>
+          <div class="qa-a">The <code>transient</code> keyword prevents a variable from being serialized and stored in the Visualforce view state. Use it for temporary variables that don't need to persist across postbacks to reduce view state size.</div>
+        </div>
+        <div class="qa-card" style="--accent:#FF6B6B;">
+          <div class="qa-q"><span class="qnum">Q12</span> How many triggers per object?</div>
+          <div class="qa-a">While Salesforce allows multiple triggers per object, <strong>best practice is one trigger per object</strong>. Multiple triggers can lead to unpredictable execution order. Use a single trigger with a Handler class pattern (dispatcher pattern) instead.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════════
+       ASSIGNMENTS
+  ══════════════════════════════════════════ -->
+  <div id="assignments" class="section-wrap reveal">
+    <div class="section-header">
+      <h2 class="section-title">
+        <span class="dot" style="background:var(--c3)"></span>
+        Assignments
+      </h2>
+      <span class="section-count">52 Challenges</span>
+    </div>
+
+    <div style="margin-bottom:2rem;">
+      <div class="pills">
+        <span class="pill" style="background:#FFF9E6;color:#B8860B;border-color:#FFE66D;">Trigger Logic</span>
+        <span class="pill" style="background:#FFE6E6;color:#CC0000;border-color:#FF6B6B;">Data Validation</span>
+        <span class="pill" style="background:#E6FFF9;color:#007B5E;border-color:#4ECDC4;">Roll-Up Summary</span>
+        <span class="pill" style="background:#F0E6FF;color:#6B0099;border-color:#B8B8FF;">Async Apex</span>
+        <span class="pill" style="background:#E6F0FF;color:#003399;border-color:#87CEEB;">Batch Apex</span>
+        <span class="pill" style="background:#FFE6F5;color:#990066;border-color:#FF8B94;">Email Automation</span>
+        <span class="pill" style="background:#E6FFE6;color:#006600;border-color:#A8E6CF;">Sharing Rules</span>
+      </div>
+    </div>
+
+    <!-- Trigger assignments grid -->
+    <div class="grid-3" style="margin-bottom:2rem;">
+      <div class="assign-card">
+        <div class="assign-num">01</div>
+        <h4>Industry & Description Default</h4>
+        <p>When an Account is inserted, set Industry = "Education". If Description is blank, set it to "Account Description is blank."</p>
+        <span class="assign-tag" style="background:var(--c1);">Before Insert</span>
+      </div>
+      <div class="assign-card">
+        <div class="assign-num">02</div>
+        <h4>Billing → Shipping Address Sync</h4>
+        <p>When an Account is created or updated, copy all Billing Address fields into Shipping Address fields.</p>
+        <span class="assign-tag" style="background:var(--c2);">Before Insert/Update</span>
+      </div>
+      <div class="assign-card">
+        <div class="assign-num">03</div>
+        <h4>Shipping Address Guard</h4>
+        <p>Only update Shipping Address from Billing Address if the Shipping Address compound field is blank.</p>
+        <span class="assign-tag" style="background:var(--c7);">Before Insert/Update</span>
+      </div>
+      <div class="assign-card">
+        <div class="assign-num">04</div>
+        <h4>Auto-Create Task on Account</h4>
+        <p>When Account is created, create a Task (High priority, Due Date +7 days) assigned to the Account Owner.</p>
+        <span class="assign-tag" style="background:var(--c5);">After Insert</span>
+      </div>
+      <div class="assign-card">
+        <div class="assign-num">05</div>
+        <h4>Opportunity Discount Calculator</h4>
+        <p>When an Opportunity is created with Amount &amp; Discount populated, calculate Discounted Price = Amount − (Discount × Amount / 100).</p>
+        <span class="assign-tag" style="background:var(--c6);">Before Insert</span>
+      </div>
+      <div class="assign-card">
+        <div class="assign-num">06</div>
+        <h4>Contact Phone → Fax</h4>
+        <p>When a Contact is updated, copy the Phone value into the Fax field automatically.</p>
+        <span class="assign-tag" style="background:var(--c4);">Before Update</span>
+      </div>
+      <div class="assign-card">
+        <div class="assign-num">07</div>
+        <h4>Opportunity Without Account Alert</h4>
+        <p>When an Opportunity is created with no Account, create a task alerting the owner to assign an account.</p>
+        <span class="assign-tag" style="background:var(--c1);">After Insert</span>
+      </div>
+      <div class="assign-card">
+        <div class="assign-num">08</div>
+        <h4>Case Trigger Context Logger</h4>
+        <p>Create a trigger on Case and use System.debug to print all Trigger context variables.</p>
+        <span class="assign-tag" style="background:var(--c8);">All Events</span>
+      </div>
+      <div class="assign-card">
+        <div class="assign-num">09</div>
+        <h4>Handler & Dispatcher Pattern</h4>
+        <p>Convert any previous trigger into a Handler and Dispatcher pattern — logic-less trigger, handler class, dispatcher routing.</p>
+        <span class="assign-tag" style="background:var(--c6);">Refactor</span>
+      </div>
+      <div class="assign-card">
+        <div class="assign-num">10</div>
+        <h4>Contact Address from Account</h4>
+        <p>When a Contact is created under an Account, populate Contact Mailing Address from Account Shipping and Other Address from Account Billing.</p>
+        <span class="assign-tag" style="background:var(--c2);">After Insert</span>
+      </div>
+      <div class="assign-card">
+        <div class="assign-num">11</div>
+        <h4>Account Info on Opportunity</h4>
+        <p>When an Opportunity is created, populate custom fields: Account Name, Industry, Phone, and Rating from the related Account.</p>
+        <span class="assign-tag" style="background:var(--c7);">After Insert</span>
+      </div>
+      <div class="assign-card">
+        <div class="assign-num">12</div>
+        <h4>Active Field Cascade</h4>
+        <p>When Account "Active" picklist changes, update the same "Active" field on all related Contacts and Opportunities.</p>
+        <span class="assign-tag" style="background:var(--c5);">After Update</span>
+      </div>
+      <div class="assign-card">
+        <div class="assign-num">16</div>
+        <h4>Prevent Duplicate Accounts</h4>
+        <p>Prevent duplicate Account records with the same Name and Rating from being created. (For StellerSync Labs — replace Panther Schools)</p>
+        <span class="assign-tag" style="background:var(--c1);">Before Insert</span>
+      </div>
+      <div class="assign-card">
+        <div class="assign-num">19</div>
+        <h4>Prevent Duplicate Contacts</h4>
+        <p>Prevent duplicate Contact records based on matching Name AND Email combination.</p>
+        <span class="assign-tag" style="background:var(--c1);">Before Insert</span>
+      </div>
+      <div class="assign-card">
+        <div class="assign-num">21</div>
+        <h4>Roll-Up: Number of Contacts</h4>
+        <p>Count all related Contacts on an Account and store in custom "Number of Contacts" field. Handle create, delete, undelete, and reparent scenarios.</p>
+        <span class="assign-tag" style="background:var(--c4);">Roll-Up Trigger</span>
+      </div>
+      <div class="assign-card">
+        <div class="assign-num">22</div>
+        <h4>Roll-Up: Opportunity Amounts</h4>
+        <p>Sum Closed and Open Opportunity Amounts separately on the Account. Handle all DML scenarios including account change and amount change.</p>
+        <span class="assign-tag" style="background:var(--c4);">Roll-Up Trigger</span>
+      </div>
+      <div class="assign-card">
+        <div class="assign-num">23</div>
+        <h4>Email Alert: Missing Account Data</h4>
+        <p>When an Account is created without Phone or Industry, email the Account Owner and create a task. Email template mentions StellerSync Labs branding.</p>
+        <span class="assign-tag" style="background:var(--c5);">After Insert</span>
+      </div>
+      <div class="assign-card">
+        <div class="assign-num">29</div>
+        <h4>Auto-Convert Qualified Leads</h4>
+        <p>When Lead Status = "Qualified", automatically convert the Lead using Database.LeadConvert. Must handle bulk records.</p>
+        <span class="assign-tag" style="background:var(--c6);">After Update</span>
+      </div>
+    </div>
+
+    <!-- Async assignments -->
+    <div class="section-header" style="margin-top:2rem;">
+      <h2 class="section-title" style="font-size:1.4rem;">
+        <span class="dot" style="background:var(--c6)"></span>
+        Async Apex Assignments
+      </h2>
+      <span class="section-count">8 Challenges</span>
+    </div>
+    <div class="grid-2">
+      <div class="assign-card">
+        <div class="assign-num">A1</div>
+        <h4>Future: Auto-Create User from Contact</h4>
+        <p>When a Contact is created with a non-null Email, use a @future method to create a Salesforce User with "Chatter Free User" profile and an assigned Role.</p>
+        <span class="assign-tag" style="background:var(--c6);">@future</span>
+      </div>
+      <div class="assign-card">
+        <div class="assign-num">A2</div>
+        <h4>Batch: Auto-Associate Contacts to Accounts</h4>
+        <p>Query Contacts without Accounts. If an Account with the same name (FirstName + LastName) exists, link it. Otherwise, create a new Account with the mapped fields.</p>
+        <span class="assign-tag" style="background:var(--c1);">Batch Apex</span>
+      </div>
+      <div class="assign-card">
+        <div class="assign-num">A3</div>
+        <h4>Batch: Copy Account Address to Contacts</h4>
+        <p>For all Contacts with an Account, copy the Account's Shipping Address to the Contact's Mailing Address.</p>
+        <span class="assign-tag" style="background:var(--c1);">Batch Apex</span>
+      </div>
+      <div class="assign-card">
+        <div class="assign-num">A4</div>
+        <h4>Batch: Create Contact for Orphan Accounts</h4>
+        <p>Query all Accounts with no Contacts. Create a Contact with the same name as the Account. Email admin on completion.</p>
+        <span class="assign-tag" style="background:var(--c1);">Batch Apex</span>
+      </div>
+      <div class="assign-card">
+        <div class="assign-num">A5</div>
+        <h4>Batch: Sync Contact Phone from Account</h4>
+        <p>Update Contact Phone and Billing Address from the related Account's Phone and Shipping Address. Email admin with success/failure count.</p>
+        <span class="assign-tag" style="background:var(--c1);">Batch Apex</span>
+      </div>
+      <div class="assign-card">
+        <div class="assign-num">A6</div>
+        <h4>Batch: Delete Old New-Status Cases</h4>
+        <p>Delete all Case records in "New" status that are older than 3 months.</p>
+        <span class="assign-tag" style="background:var(--c1);">Batch Apex</span>
+      </div>
+      <div class="assign-card">
+        <div class="assign-num">A7</div>
+        <h4>Batch: Archive Old Opportunities</h4>
+        <p>Archive Opportunities with Close Date &lt; 3 months ago into a custom "Archived Opportunity" object, then delete the original. Email admin with totals.</p>
+        <span class="assign-tag" style="background:var(--c1);">Batch Apex</span>
+      </div>
+      <div class="assign-card">
+        <div class="assign-num">A8</div>
+        <h4>Scheduler: Weekly Batch Runner</h4>
+        <p>Create a Scheduler class that runs the Archive Opportunities batch every week via the standard Apex Scheduling wizard.</p>
+        <span class="assign-tag" style="background:var(--c4);">Scheduled Apex</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════════
+       INHERITANCE QUICK REF
+  ══════════════════════════════════════════ -->
+  <div class="section-wrap reveal">
+    <div class="section-header">
+      <h2 class="section-title">
+        <span class="dot" style="background:var(--c2)"></span>
+        Inheritance & Getters/Setters
+      </h2>
+    </div>
+    <div class="grid-2">
+      <div class="code-block">
+        <span class="lang-tag">Inheritance</span>
+<span class="kw">public virtual class</span> <span class="ty">Animal</span> {
+    <span class="kw">public virtual</span> <span class="ty">String</span> <span class="fn">speak</span>() {
+        <span class="kw">return</span> <span class="str">'...'</span>;
+    }
+}
+
+<span class="kw">public class</span> <span class="ty">Dog</span> <span class="kw">extends</span> <span class="ty">Animal</span> {
+    <span class="kw">public override</span> <span class="ty">String</span> <span class="fn">speak</span>() {
+        <span class="kw">return</span> <span class="str">'Woof! '</span> + <span class="kw">super</span>.<span class="fn">speak</span>();
+    }
+}
+
+<span class="kw">public abstract class</span> <span class="ty">Shape</span> {
+    <span class="kw">public abstract</span> <span class="ty">Decimal</span> <span class="fn">area</span>();
+}
+      </div>
+      <div class="code-block">
+        <span class="lang-tag">Getters / Setters</span>
+<span class="kw">public class</span> <span class="ty">Person</span> {
+
+  <span class="cm">// Auto-property (shorthand)</span>
+  <span class="kw">public</span> <span class="ty">String</span> Name { <span class="kw">get</span>; <span class="kw">set</span>; }
+
+  <span class="cm">// Custom getter & setter</span>
+  <span class="kw">private</span> <span class="ty">Integer</span> _age;
+  <span class="kw">public</span> <span class="ty">Integer</span> Age {
+    <span class="kw">get</span> { <span class="kw">return</span> _age; }
+    <span class="kw">set</span> {
+      <span class="kw">if</span>(value &lt; <span class="str">0</span>) <span class="kw">throw new</span> <span class="ty">IllegalArgumentException</span>();
+      _age = value;
+    }
+  }
+
+  <span class="cm">// Read-only property</span>
+  <span class="kw">public</span> <span class="ty">String</span> Summary { <span class="kw">get</span>; <span class="kw">private set</span>; }
+}
+      </div>
+    </div>
+  </div>
+
+</div><!-- end .container -->
+
+<!-- FOOTER -->
+<footer>
+  <p>Built with ❤️ by <strong>StellerSync Labs</strong> · Salesforce Apex Developer Series</p>
+  <p style="margin-top:0.5rem;font-size:0.78rem;">Covering OOP · Collections · SOQL · Triggers · Test Classes · Async Apex · 52 Assignments</p>
+</footer>
+
+<script>
+  // Scroll reveal
+  const revealEls = document.querySelectorAll('.reveal');
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if(e.isIntersecting) {
+        e.target.classList.add('visible');
+        observer.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.1 });
+  revealEls.forEach(el => observer.observe(el));
+</script>
+</body>
+</html>

@@ -293,9 +293,7 @@ ol.fancy li::before { content:counter(steps); position:absolute; left:0; font-fa
   main { padding:2rem 1rem 6rem; }
   .sec-title { font-size:1.7rem; }
   .cards-2 { grid-template-columns: 1fr; }
-  #interview-btn .btn-inner { flex-direction: column; text-align: center; gap: 0.8rem; padding: 1.5rem 1rem; }
-  #interview-btn .btn-text { text-align: center; }
-  #interview-btn .btn-arrow { display: none; }
+  .hero-buttons-container { gap: .8rem; }
   #hero h1 { font-size: 2.5rem; }
   .limit-item { grid-template-columns: 1fr; gap: 0.2rem; }
 }
@@ -316,23 +314,34 @@ ol.fancy li::before { content:counter(steps); position:absolute; left:0; font-fa
 #btt.show { opacity:1; pointer-events:all; }
 #btt:hover { background:var(--c1); color:#000; border-color:var(--c1); }
 
-#interview-btn {
-  display:block; text-decoration:none;
-  background: linear-gradient(135deg, #1e40af 0%, #7c3aed 50%, #0ea5e9 100%);
-  border-radius: 20px; padding: 3px;
-  box-shadow: 0 8px 40px rgba(30,64,175,0.3), 0 2px 8px rgba(0,0,0,.1);
-  transition: transform .25s, box-shadow .25s; max-width: 700px; margin: 0 auto;
+/* ── HERO BUTTON LINKS ────────────────────────── */
+.hero-buttons-container {
+  display: flex; flex-direction: column; gap: 1rem;
+  max-width: 720px; margin: 0 auto;
 }
-#interview-btn:hover { transform: translateY(-4px); box-shadow: 0 16px 50px rgba(30,64,175,0.4); }
+.hero-button-link {
+  display: block; text-decoration: none;
+  background: linear-gradient(135deg, #0ea5e9 0%, #7c3aed 50%, #1e40af 100%);
+  border-radius: 18px; padding: 3px;
+  box-shadow: 0 8px 32px rgba(124,58,237,0.22), 0 2px 8px rgba(0,0,0,.08);
+  transition: transform .25s, box-shadow .25s;
+}
+.hero-button-link:hover { transform: translateY(-4px); box-shadow: 0 16px 48px rgba(124,58,237,0.32); }
 .btn-inner {
-  background: #fff; border-radius: 18px; padding: 1.8rem 2rem;
+  background: #ffffff; border-radius: 15px; padding: 1.5rem 1.8rem;
   display: flex; align-items: center; gap: 1.4rem;
 }
-.btn-icon { font-size: 2.8rem; flex-shrink:0; }
-.btn-text { flex:1; text-align:left; }
-.btn-title { font-family: "Syne", sans-serif; font-size: 1.3rem; font-weight: 800; color: #0f172a; }
-.btn-sub { color: #4b5a75; font-size: .88rem; margin-top: .2rem; }
-.btn-arrow { font-size: 2rem; color: #7c3aed; font-weight: 800; flex-shrink:0; }
+.btn-icon { font-size: 2.4rem; flex-shrink: 0; }
+.btn-text { flex: 1; text-align: left; }
+.btn-title { font-family: var(--font-head); font-size: 1.15rem; font-weight: 800; color: #0f172a; }
+.btn-sub { color: #4b5a75; font-size: .85rem; margin-top: .2rem; line-height: 1.45; }
+.btn-arrow { font-size: 1.8rem; color: var(--c2); font-weight: 800; flex-shrink: 0; transition: transform .2s; }
+.hero-button-link:hover .btn-arrow { transform: translateX(4px); }
+@media(max-width:600px){
+  .btn-inner { flex-direction: column; text-align: center; padding: 1.3rem 1rem; }
+  .btn-text { text-align: center; }
+  .btn-arrow { display: none; }
+}
 </style>
 </head>
 <body>
@@ -347,7 +356,28 @@ ol.fancy li::before { content:counter(steps); position:absolute; left:0; font-fa
   <p>Validation Rules · Roll-Up Summaries · Flow vs Apex · LWC · Integrations · Governor Limits & more — all in one place.</p>
 
   <div style="margin-top:2.5rem; width:100%; padding:0 1rem; position:relative; z-index:2;">
-    <a href="sf_interview_prep.html" id="interview-btn">
+    <div class="hero-buttons-container">
+      <a href="salesforce_triggers_guide.html" id="triggers-btn" class="hero-button-link">
+        <div class="btn-inner">
+          <div class="btn-icon">⚡</div>
+          <div class="btn-text">
+            <div class="btn-title">Salesforce Triggers: Mastery Guide</div>
+            <div class="btn-sub">Comprehensive technical reference for team training and interview preparation</div>
+          </div>
+          <div class="btn-arrow">→</div>
+        </div>
+      </a>
+      <a href="apex-guide.html" id="apex-guide-btn" class="hero-button-link">
+        <div class="btn-inner">
+          <div class="btn-icon">⬡</div>
+          <div class="btn-text">
+            <div class="btn-title">Apex Developer Guide</div>
+            <div class="btn-sub">From core OOP concepts to async patterns, triggers, test classes, and real-world assignments</div>
+          </div>
+          <div class="btn-arrow">→</div>
+        </div>
+      </a>
+      <a href="sf_interview_prep.html" id="interview-btn" class="hero-button-link">
       <div class="btn-inner">
         <div class="btn-icon">🎯</div>
         <div class="btn-text">
@@ -356,7 +386,8 @@ ol.fancy li::before { content:counter(steps); position:absolute; left:0; font-fa
         </div>
         <div class="btn-arrow">→</div>
       </div>
-    </a>
+      </a>
+    </div>
   </div>
 
   <div class="hero-chips">
