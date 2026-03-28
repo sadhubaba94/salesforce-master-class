@@ -278,8 +278,8 @@ ol.fancy li::before { content:counter(steps); position:absolute; left:0; font-fa
 .scenario { background:var(--surface); border:1px solid var(--border); border-radius:var(--radius); padding:1.2rem 1.5rem; margin:.8rem 0; }
 .scenario .sq { font-family:var(--font-head); font-weight:700; font-size:.95rem; margin-bottom:.5rem; }
 .scenario .sa { color:var(--muted); font-size:.88rem; line-height:1.6; }
-.correct { color:#34d399; }
-.incorrect { color:#f87171; }
+.correct { color:#059669; }
+.incorrect { color:#dc2626; }
 
 /* ── PILL NAV (topic anchor) ──────────────────── */
 .topic-tag {
@@ -357,6 +357,16 @@ ol.fancy li::before { content:counter(steps); position:absolute; left:0; font-fa
 
   <div style="margin-top:2.5rem; width:100%; padding:0 1rem; position:relative; z-index:2;">
     <div class="hero-buttons-container">
+      <a href="DataCloud_Agentforce_Guide.html" id="datacloud-agentforce-btn" class="hero-button-link">
+        <div class="btn-inner">
+          <div class="btn-icon">☁️</div>
+          <div class="btn-text">
+            <div class="btn-title">Data Cloud &amp; Agentforce</div>
+            <div class="btn-sub">Zero to Hero Complete Guide 2024–2025 · Core Architecture &amp; Autonomous AI Agents</div>
+          </div>
+          <div class="btn-arrow">→</div>
+        </div>
+      </a>
       <a href="salesforce_triggers_guide.html" id="triggers-btn" class="hero-button-link">
         <div class="btn-inner">
           <div class="btn-icon">⚡</div>
@@ -771,10 +781,10 @@ ol.fancy li::before { content:counter(steps); position:absolute; left:0; font-fa
       <thead><tr><th>Scenario</th><th>Tool</th><th>Reason</th></tr></thead>
       <tbody>
         <tr><td>Multi-step onboarding form</td><td><span class="tag tag-yes">Screen Flow</span></td><td>Use Subflows for modularity</td></tr>
-        <tr><td>Update parent from child aggregate</td><td><span class="tag" style="background:rgba(124,58,237,.15);color:#a78bfa;border:1px solid rgba(124,58,237,.3)">Apex Trigger</span></td><td>SOQL aggregates not efficient in Flow</td></tr>
-        <tr><td>Bulk account enrichment via API</td><td><span class="tag" style="background:rgba(124,58,237,.15);color:#a78bfa;border:1px solid rgba(124,58,237,.3)">Queueable Apex</span></td><td>Avoid limits, control retry logic</td></tr>
+        <tr><td>Update parent from child aggregate</td><td><span class="tag" style="background:rgba(124,58,237,.15);color:var(--c2);border:1px solid rgba(124,58,237,.3)">Apex Trigger</span></td><td>SOQL aggregates not efficient in Flow</td></tr>
+        <tr><td>Bulk account enrichment via API</td><td><span class="tag" style="background:rgba(124,58,237,.15);color:var(--c2);border:1px solid rgba(124,58,237,.3)">Queueable Apex</span></td><td>Avoid limits, control retry logic</td></tr>
         <tr><td>Case routing with thresholds</td><td><span class="tag tag-warn">Flow + Invocable</span></td><td>Best of both worlds</td></tr>
-        <tr><td>Daily export to external FTP</td><td><span class="tag" style="background:rgba(124,58,237,.15);color:#a78bfa;border:1px solid rgba(124,58,237,.3)">Apex + Batch</span></td><td>Scheduled Apex + integration</td></tr>
+        <tr><td>Daily export to external FTP</td><td><span class="tag" style="background:rgba(124,58,237,.15);color:var(--c2);border:1px solid rgba(124,58,237,.3)">Apex + Batch</span></td><td>Scheduled Apex + integration</td></tr>
       </tbody>
     </table>
   </div>
@@ -1184,11 +1194,11 @@ public static void sendEmail(String addr) {
     <table>
       <thead><tr><th>Requirement</th><th>Recommended</th></tr></thead>
       <tbody>
-        <tr><td>External API callout</td><td><span class="tag" style="background:rgba(124,58,237,.15);color:#a78bfa;border:1px solid rgba(124,58,237,.3)">Queueable</span></td></tr>
+        <tr><td>External API callout</td><td><span class="tag" style="background:rgba(124,58,237,.15);color:var(--c2);border:1px solid rgba(124,58,237,.3)">Queueable</span></td></tr>
         <tr><td>Scheduled data cleanup</td><td><span class="tag tag-warn">Scheduled Apex</span></td></tr>
-        <tr><td>Bulk record updates (10k+)</td><td><span class="tag" style="background:rgba(245,158,11,.15);color:#fbbf24;border:1px solid rgba(245,158,11,.3)">Batch Apex</span></td></tr>
+        <tr><td>Bulk record updates (10k+)</td><td><span class="tag" style="background:rgba(245,158,11,.15);color:var(--c3);border:1px solid rgba(245,158,11,.3)">Batch Apex</span></td></tr>
         <tr><td>Lightweight background task</td><td><span class="tag tag-yes">Future Method</span></td></tr>
-        <tr><td>Chained dependent operations</td><td><span class="tag" style="background:rgba(124,58,237,.15);color:#a78bfa;border:1px solid rgba(124,58,237,.3)">Queueable</span></td></tr>
+        <tr><td>Chained dependent operations</td><td><span class="tag" style="background:rgba(124,58,237,.15);color:var(--c2);border:1px solid rgba(124,58,237,.3)">Queueable</span></td></tr>
         <tr><td>Export 1M+ records to FTP</td><td><span class="tag tag-warn">Batch + Callout</span></td></tr>
       </tbody>
     </table>
@@ -2029,11 +2039,11 @@ HttpResponse res = new Http().send(req);
       <thead><tr><th>Scenario</th><th>Recommended</th><th>Reason</th></tr></thead>
       <tbody>
         <tr><td>Real-time UI update on Case escalation</td><td><span class="tag tag-yes">Streaming API</span></td><td>Native LWC support via empApi</td></tr>
-        <tr><td>ETL sync to AWS Redshift</td><td><span class="tag" style="background:rgba(124,58,237,.15);color:#a78bfa;border:1px solid rgba(124,58,237,.3)">Pub/Sub API</span></td><td>Scalable, high throughput, binary</td></tr>
+        <tr><td>ETL sync to AWS Redshift</td><td><span class="tag" style="background:rgba(124,58,237,.15);color:var(--c2);border:1px solid rgba(124,58,237,.3)">Pub/Sub API</span></td><td>Scalable, high throughput, binary</td></tr>
         <tr><td>Send Slack message on Opportunity Won</td><td><span class="tag tag-warn">REST Hook</span></td><td>Simple fire-and-forget</td></tr>
-        <tr><td>Internal Order → Shipment flow</td><td><span class="tag" style="background:rgba(124,58,237,.15);color:#a78bfa;border:1px solid rgba(124,58,237,.3)">Pub/Sub API</span></td><td>Multi-topic, backpressure handling</td></tr>
+        <tr><td>Internal Order → Shipment flow</td><td><span class="tag" style="background:rgba(124,58,237,.15);color:var(--c2);border:1px solid rgba(124,58,237,.3)">Pub/Sub API</span></td><td>Multi-topic, backpressure handling</td></tr>
         <tr><td>LWC push notifications</td><td><span class="tag tag-yes">Streaming API</span></td><td>Only API with browser support</td></tr>
-        <tr><td>Microservices event backbone</td><td><span class="tag" style="background:rgba(124,58,237,.15);color:#a78bfa;border:1px solid rgba(124,58,237,.3)">Pub/Sub API</span></td><td>Enterprise-grade streaming</td></tr>
+        <tr><td>Microservices event backbone</td><td><span class="tag" style="background:rgba(124,58,237,.15);color:var(--c2);border:1px solid rgba(124,58,237,.3)">Pub/Sub API</span></td><td>Enterprise-grade streaming</td></tr>
       </tbody>
     </table>
   </div>
