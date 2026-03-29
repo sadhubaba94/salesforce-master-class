@@ -1,0 +1,1705 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sales, Service & Experience Cloud</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,600;0,9..144,800;1,9..144,400&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,400&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<style>
+/* ═══════════════════════════════ TOKENS ═══════════════════════════════ */
+:root {
+  --sales-h:   #1B6B3A;
+  --sales-m:   #2D9156;
+  --sales-l:   #E8F5E9;
+  --sales-ll:  #F1FAF3;
+  --sales-acc: #FFD54F;
+
+  --svc-h:     #B83227;
+  --svc-m:     #D94535;
+  --svc-l:     #FDECEA;
+  --svc-ll:    #FFF5F4;
+  --svc-acc:   #FFAB91;
+
+  --exp-h:     #6A1B9A;
+  --exp-m:     #8E24AA;
+  --exp-l:     #F3E5F5;
+  --exp-ll:    #FAF2FE;
+  --exp-acc:   #CE93D8;
+
+  --teal:      #00695C;
+  --teal-l:    #E0F2F1;
+  --amber:     #E65100;
+  --amber-l:   #FFF8E1;
+  --gold:      #7B4F00;
+  --gold-l:    #FFF8DC;
+  --gold-m:    #FFD54F;
+
+  --bg:        #FAFAF8;
+  --surface:   #FFFFFF;
+  --border:    #E8E8E2;
+  --muted:     #8A8A80;
+  --txt:       #1A1A18;
+  --txt2:      #3D3D38;
+
+  --r-sm: 8px;
+  --r-md: 14px;
+  --r-lg: 22px;
+  --shadow: 0 2px 16px rgba(0,0,0,.07), 0 1px 4px rgba(0,0,0,.04);
+  --shadow-lg: 0 8px 40px rgba(0,0,0,.10), 0 2px 8px rgba(0,0,0,.06);
+  --transition: .22s cubic-bezier(.4,0,.2,1);
+}
+
+/* ═══════════════════════════════ RESET ═══════════════════════════════ */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body {
+  font-family: 'DM Sans', sans-serif;
+  background: var(--bg);
+  color: var(--txt);
+  line-height: 1.7;
+  font-size: 15px;
+  overflow-x: hidden;
+}
+
+/* ═══════════════════════════════ SCROLLBAR ═══════════════════════════════ */
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: var(--border); }
+::-webkit-scrollbar-thumb { background: #C8C8C0; border-radius: 99px; }
+::-webkit-scrollbar-thumb:hover { background: #AAAAAA; }
+
+/* ═══════════════════════════════ HEADER ═══════════════════════════════ */
+#site-header {
+  position: sticky; top: 0; z-index: 100;
+  background: var(--surface);
+  border-bottom: 2px solid var(--border);
+  box-shadow: var(--shadow);
+  padding: 0 28px;
+  display: flex; align-items: center; gap: 20px;
+  height: 64px;
+}
+.header-logo {
+  display: flex; align-items: center; gap: 10px; flex-shrink: 0;
+}
+.logo-badge {
+  width: 36px; height: 36px; border-radius: 10px;
+  background: linear-gradient(135deg, var(--sales-h), var(--exp-m));
+  display: flex; align-items: center; justify-content: center;
+  color: #fff; font-family: 'Fraunces', serif; font-size: 18px; font-weight: 800;
+}
+.logo-text {
+  font-family: 'Fraunces', serif; font-size: 17px; font-weight: 600;
+  color: var(--txt); white-space: nowrap;
+}
+.logo-text span { color: var(--sales-h); }
+
+.header-search {
+  flex: 1; max-width: 400px;
+  display: flex; align-items: center;
+  background: var(--bg); border: 1.5px solid var(--border);
+  border-radius: 99px; padding: 0 14px; gap: 8px;
+  transition: border-color var(--transition);
+}
+.header-search:focus-within { border-color: var(--sales-m); }
+.header-search svg { color: var(--muted); flex-shrink: 0; }
+.header-search input {
+  border: none; background: transparent; outline: none;
+  font-family: 'DM Sans', sans-serif; font-size: 14px;
+  color: var(--txt); width: 100%; padding: 8px 0;
+}
+.header-search input::placeholder { color: var(--muted); }
+
+.cloud-tabs {
+  display: flex; gap: 6px; margin-left: auto;
+}
+.cloud-tab {
+  padding: 6px 16px; border-radius: 99px; font-size: 13px; font-weight: 600;
+  cursor: pointer; border: 1.5px solid transparent;
+  transition: all var(--transition); white-space: nowrap;
+}
+.cloud-tab.sales  { border-color: var(--sales-m); color: var(--sales-h); }
+.cloud-tab.svc    { border-color: var(--svc-m);   color: var(--svc-h); }
+.cloud-tab.exp    { border-color: var(--exp-m);   color: var(--exp-h); }
+.cloud-tab.sales.active, .cloud-tab.sales:hover  { background: var(--sales-h); color: #fff; }
+.cloud-tab.svc.active,   .cloud-tab.svc:hover    { background: var(--svc-h);   color: #fff; }
+.cloud-tab.exp.active,   .cloud-tab.exp:hover    { background: var(--exp-h);   color: #fff; }
+
+/* ═══════════════════════════════ LAYOUT ═══════════════════════════════ */
+.layout {
+  display: grid;
+  grid-template-columns: 270px 1fr;
+  min-height: calc(100vh - 64px);
+  max-width: 1440px;
+  margin: 0 auto;
+}
+
+/* ═══════════════════════════════ SIDEBAR ═══════════════════════════════ */
+#sidebar {
+  position: sticky; top: 64px; height: calc(100vh - 64px);
+  overflow-y: auto; overflow-x: hidden;
+  background: var(--surface);
+  border-right: 1.5px solid var(--border);
+  padding: 20px 0;
+}
+.nav-cloud-header {
+  display: flex; align-items: center; gap: 8px;
+  padding: 8px 20px; margin: 12px 8px 4px;
+  border-radius: var(--r-sm);
+  font-size: 11px; font-weight: 700; letter-spacing: .08em;
+  text-transform: uppercase;
+}
+.nav-cloud-header.sales { background: var(--sales-l); color: var(--sales-h); }
+.nav-cloud-header.svc   { background: var(--svc-l);   color: var(--svc-h); }
+.nav-cloud-header.exp   { background: var(--exp-l);   color: var(--exp-h); }
+.nav-cloud-header .dot  { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
+.nav-cloud-header.sales .dot { background: var(--sales-h); }
+.nav-cloud-header.svc   .dot { background: var(--svc-h); }
+.nav-cloud-header.exp   .dot { background: var(--exp-h); }
+
+.nav-item {
+  display: flex; align-items: center; gap: 8px;
+  padding: 7px 20px; margin: 1px 8px;
+  border-radius: var(--r-sm); font-size: 13.5px; color: var(--txt2);
+  cursor: pointer; text-decoration: none;
+  transition: all var(--transition);
+  position: relative;
+}
+.nav-item:hover { background: var(--bg); color: var(--txt); }
+.nav-item.active-nav { font-weight: 600; }
+.nav-item.active-nav.sales { background: var(--sales-ll); color: var(--sales-h); }
+.nav-item.active-nav.svc   { background: var(--svc-ll);   color: var(--svc-h); }
+.nav-item.active-nav.exp   { background: var(--exp-ll);   color: var(--exp-h); }
+.nav-item.active-nav::before {
+  content: ''; position: absolute; left: 0; top: 20%; bottom: 20%;
+  width: 3px; border-radius: 0 3px 3px 0; 
+}
+.nav-item.active-nav.sales::before { background: var(--sales-h); }
+.nav-item.active-nav.svc::before   { background: var(--svc-h); }
+.nav-item.active-nav.exp::before   { background: var(--exp-h); }
+.nav-num {
+  width: 20px; height: 20px; border-radius: 6px; flex-shrink: 0;
+  font-size: 10px; font-weight: 700; display: flex; align-items: center; justify-content: center;
+}
+.nav-item.sales .nav-num { background: var(--sales-l); color: var(--sales-h); }
+.nav-item.svc   .nav-num { background: var(--svc-l);   color: var(--svc-h); }
+.nav-item.exp   .nav-num { background: var(--exp-l);   color: var(--exp-h); }
+
+/* ═══════════════════════════════ MAIN CONTENT ═══════════════════════════════ */
+#main {
+  padding: 40px 52px 80px;
+  max-width: 900px;
+}
+
+/* Progress bar */
+#progress-bar {
+  position: fixed; top: 64px; left: 270px; right: 0; height: 3px; z-index: 99;
+  background: var(--border);
+}
+#progress-fill {
+  height: 100%; width: 0%;
+  background: linear-gradient(90deg, var(--sales-h), var(--exp-m));
+  transition: width .1s;
+}
+
+/* ═══════════════════════════════ CLOUD HERO BANNERS ═══════════════════════════════ */
+.cloud-hero {
+  border-radius: var(--r-lg); padding: 44px 44px 36px;
+  margin-bottom: 40px; position: relative; overflow: hidden;
+}
+.cloud-hero.sales { background: linear-gradient(135deg, var(--sales-h) 0%, #2D9156 60%, #1B5E20 100%); }
+.cloud-hero.svc   { background: linear-gradient(135deg, var(--svc-h)   0%, #D94535 60%, #8B1A10 100%); }
+.cloud-hero.exp   { background: linear-gradient(135deg, var(--exp-h)   0%, #8E24AA 60%, #4A0072 100%); }
+.cloud-hero::after {
+  content: '';
+  position: absolute; right: -30px; top: -30px;
+  width: 220px; height: 220px; border-radius: 50%;
+  background: rgba(255,255,255,.06);
+}
+.cloud-hero::before {
+  content: '';
+  position: absolute; right: 60px; bottom: -50px;
+  width: 150px; height: 150px; border-radius: 50%;
+  background: rgba(255,255,255,.05);
+}
+.hero-eyebrow {
+  font-size: 11px; font-weight: 700; letter-spacing: .12em; text-transform: uppercase;
+  color: rgba(255,255,255,.7); margin-bottom: 10px;
+}
+.hero-title {
+  font-family: 'Fraunces', serif; font-size: 42px; font-weight: 800;
+  color: #fff; line-height: 1.1; margin-bottom: 12px;
+}
+.hero-sub {
+  font-size: 15px; color: rgba(255,255,255,.82); line-height: 1.6; max-width: 520px;
+}
+.hero-pills {
+  display: flex; flex-wrap: wrap; gap: 8px; margin-top: 20px;
+}
+.hero-pill {
+  background: rgba(255,255,255,.18); color: #fff;
+  padding: 4px 12px; border-radius: 99px; font-size: 12px; font-weight: 500;
+  backdrop-filter: blur(4px);
+}
+
+/* ═══════════════════════════════ SECTION ANCHORS ═══════════════════════════════ */
+.section-anchor { padding-top: 20px; margin-top: -20px; }
+
+/* ═══════════════════════════════ SECTION HEADINGS ═══════════════════════════════ */
+.sec-h1 {
+  font-family: 'Fraunces', serif; font-weight: 700;
+  font-size: 28px; line-height: 1.25; margin: 40px 0 14px;
+  padding-bottom: 10px;
+  display: flex; align-items: center; gap: 12px;
+}
+.sec-h1 .h1-num {
+  width: 36px; height: 36px; border-radius: 10px; flex-shrink: 0;
+  font-size: 14px; font-weight: 700; display: flex; align-items: center; justify-content: center;
+  color: #fff;
+}
+.sec-h1.sales { color: var(--sales-h); border-bottom: 2px solid var(--sales-l); }
+.sec-h1.svc   { color: var(--svc-h);   border-bottom: 2px solid var(--svc-l); }
+.sec-h1.exp   { color: var(--exp-h);   border-bottom: 2px solid var(--exp-l); }
+.sec-h1.sales .h1-num { background: var(--sales-h); }
+.sec-h1.svc   .h1-num { background: var(--svc-h); }
+.sec-h1.exp   .h1-num { background: var(--exp-h); }
+
+.sec-h2 {
+  font-family: 'Fraunces', serif; font-weight: 600;
+  font-size: 20px; margin: 30px 0 10px;
+  display: flex; align-items: center; gap: 8px;
+}
+.sec-h2::before {
+  content: ''; display: inline-block;
+  width: 4px; height: 20px; border-radius: 2px; flex-shrink: 0;
+}
+.sec-h2.sales { color: var(--sales-h); }
+.sec-h2.svc   { color: var(--svc-h); }
+.sec-h2.exp   { color: var(--exp-h); }
+.sec-h2.teal  { color: var(--teal); }
+.sec-h2.sales::before { background: var(--sales-h); }
+.sec-h2.svc::before   { background: var(--svc-h); }
+.sec-h2.exp::before   { background: var(--exp-h); }
+.sec-h2.teal::before  { background: var(--teal); }
+
+/* ═══════════════════════════════ PROSE ═══════════════════════════════ */
+.prose {
+  color: var(--txt2); line-height: 1.75; font-size: 15px;
+  margin-bottom: 14px;
+}
+.prose strong { color: var(--txt); font-weight: 600; }
+
+/* ═══════════════════════════════ LISTS ═══════════════════════════════ */
+.bullet-list { list-style: none; margin: 10px 0 16px; padding: 0; }
+.bullet-list li {
+  display: flex; gap: 10px; padding: 5px 0; color: var(--txt2); font-size: 14.5px;
+  align-items: flex-start;
+}
+.bullet-list li::before {
+  content: ''; flex-shrink: 0;
+  width: 7px; height: 7px; border-radius: 50%; margin-top: 8px;
+}
+.bullet-list.sales li::before { background: var(--sales-m); }
+.bullet-list.svc   li::before { background: var(--svc-m); }
+.bullet-list.exp   li::before { background: var(--exp-m); }
+.bullet-list.teal  li::before { background: var(--teal); }
+.bullet-list.neutral li::before { background: var(--muted); }
+
+.num-list { list-style: none; margin: 10px 0 16px; padding: 0; counter-reset: steps; }
+.num-list li {
+  display: flex; gap: 12px; padding: 6px 0; color: var(--txt2); font-size: 14.5px;
+  align-items: flex-start; counter-increment: steps;
+}
+.num-list li::before {
+  content: counter(steps);
+  flex-shrink: 0; width: 22px; height: 22px; border-radius: 6px;
+  font-size: 11px; font-weight: 700; display: flex; align-items: center; justify-content: center;
+  margin-top: 2px;
+}
+.num-list.sales li::before { background: var(--sales-l); color: var(--sales-h); }
+.num-list.svc   li::before { background: var(--svc-l);   color: var(--svc-h); }
+.num-list.exp   li::before { background: var(--exp-l);   color: var(--exp-h); }
+
+/* ═══════════════════════════════ CARDS / BOXES ═══════════════════════════════ */
+.info-card {
+  border-radius: var(--r-md); padding: 18px 22px; margin: 14px 0;
+  border-left: 4px solid;
+}
+.info-card.sales { background: var(--sales-ll); border-color: var(--sales-h); }
+.info-card.svc   { background: var(--svc-ll);   border-color: var(--svc-h); }
+.info-card.exp   { background: var(--exp-ll);   border-color: var(--exp-h); }
+.info-card.teal  { background: var(--teal-l);   border-color: var(--teal); }
+.info-card.amber { background: var(--amber-l);  border-color: var(--amber); }
+.info-card.warn  { background: #FFF3E0;         border-color: #E65100; }
+.info-card.tip   { background: #F1F8E9;         border-color: #558B2F; }
+.info-card-title {
+  font-weight: 700; font-size: 13px; text-transform: uppercase; letter-spacing: .06em;
+  margin-bottom: 6px;
+}
+.info-card.sales .info-card-title { color: var(--sales-h); }
+.info-card.svc   .info-card-title { color: var(--svc-h); }
+.info-card.exp   .info-card-title { color: var(--exp-h); }
+.info-card.teal  .info-card-title { color: var(--teal); }
+.info-card.amber .info-card-title { color: var(--amber); }
+.info-card.warn  .info-card-title { color: #E65100; }
+.info-card.tip   .info-card-title { color: #558B2F; }
+.info-card p { font-size: 14px; color: var(--txt2); line-height: 1.65; }
+
+/* ═══════════════════════════════ TABLES ═══════════════════════════════ */
+.data-table {
+  width: 100%; border-collapse: collapse; margin: 16px 0 24px;
+  font-size: 13.5px; border-radius: var(--r-md); overflow: hidden;
+  box-shadow: var(--shadow);
+}
+.data-table thead tr { }
+.data-table thead th {
+  padding: 12px 16px; text-align: left; font-weight: 700;
+  font-size: 12px; text-transform: uppercase; letter-spacing: .06em;
+}
+.data-table.sales thead th { background: var(--sales-h); color: #fff; }
+.data-table.svc   thead th { background: var(--svc-h);   color: #fff; }
+.data-table.exp   thead th { background: var(--exp-h);   color: #fff; }
+.data-table.teal  thead th { background: var(--teal);    color: #fff; }
+.data-table.neutral thead th { background: #37474F;      color: #fff; }
+.data-table tbody tr:nth-child(odd)  { background: var(--surface); }
+.data-table tbody tr:nth-child(even) { background: var(--bg); }
+.data-table tbody tr:hover { filter: brightness(.97); }
+.data-table tbody td { padding: 11px 16px; color: var(--txt2); border-bottom: 1px solid var(--border); vertical-align: top; line-height: 1.55; }
+.data-table tbody tr:last-child td { border-bottom: none; }
+.data-table tbody td:first-child { font-weight: 600; color: var(--txt); }
+
+/* ═══════════════════════════════ INTERVIEW QA ═══════════════════════════════ */
+.qa-section { margin: 24px 0; }
+.qa-item { margin-bottom: 10px; border-radius: var(--r-md); overflow: hidden; box-shadow: var(--shadow); }
+.qa-question {
+  display: flex; align-items: flex-start; gap: 14px;
+  padding: 16px 20px; cursor: pointer;
+  transition: background var(--transition);
+  user-select: none;
+}
+.qa-question:hover { filter: brightness(.97); }
+.qa-num {
+  flex-shrink: 0; width: 30px; height: 30px; border-radius: 8px;
+  font-size: 12px; font-weight: 800; display: flex; align-items: center; justify-content: center;
+  color: #fff; margin-top: 1px;
+}
+.qa-item.sales .qa-question { background: var(--sales-l); }
+.qa-item.svc   .qa-question { background: var(--svc-l); }
+.qa-item.exp   .qa-question { background: var(--exp-l); }
+.qa-item.sales .qa-num { background: var(--sales-h); }
+.qa-item.svc   .qa-num { background: var(--svc-h); }
+.qa-item.exp   .qa-num { background: var(--exp-h); }
+.qa-q-text {
+  flex: 1; font-weight: 600; font-size: 14.5px;
+  line-height: 1.5;
+}
+.qa-item.sales .qa-q-text { color: var(--sales-h); }
+.qa-item.svc   .qa-q-text { color: var(--svc-h); }
+.qa-item.exp   .qa-q-text { color: var(--exp-h); }
+.qa-chevron {
+  flex-shrink: 0; width: 22px; height: 22px;
+  border-radius: 50%; display: flex; align-items: center; justify-content: center;
+  transition: transform var(--transition); margin-top: 2px;
+}
+.qa-item.sales .qa-chevron { background: var(--sales-h); color: #fff; }
+.qa-item.svc   .qa-chevron { background: var(--svc-h);   color: #fff; }
+.qa-item.exp   .qa-chevron { background: var(--exp-h);   color: #fff; }
+.qa-item.open .qa-chevron  { transform: rotate(180deg); }
+.qa-answer {
+  max-height: 0; overflow: hidden;
+  transition: max-height .38s cubic-bezier(.4,0,.2,1);
+}
+.qa-item.open .qa-answer { max-height: 800px; }
+.qa-answer-inner {
+  padding: 18px 22px 20px; background: var(--surface);
+  border-top: 1.5px solid var(--border);
+  font-size: 14px; color: var(--txt2); line-height: 1.75;
+}
+.qa-label {
+  display: inline-flex; align-items: center; gap: 6px;
+  font-size: 11px; font-weight: 700; text-transform: uppercase;
+  letter-spacing: .08em; margin-bottom: 8px; padding: 3px 10px;
+  border-radius: 99px;
+}
+.qa-item.sales .qa-label { background: var(--sales-l); color: var(--sales-h); }
+.qa-item.svc   .qa-label { background: var(--svc-l);   color: var(--svc-h); }
+.qa-item.exp   .qa-label { background: var(--exp-l);   color: var(--exp-h); }
+
+/* ═══════════════════════════════ DIVIDER ═══════════════════════════════ */
+.section-divider {
+  border: none; height: 1px; background: var(--border); margin: 40px 0;
+}
+
+/* ═══════════════════════════════ QUICK REF GRID ═══════════════════════════════ */
+.qr-grid {
+  display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin: 16px 0;
+}
+.qr-card {
+  border-radius: var(--r-md); padding: 16px 18px;
+  border: 1.5px solid var(--border);
+  transition: box-shadow var(--transition);
+}
+.qr-card:hover { box-shadow: var(--shadow-lg); }
+.qr-card-title { font-weight: 700; font-size: 13px; margin-bottom: 6px; }
+.qr-card-body  { font-size: 13px; color: var(--txt2); line-height: 1.55; }
+.qr-card.sales { border-top: 3px solid var(--sales-h); }
+.qr-card.svc   { border-top: 3px solid var(--svc-h); }
+.qr-card.exp   { border-top: 3px solid var(--exp-h); }
+.qr-card.sales .qr-card-title { color: var(--sales-h); }
+.qr-card.svc   .qr-card-title { color: var(--svc-h); }
+.qr-card.exp   .qr-card-title { color: var(--exp-h); }
+
+/* ═══════════════════════════════ PROCESS FLOW ═══════════════════════════════ */
+.process-flow {
+  display: flex; flex-direction: column; gap: 0; margin: 16px 0;
+}
+.process-step {
+  display: flex; gap: 14px; position: relative;
+}
+.process-step-left {
+  display: flex; flex-direction: column; align-items: center; flex-shrink: 0;
+  width: 36px;
+}
+.process-step-dot {
+  width: 36px; height: 36px; border-radius: 50%; flex-shrink: 0;
+  font-size: 13px; font-weight: 700; display: flex; align-items: center; justify-content: center;
+  color: #fff; z-index: 1;
+}
+.process-step-line {
+  width: 2px; flex: 1; min-height: 20px;
+}
+.process-step:last-child .process-step-line { display: none; }
+.process-step.sales .process-step-dot  { background: var(--sales-h); }
+.process-step.sales .process-step-line { background: var(--sales-l); }
+.process-step.svc   .process-step-dot  { background: var(--svc-h); }
+.process-step.svc   .process-step-line { background: var(--svc-l); }
+.process-step.exp   .process-step-dot  { background: var(--exp-h); }
+.process-step.exp   .process-step-line { background: var(--exp-l); }
+.process-step-content {
+  flex: 1; padding: 4px 0 24px;
+}
+.process-step-content strong { font-weight: 700; font-size: 14.5px; color: var(--txt); display: block; margin-bottom: 3px; }
+.process-step-content p { font-size: 13.5px; color: var(--txt2); line-height: 1.6; }
+
+/* ═══════════════════════════════ BADGE / PILL ═══════════════════════════════ */
+.feature-pill {
+  display: inline-flex; align-items: center; gap: 5px;
+  padding: 3px 10px; border-radius: 99px; font-size: 12px; font-weight: 600;
+  margin: 2px;
+}
+.feature-pill.sales { background: var(--sales-l); color: var(--sales-h); }
+.feature-pill.svc   { background: var(--svc-l);   color: var(--svc-h); }
+.feature-pill.exp   { background: var(--exp-l);   color: var(--exp-h); }
+
+/* ═══════════════════════════════ STAGE PIPELINE ═══════════════════════════════ */
+.pipeline {
+  display: flex; flex-wrap: wrap; gap: 8px; margin: 14px 0;
+}
+.pipeline-stage {
+  display: flex; align-items: center; gap: 0;
+}
+.stage-box {
+  padding: 8px 14px; font-size: 12.5px; font-weight: 600;
+  border-radius: 6px;
+}
+.stage-arrow {
+  width: 0; height: 0;
+  border-top: 18px solid transparent;
+  border-bottom: 18px solid transparent;
+  border-left: 10px solid;
+  margin-left: 0;
+}
+.stage-pct { font-size: 10px; opacity: .7; display: block; }
+
+/* ═══════════════════════════════ SEARCH HIGHLIGHT ═══════════════════════════════ */
+.search-highlight { background: #FFF9C4; border-radius: 3px; }
+.hidden-by-search { display: none !important; }
+
+/* ═══════════════════════════════ BACK TO TOP ═══════════════════════════════ */
+#back-top {
+  position: fixed; bottom: 30px; right: 30px;
+  width: 44px; height: 44px; border-radius: 50%;
+  background: var(--sales-h); color: #fff;
+  display: flex; align-items: center; justify-content: center;
+  cursor: pointer; box-shadow: var(--shadow-lg);
+  opacity: 0; pointer-events: none;
+  transition: all var(--transition);
+  z-index: 200;
+}
+#back-top.visible { opacity: 1; pointer-events: all; }
+#back-top:hover { background: var(--sales-m); transform: translateY(-2px); }
+
+/* ═══════════════════════════════ ANIMATIONS ═══════════════════════════════ */
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+.fade-in { animation: fadeUp .5s ease both; }
+.fade-in-1 { animation-delay: .1s; }
+.fade-in-2 { animation-delay: .2s; }
+.fade-in-3 { animation-delay: .3s; }
+
+/* ═══════════════════════════════ RESPONSIVE ═══════════════════════════════ */
+@media (max-width: 960px) {
+  .layout { grid-template-columns: 1fr; }
+  #sidebar { display: none; }
+  #progress-bar { left: 0; }
+  #main { padding: 28px 24px 60px; }
+  .cloud-tabs { display: none; }
+  .qr-grid { grid-template-columns: 1fr; }
+}
+
+/* ═══════════════════════════════ PRINT ═══════════════════════════════ */
+@media print {
+  #sidebar, #site-header, #back-top, #progress-bar { display: none; }
+  .layout { display: block; }
+  #main { max-width: 100%; padding: 0; }
+  .qa-answer { max-height: none !important; }
+}
+
+/* ═══ extras ═══ */
+.inline-code {
+  font-family: 'JetBrains Mono', monospace;
+  background: var(--bg); border: 1px solid var(--border);
+  padding: 1px 6px; border-radius: 4px; font-size: .88em; color: var(--svc-h);
+}
+.tag {
+  display: inline-block; padding: 2px 8px; border-radius: 5px;
+  font-size: 11.5px; font-weight: 600; margin: 1px;
+}
+.tag.green  { background: var(--sales-l); color: var(--sales-h); }
+.tag.red    { background: var(--svc-l);   color: var(--svc-h); }
+.tag.purple { background: var(--exp-l);   color: var(--exp-h); }
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<header id="site-header">
+  <div class="header-logo">
+    <div class="logo-badge">S</div>
+    <span class="logo-text"><span>Salesforce</span> Sales, Service, Experience Cloud</span>
+  </div>
+  <div class="header-search">
+    <svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+    <input type="text" id="search-input" placeholder="Search topics, concepts, Q&A…">
+  </div>
+  <div class="cloud-tabs">
+    <button class="cloud-tab sales active" onclick="scrollToCloud('sales')">☁ Sales</button>
+    <button class="cloud-tab svc"          onclick="scrollToCloud('svc')">☁ Service</button>
+    <button class="cloud-tab exp"          onclick="scrollToCloud('exp')">☁ Experience</button>
+  </div>
+</header>
+
+<!-- PROGRESS BAR -->
+<div id="progress-bar"><div id="progress-fill"></div></div>
+
+<div class="layout">
+<!-- SIDEBAR -->
+<nav id="sidebar">
+  <div class="nav-cloud-header sales"><div class="dot"></div>SALES CLOUD</div>
+  <a class="nav-item sales" href="#s1" data-cloud="sales"><span class="nav-num">1</span>Introduction</a>
+  <a class="nav-item sales" href="#s2" data-cloud="sales"><span class="nav-num">2</span>Core Objects</a>
+  <a class="nav-item sales" href="#s3" data-cloud="sales"><span class="nav-num">3</span>Lead Management</a>
+  <a class="nav-item sales" href="#s4" data-cloud="sales"><span class="nav-num">4</span>Opportunity Mgmt</a>
+  <a class="nav-item sales" href="#s5" data-cloud="sales"><span class="nav-num">5</span>Account & Contact</a>
+  <a class="nav-item sales" href="#s6" data-cloud="sales"><span class="nav-num">6</span>Sales Process & Path</a>
+  <a class="nav-item sales" href="#s7" data-cloud="sales"><span class="nav-num">7</span>Forecasting & Reports</a>
+  <a class="nav-item sales" href="#s8" data-cloud="sales"><span class="nav-num">8</span>Automation</a>
+  <a class="nav-item sales" href="#s9" data-cloud="sales"><span class="nav-num">9</span>CPQ Basics</a>
+  <a class="nav-item sales" href="#s10" data-cloud="sales"><span class="nav-num">10</span>Interview Q&A (25)</a>
+
+  <div class="nav-cloud-header svc"><div class="dot"></div>SERVICE CLOUD</div>
+  <a class="nav-item svc" href="#sv1" data-cloud="svc"><span class="nav-num">11</span>Introduction</a>
+  <a class="nav-item svc" href="#sv2" data-cloud="svc"><span class="nav-num">12</span>Cases Deep-Dive</a>
+  <a class="nav-item svc" href="#sv3" data-cloud="svc"><span class="nav-num">13</span>Entitlements & SLAs</a>
+  <a class="nav-item svc" href="#sv4" data-cloud="svc"><span class="nav-num">14</span>Knowledge Base</a>
+  <a class="nav-item svc" href="#sv5" data-cloud="svc"><span class="nav-num">15</span>Omni-Channel</a>
+  <a class="nav-item svc" href="#sv6" data-cloud="svc"><span class="nav-num">16</span>Live Agent & Bots</a>
+  <a class="nav-item svc" href="#sv7" data-cloud="svc"><span class="nav-num">17</span>Service Console</a>
+  <a class="nav-item svc" href="#sv8" data-cloud="svc"><span class="nav-num">18</span>Einstein for Service</a>
+  <a class="nav-item svc" href="#sv9" data-cloud="svc"><span class="nav-num">19</span>Field Service (FSL)</a>
+  <a class="nav-item svc" href="#sv10" data-cloud="svc"><span class="nav-num">20</span>Interview Q&A (25)</a>
+
+  <div class="nav-cloud-header exp"><div class="dot"></div>EXPERIENCE CLOUD</div>
+  <a class="nav-item exp" href="#e1" data-cloud="exp"><span class="nav-num">21</span>Introduction</a>
+  <a class="nav-item exp" href="#e2" data-cloud="exp"><span class="nav-num">22</span>Licenses & Members</a>
+  <a class="nav-item exp" href="#e3" data-cloud="exp"><span class="nav-num">23</span>Sites & Templates</a>
+  <a class="nav-item exp" href="#e4" data-cloud="exp"><span class="nav-num">24</span>Content & Knowledge</a>
+  <a class="nav-item exp" href="#e5" data-cloud="exp"><span class="nav-num">25</span>Security & Sharing</a>
+  <a class="nav-item exp" href="#e6" data-cloud="exp"><span class="nav-num">26</span>LWC & Aura</a>
+  <a class="nav-item exp" href="#e7" data-cloud="exp"><span class="nav-num">27</span>Einstein & Personalisation</a>
+  <a class="nav-item exp" href="#e8" data-cloud="exp"><span class="nav-num">28</span>Interview Q&A (18)</a>
+</nav>
+
+<!-- MAIN -->
+<main id="main">
+
+<!-- ══════════════════════════════════════════════ -->
+<!-- SALES CLOUD                                    -->
+<!-- ══════════════════════════════════════════════ -->
+<div id="sales-hero" class="cloud-hero sales fade-in">
+  <div class="hero-eyebrow">Part 1 of 3</div>
+  <div class="hero-title">Sales Cloud</div>
+  <div class="hero-sub">Master the complete sales cycle — from lead generation to closing deals. Understand every object, process, and automation tool that powers revenue growth.</div>
+  <div class="hero-pills">
+    <span class="hero-pill">Leads & Conversion</span>
+    <span class="hero-pill">Opportunities</span>
+    <span class="hero-pill">Forecasting</span>
+    <span class="hero-pill">Automation</span>
+    <span class="hero-pill">CPQ</span>
+    <span class="hero-pill">25 Interview Q&As</span>
+  </div>
+</div>
+
+<!-- S1 -->
+<div id="s1" class="section-anchor">
+<h2 class="sec-h1 sales"><div class="h1-num">1</div>Introduction to Salesforce & Sales Cloud</h2>
+<p class="prose">Salesforce is the world's <strong>#1 CRM platform</strong>, delivered as cloud-based SaaS. Founded in 1999 by Marc Benioff, it removed the need for on-premise installations. Salesforce runs on the multi-tenant <strong>Force.com platform</strong> — all customers share the same infrastructure but have completely isolated data through metadata-based separation.</p>
+
+<h3 class="sec-h2 sales">What is Sales Cloud?</h3>
+<p class="prose">Sales Cloud helps sales teams manage the complete sales cycle — from identifying prospects to closing deals. It provides tools for lead management, opportunity tracking, account and contact management, sales forecasting, and automation to increase pipeline visibility, improve rep productivity, and close more deals faster.</p>
+
+<h3 class="sec-h2 sales">Key Business Benefits</h3>
+<ul class="bullet-list sales">
+  <li>360-degree view of every customer and prospect in a single platform</li>
+  <li>Automated workflows that eliminate repetitive manual tasks for reps</li>
+  <li>Real-time dashboards and forecasting for full management visibility</li>
+  <li>Mobile access — reps can update CRM from any device, anywhere</li>
+  <li>Email integration (Gmail/Outlook) to log activities automatically</li>
+  <li>Einstein AI for predictive lead scoring and opportunity insights</li>
+  <li>AppExchange ecosystem with thousands of pre-built integrations</li>
+</ul>
+
+<h3 class="sec-h2 sales">Platform Architecture</h3>
+<table class="data-table sales">
+  <thead><tr><th>Component</th><th>Description</th></tr></thead>
+  <tbody>
+    <tr><td>Multi-Tenant Architecture</td><td>Multiple customers share the same infrastructure; data is logically isolated via metadata</td></tr>
+    <tr><td>Metadata-Driven Development</td><td>Everything (fields, layouts, workflows) is metadata, enabling declarative configuration</td></tr>
+    <tr><td>Force.com Platform</td><td>Underlying PaaS layer providing database, logic, UI framework, and APIs</td></tr>
+    <tr><td>MVC Pattern</td><td>Model (Objects/Fields), View (Pages/Layouts), Controller (Apex/Flows)</td></tr>
+    <tr><td>APIs</td><td>REST, SOAP, Bulk, Streaming APIs for integration with external systems</td></tr>
+    <tr><td>Governor Limits</td><td>Platform-imposed limits to ensure fair resource sharing in multi-tenant environment</td></tr>
+  </tbody>
+</table>
+</div>
+
+<hr class="section-divider">
+
+<!-- S2 -->
+<div id="s2" class="section-anchor">
+<h2 class="sec-h1 sales"><div class="h1-num">2</div>Core Sales Cloud Objects</h2>
+<p class="prose">Sales Cloud is built around standard objects that represent real-world business entities. Understanding these objects and their relationships is the foundation of everything in Sales Cloud.</p>
+
+<table class="data-table sales">
+  <thead><tr><th>Object</th><th>Purpose & Key Fields</th></tr></thead>
+  <tbody>
+    <tr><td>Lead</td><td>Unqualified prospect. Key fields: First/Last Name, Company, Status, Lead Source, Rating, Owner, IsConverted</td></tr>
+    <tr><td>Account</td><td>Company or organisation. Key fields: Name, Type, Industry, Annual Revenue, Phone, BillingAddress, Owner</td></tr>
+    <tr><td>Contact</td><td>Individual person at an Account. Key fields: First/Last Name, Email, Phone, AccountId, Title, MailingAddress</td></tr>
+    <tr><td>Opportunity</td><td>Potential deal/sale. Key fields: Name, AccountId, Amount, CloseDate, StageName, Probability, Owner</td></tr>
+    <tr><td>Product (Product2)</td><td>Items/services sold. Key fields: Name, ProductCode, IsActive, Family</td></tr>
+    <tr><td>Price Book (Pricebook2)</td><td>List of products with prices. Standard or custom price books available</td></tr>
+    <tr><td>Quote</td><td>Formal price proposal for an Opportunity. Syncs line items back to Opportunity</td></tr>
+    <tr><td>Activity (Task/Event)</td><td>Logs calls, emails, meetings, to-dos. Related to Leads, Contacts, Accounts, Opps</td></tr>
+    <tr><td>Campaign</td><td>Marketing programme that generates Leads/Contacts as Campaign Members</td></tr>
+    <tr><td>Campaign Member</td><td>Junction object linking Lead or Contact to a Campaign with a Status</td></tr>
+  </tbody>
+</table>
+
+<div class="info-card sales">
+  <div class="info-card-title">🔗 Key Relationship: Lead Conversion Flow</div>
+  <p>When a Lead is qualified and converted, Salesforce creates (or matches) an <strong>Account</strong>, <strong>Contact</strong>, and optionally an <strong>Opportunity</strong> in a single atomic operation. This is the most important relationship flow in Sales Cloud — and a guaranteed interview topic.</p>
+</div>
+
+<h3 class="sec-h2 sales">Object Relationships</h3>
+<ul class="bullet-list sales">
+  <li>Account → Contact: One Account can have many Contacts (Lookup relationship)</li>
+  <li>Account → Opportunity: One Account can have many Opportunities (Lookup)</li>
+  <li>Opportunity → Contact: Many-to-many via Opportunity Contact Role junction object</li>
+  <li>Opportunity → Product: Many-to-many via Opportunity Line Item (OpportunityLineItem)</li>
+  <li>Account → Account: Parent-Child hierarchy via Parent Account field (self-lookup)</li>
+</ul>
+</div>
+
+<hr class="section-divider">
+
+<!-- S3 -->
+<div id="s3" class="section-anchor">
+<h2 class="sec-h1 sales"><div class="h1-num">3</div>Lead Management & Conversion</h2>
+<p class="prose">Leads represent unqualified prospects. Effective lead management ensures reps focus on high-value prospects and no opportunity is missed. The journey from raw lead to qualified opportunity is the foundation of the sales pipeline.</p>
+
+<h3 class="sec-h2 sales">Lead Lifecycle</h3>
+<div class="process-flow">
+  <div class="process-step sales"><div class="process-step-left"><div class="process-step-dot">1</div><div class="process-step-line"></div></div><div class="process-step-content"><strong>Lead Generation</strong><p>Generated through web forms, marketing campaigns, trade shows, purchased lists, or manual rep entry</p></div></div>
+  <div class="process-step sales"><div class="process-step-left"><div class="process-step-dot">2</div><div class="process-step-line"></div></div><div class="process-step-content"><strong>Lead Assignment</strong><p>Assigned to a queue or rep using Lead Assignment Rules (geography, industry, lead source criteria)</p></div></div>
+  <div class="process-step sales"><div class="process-step-left"><div class="process-step-dot">3</div><div class="process-step-line"></div></div><div class="process-step-content"><strong>Auto-Response</strong><p>Auto-response rules send personalised email acknowledgements based on lead attributes</p></div></div>
+  <div class="process-step sales"><div class="process-step-left"><div class="process-step-dot">4</div><div class="process-step-line"></div></div><div class="process-step-content"><strong>Qualification</strong><p>Reps make calls, send emails, log activities. Status updated: Open → Working → Nurturing → Qualified</p></div></div>
+  <div class="process-step sales"><div class="process-step-left"><div class="process-step-dot">5</div><div class="process-step-line"></div></div><div class="process-step-content"><strong>Conversion</strong><p>Qualified leads are converted — creates Account + Contact + Opportunity in one atomic action</p></div></div>
+</div>
+
+<h3 class="sec-h2 sales">Lead Assignment Rules</h3>
+<p class="prose">Lead Assignment Rules automatically route incoming leads to the right owner (user or queue) based on rule criteria. <strong>Only ONE rule can be active at a time</strong>, but it can contain multiple rule entries evaluated in order.</p>
+<ul class="bullet-list sales">
+  <li>Rule entries evaluated top-to-bottom — first matching entry wins</li>
+  <li>Criteria can include any lead field: Country, Industry, Annual Revenue, Lead Source</li>
+  <li>If no rule matches, lead goes to the default owner specified in the rule</li>
+  <li>Triggered from Web-to-Lead, Data Import Wizard, or by checking "Assign using active assignment rule"</li>
+</ul>
+
+<h3 class="sec-h2 sales">Web-to-Lead</h3>
+<p class="prose">Web-to-Lead generates HTML form code that you embed on your website. When a visitor submits, a Lead record is automatically created in Salesforce.</p>
+<table class="data-table sales">
+  <thead><tr><th>Configuration Point</th><th>Detail</th></tr></thead>
+  <tbody>
+    <tr><td>Daily Limit</td><td>500 leads/day by default (can be increased with Salesforce Support)</td></tr>
+    <tr><td>Spam Prevention</td><td>reCAPTCHA can be added to the generated form</td></tr>
+    <tr><td>Auto-Response</td><td>Auto-response rules send confirmation emails to the submitter</td></tr>
+    <tr><td>Assignment</td><td>Assignment rules automatically route the new lead to the correct owner</td></tr>
+    <tr><td>Return URL</td><td>Thank-you page URL the visitor is redirected to after submission</td></tr>
+  </tbody>
+</table>
+
+<h3 class="sec-h2 sales">Lead Conversion — What Actually Happens</h3>
+<div class="info-card amber">
+  <div class="info-card-title">⚡ Under the Hood — Lead Conversion</div>
+  <p>When a rep clicks 'Convert': Salesforce searches for matching Accounts (by company name). Rep chooses to create a new Account or merge into existing. A new Contact is created linked to the Account. Optionally, an Opportunity is created. <strong>Lead Field Mapping</strong> transfers values from Lead fields to Account/Contact/Opportunity fields. The Lead is marked <span class="inline-code">IsConverted = TRUE</span> and locked. The ConvertedAccountId, ConvertedContactId, and ConvertedOpportunityId are stamped on the Lead record.</p>
+</div>
+</div>
+
+<hr class="section-divider">
+
+<!-- S4 -->
+<div id="s4" class="section-anchor">
+<h2 class="sec-h1 sales"><div class="h1-num">4</div>Opportunity Management</h2>
+<p class="prose">Opportunities represent potential revenue-generating deals. They are the core of the sales pipeline and forecasting engine. Mastering opportunity management is critical for both admins and sales reps.</p>
+
+<h3 class="sec-h2 sales">Opportunity Stages & Pipeline</h3>
+<div class="pipeline">
+  <div class="pipeline-stage"><div class="stage-box" style="background:#E8F5E9;color:#1B6B3A">Prospecting<span class="stage-pct">10%</span></div></div>
+  <div style="display:flex;align-items:center;color:#A5D6A7">›</div>
+  <div class="pipeline-stage"><div class="stage-box" style="background:#C8E6C9;color:#1B6B3A">Qualification<span class="stage-pct">20%</span></div></div>
+  <div style="display:flex;align-items:center;color:#A5D6A7">›</div>
+  <div class="pipeline-stage"><div class="stage-box" style="background:#A5D6A7;color:#1B5E20">Needs Analysis<span class="stage-pct">25%</span></div></div>
+  <div style="display:flex;align-items:center;color:#A5D6A7">›</div>
+  <div class="pipeline-stage"><div class="stage-box" style="background:#81C784;color:#fff">Proposal<span class="stage-pct">75%</span></div></div>
+  <div style="display:flex;align-items:center;color:#A5D6A7">›</div>
+  <div class="pipeline-stage"><div class="stage-box" style="background:#4CAF50;color:#fff">Negotiation<span class="stage-pct">90%</span></div></div>
+  <div style="display:flex;align-items:center;color:#A5D6A7">›</div>
+  <div class="pipeline-stage"><div class="stage-box" style="background:#2E7D32;color:#fff">Closed Won<span class="stage-pct">100%</span></div></div>
+</div>
+
+<table class="data-table sales">
+  <thead><tr><th>Stage</th><th>Probability</th><th>Forecast Category</th></tr></thead>
+  <tbody>
+    <tr><td>Prospecting</td><td>10%</td><td>Pipeline</td></tr>
+    <tr><td>Qualification</td><td>20%</td><td>Pipeline</td></tr>
+    <tr><td>Needs Analysis</td><td>25%</td><td>Pipeline</td></tr>
+    <tr><td>Value Proposition</td><td>50%</td><td>Pipeline</td></tr>
+    <tr><td>Proposal / Price Quote</td><td>75%</td><td>Best Case</td></tr>
+    <tr><td>Negotiation / Review</td><td>90%</td><td>Commit</td></tr>
+    <tr><td>Closed Won</td><td>100%</td><td>Closed</td></tr>
+    <tr><td>Closed Lost</td><td>0%</td><td>Omitted</td></tr>
+  </tbody>
+</table>
+
+<h3 class="sec-h2 sales">Opportunity Contact Roles (OCR)</h3>
+<p class="prose">OCR is a junction object linking Contacts to an Opportunity, defining each person's role in the buying decision. Critical for enterprise deals with multiple stakeholders.</p>
+<ul class="bullet-list sales">
+  <li>Roles: Decision Maker, Evaluator, Executive Sponsor, Technical Buyer, Economic Buyer, Champion</li>
+  <li>One Contact can be marked as the Primary Contact on the Opportunity</li>
+  <li>OCRs flow into Account and Contact activity history for full touchpoint visibility</li>
+  <li>Used in reports to analyse win rates by role — a powerful coaching tool</li>
+</ul>
+
+<h3 class="sec-h2 sales">Products, Price Books & Quotes</h3>
+<table class="data-table sales">
+  <thead><tr><th>Concept</th><th>Description</th></tr></thead>
+  <tbody>
+    <tr><td>Standard Price Book</td><td>Auto-created by Salesforce; contains standard list prices for all products</td></tr>
+    <tr><td>Custom Price Books</td><td>Different pricing for customer segments, regions, partners, or currencies</td></tr>
+    <tr><td>Adding Products</td><td>Opportunity must have a Price Book selected first; then choose products</td></tr>
+    <tr><td>Quote Sync</td><td>When activated, Quote Line Items automatically update Opportunity Line Items</td></tr>
+    <tr><td>Quote PDF</td><td>Quotes exported as PDFs using custom templates via Visualforce or Lightning</td></tr>
+  </tbody>
+</table>
+</div>
+
+<hr class="section-divider">
+
+<!-- S5 -->
+<div id="s5" class="section-anchor">
+<h2 class="sec-h1 sales"><div class="h1-num">5</div>Account & Contact Management</h2>
+
+<h3 class="sec-h2 sales">Account Hierarchies</h3>
+<p class="prose">Accounts can be organised in parent-child hierarchies using the Parent Account lookup field. This enables enterprise account management where a global corporation has regional subsidiaries all linked together.</p>
+<ul class="bullet-list sales">
+  <li>Hierarchy limited to 10,000 Accounts in a single chain</li>
+  <li>Rollup summary fields cannot cross hierarchy levels (only Master-Detail, not Lookup)</li>
+  <li>Account Teams: Multiple reps assigned roles on one account for collaborative selling</li>
+</ul>
+
+<h3 class="sec-h2 sales">Person Accounts</h3>
+<div class="info-card warn">
+  <div class="info-card-title">⚠️ Important — Person Accounts</div>
+  <p>Person Accounts merge the Account and Contact into a single record for B2C scenarios. <strong>Once enabled, Person Accounts cannot be disabled.</strong> Used when the customer is an individual rather than a company. Every Account will have either a 'Business Account' or 'Person Account' record type. Contact fields appear directly on the Account record.</p>
+</div>
+
+<table class="data-table sales">
+  <thead><tr><th>Account Team</th><th>Opportunity Team</th></tr></thead>
+  <tbody>
+    <tr><td>Multiple users access one Account</td><td>Multiple users collaborate on one Opportunity</td></tr>
+    <tr><td>Roles defined at Account level</td><td>Roles defined at Opportunity level</td></tr>
+    <tr><td>Drives Account sharing rules</td><td>Can drive Opportunity sharing</td></tr>
+    <tr><td>Enable in Account Settings</td><td>Enable in Opportunity Settings</td></tr>
+  </tbody>
+</table>
+</div>
+
+<hr class="section-divider">
+
+<!-- S6 -->
+<div id="s6" class="section-anchor">
+<h2 class="sec-h1 sales"><div class="h1-num">6</div>Sales Process & Path</h2>
+<p class="prose">A Sales Process defines which Opportunity stages are available for a particular Record Type. Sales Path provides visual guidance to reps about what steps to take at each stage — key fields, tips, checklists right on the record.</p>
+
+<h3 class="sec-h2 sales">Sales Process Configuration Steps</h3>
+<ol class="num-list sales">
+  <li><strong>Create a Sales Process</strong> — Setup → Sales Processes → New. Select stages from the master stage list</li>
+  <li><strong>Create a Record Type</strong> — Object Manager → Opportunity → Record Types. Assign the Sales Process</li>
+  <li><strong>Assign Profiles</strong> — Specify which profiles have access to each Record Type</li>
+  <li><strong>Create Page Layout</strong> — Assign appropriate layout to each Record Type + Profile combination</li>
+</ol>
+
+<h3 class="sec-h2 sales">Kanban View</h3>
+<p class="prose">Kanban View displays Opportunities as cards in columns organised by Stage. Reps can drag-and-drop cards to update stages. Summary values (sum of Amount) are shown per column. Alerts flag stale records. Available on all list views with filtering support.</p>
+
+<div class="info-card tip">
+  <div class="info-card-title">💡 Pro Tip — Path Guidance</div>
+  <p>For each stage in Path, configure up to 5 Key Fields (display critical fields without scrolling) and Guidance for Success (rich text with checklists, links, best practices). This is one of the highest-ROI configurations you can build for a sales team — it eliminates "what should I do next?" questions entirely.</p>
+</div>
+</div>
+
+<hr class="section-divider">
+
+<!-- S7 -->
+<div id="s7" class="section-anchor">
+<h2 class="sec-h1 sales"><div class="h1-num">7</div>Forecasting & Reports</h2>
+
+<h3 class="sec-h2 sales">Collaborative Forecasting</h3>
+<p class="prose">Collaborative Forecasting gives managers real-time pipeline visibility and lets them adjust (override) forecasts. Forecast amounts roll up the role hierarchy from rep → manager → VP → C-suite.</p>
+<table class="data-table sales">
+  <thead><tr><th>Forecast Category</th><th>Description</th></tr></thead>
+  <tbody>
+    <tr><td>Pipeline</td><td>All open Opps not in Closed Won/Lost. Earliest, least confident category</td></tr>
+    <tr><td>Best Case</td><td>Opps likely to close this period, including all Commit opps</td></tr>
+    <tr><td>Commit</td><td>Deals the rep is highly confident will close this period</td></tr>
+    <tr><td>Most Likely</td><td>Optional category between Best Case and Commit</td></tr>
+    <tr><td>Closed</td><td>Closed Won Opps — always included in all forecast rollups</td></tr>
+    <tr><td>Omitted</td><td>Excluded from forecasts (e.g., Closed Lost, future pipeline)</td></tr>
+  </tbody>
+</table>
+<ul class="bullet-list sales">
+  <li><strong>Forecast Hierarchy:</strong> Based on Role Hierarchy — reps must have a role assigned</li>
+  <li><strong>Adjustments:</strong> Managers can adjust without changing underlying Opportunities</li>
+  <li><strong>Quota Management:</strong> Quotas loaded via Data Import Wizard, displayed alongside forecasts</li>
+</ul>
+
+<h3 class="sec-h2 sales">Report Types</h3>
+<table class="data-table sales">
+  <thead><tr><th>Report Type</th><th>Best Used For</th><th>Dashboard?</th></tr></thead>
+  <tbody>
+    <tr><td>Tabular</td><td>Simple lists, exports, raw data download</td><td>❌ No</td></tr>
+    <tr><td>Summary</td><td>Grouped records with subtotals — most common for dashboards</td><td>✅ Yes</td></tr>
+    <tr><td>Matrix</td><td>Two-dimensional (rows + columns) — pivot-style comparison analysis</td><td>✅ Yes</td></tr>
+    <tr><td>Joined</td><td>Multiple report blocks with different objects in one view</td><td>✅ Limited</td></tr>
+  </tbody>
+</table>
+</div>
+
+<hr class="section-divider">
+
+<!-- S8 -->
+<div id="s8" class="section-anchor">
+<h2 class="sec-h1 sales"><div class="h1-num">8</div>Automation in Sales Cloud</h2>
+
+<table class="data-table sales">
+  <thead><tr><th>Automation Tool</th><th>Description & Use Case</th></tr></thead>
+  <tbody>
+    <tr><td>Flow (Screen Flow)</td><td>User-interactive wizard. Guides reps through multi-step processes on screen</td></tr>
+    <tr><td>Flow (Record-Triggered)</td><td>Fires automatically on record create/update/delete. Replacement for Workflow & Process Builder</td></tr>
+    <tr><td>Flow (Schedule-Triggered)</td><td>Runs at a scheduled time on a batch of records — nightly processing</td></tr>
+    <tr><td>Approval Processes</td><td>Multi-step human approval workflows. E.g., discount approval for &gt;20% off</td></tr>
+    <tr><td>Einstein Lead Scoring</td><td>AI-powered scoring of leads based on historical conversion patterns</td></tr>
+    <tr><td>Validation Rules</td><td>Prevent bad data from being saved. Formula-based with custom error messages</td></tr>
+    <tr><td>Duplicate & Matching Rules</td><td>Detect and block duplicate Leads, Contacts, Accounts on record save</td></tr>
+  </tbody>
+</table>
+
+<div class="info-card tip">
+  <div class="info-card-title">🔑 Critical to Know — Flow is the Future</div>
+  <p>Salesforce is <strong>retiring Workflow Rules and Process Builder</strong>. All new automations should be built in Flow. In interviews, always recommend Flow over legacy tools. Knowing the types of Flows (Record-Triggered, Screen, Scheduled, Platform Event) and when to use each is essential for any Salesforce role.</p>
+</div>
+</div>
+
+<hr class="section-divider">
+
+<!-- S9 -->
+<div id="s9" class="section-anchor">
+<h2 class="sec-h1 sales"><div class="h1-num">9</div>CPQ Basics — Configure, Price, Quote</h2>
+<p class="prose">Salesforce CPQ is an advanced quoting solution (paid managed package/add-on) that handles complex product configuration, pricing logic, and quote generation. It significantly accelerates the quote-to-cash process for companies with complex product catalogs.</p>
+
+<table class="data-table sales">
+  <thead><tr><th>CPQ Feature</th><th>Description</th></tr></thead>
+  <tbody>
+    <tr><td>Product Rules</td><td>Configuration rules ensuring only valid product combinations can be quoted</td></tr>
+    <tr><td>Price Rules</td><td>Dynamic pricing logic — volume discounts, promotional pricing, conditional pricing</td></tr>
+    <tr><td>Bundle Products</td><td>Parent product with configurable child components (hardware + software + support)</td></tr>
+    <tr><td>Guided Selling</td><td>Wizard that asks reps questions to filter to the right products automatically</td></tr>
+    <tr><td>Quote Templates</td><td>Professional PDF templates with dynamic content, logo, terms and conditions</td></tr>
+    <tr><td>Approval Rules</td><td>CPQ-specific discount approval thresholds (separate from standard Approval Processes)</td></tr>
+    <tr><td>Subscription Products</td><td>Recurring billing products that integrate with Salesforce Billing for renewals</td></tr>
+  </tbody>
+</table>
+</div>
+
+<hr class="section-divider">
+
+<!-- S10 INTERVIEW QA -->
+<div id="s10" class="section-anchor">
+<h2 class="sec-h1 sales"><div class="h1-num">10</div>Sales Cloud — Interview Questions & Answers</h2>
+<div class="info-card sales"><div class="info-card-title">📋 25 Expert Q&As</div><p>Covering Admin, Consultant & Developer level questions. Tap any question to expand the full answer.</p></div>
+
+<div class="qa-section" id="qa-sales"></div>
+</div>
+
+<!-- ══════════════════════════════════════════════ -->
+<!-- SERVICE CLOUD                                  -->
+<!-- ══════════════════════════════════════════════ -->
+<div id="sv-hero" class="cloud-hero svc" style="margin-top:60px">
+  <div class="hero-eyebrow">Part 2 of 3</div>
+  <div class="hero-title">Service Cloud</div>
+  <div class="hero-sub">Master every tool that powers world-class customer service — from Case Management and SLAs to Einstein Bots and Field Service. Resolve faster, scale smarter.</div>
+  <div class="hero-pills">
+    <span class="hero-pill">Case Management</span>
+    <span class="hero-pill">Entitlements & SLAs</span>
+    <span class="hero-pill">Omni-Channel</span>
+    <span class="hero-pill">Einstein Bots</span>
+    <span class="hero-pill">Field Service</span>
+    <span class="hero-pill">25 Interview Q&As</span>
+  </div>
+</div>
+
+<!-- SV1 -->
+<div id="sv1" class="section-anchor">
+<h2 class="sec-h1 svc"><div class="h1-num">11</div>Introduction to Service Cloud</h2>
+<p class="prose">Salesforce Service Cloud is the world's #1 customer service platform. It empowers service teams to resolve issues faster, deliver personalised service across every channel, and turn service interactions into customer loyalty. Service Cloud shares objects (Accounts, Contacts) with Sales Cloud but introduces specialised objects and features for support operations.</p>
+
+<table class="data-table svc">
+  <thead><tr><th>Component</th><th>Description</th></tr></thead>
+  <tbody>
+    <tr><td>Cases</td><td>Core object — represents a customer issue or service request</td></tr>
+    <tr><td>Entitlements</td><td>Defines what level of support a customer is contractually entitled to receive</td></tr>
+    <tr><td>Milestones</td><td>Time-based metrics within Entitlements (e.g., first response in 1 hour)</td></tr>
+    <tr><td>Knowledge Base</td><td>Articles for agents and customers to find solutions — powers self-service</td></tr>
+    <tr><td>Omni-Channel</td><td>Intelligent routing of work items to the right agent based on availability and skills</td></tr>
+    <tr><td>Live Agent / Messaging</td><td>Real-time chat and asynchronous messaging for customers</td></tr>
+    <tr><td>Service Console</td><td>Unified multi-tab workspace for agents handling multiple cases simultaneously</td></tr>
+    <tr><td>Einstein Bots</td><td>AI-powered chatbots for automated first-line customer interactions</td></tr>
+    <tr><td>Field Service Lightning</td><td>Tools for managing field technician dispatching and work orders</td></tr>
+  </tbody>
+</table>
+</div>
+
+<hr class="section-divider">
+
+<!-- SV2 -->
+<div id="sv2" class="section-anchor">
+<h2 class="sec-h1 svc"><div class="h1-num">12</div>Cases — The Heart of Service Cloud</h2>
+<p class="prose">A Case represents a customer issue, question, complaint, or service request. Every customer interaction that requires tracking and resolution should generate a Case. Cases are linked to Accounts and Contacts and can be linked to Assets, Contracts, Orders, and Knowledge Articles.</p>
+
+<h3 class="sec-h2 svc">Key Case Fields</h3>
+<table class="data-table svc">
+  <thead><tr><th>Field</th><th>Description</th></tr></thead>
+  <tbody>
+    <tr><td>Case Number</td><td>Auto-generated unique identifier (read-only)</td></tr>
+    <tr><td>Subject</td><td>Brief description — the 'title' of the case</td></tr>
+    <tr><td>Status</td><td>Open, Working, Escalated, Pending Customer, Closed (customisable)</td></tr>
+    <tr><td>Priority</td><td>Low, Medium, High, Critical — drives SLA and escalation rules</td></tr>
+    <tr><td>Origin</td><td>How the case was created: Phone, Email, Web, Chat, Social, Self-Service</td></tr>
+    <tr><td>IsEscalated</td><td>Checkbox — set automatically by Escalation Rules when SLA is breached</td></tr>
+    <tr><td>IsClosed</td><td>Auto-set when Status maps to a 'closed' status category</td></tr>
+    <tr><td>AssetId</td><td>Links case to a specific product/asset the customer owns</td></tr>
+  </tbody>
+</table>
+
+<h3 class="sec-h2 svc">Case Creation Channels</h3>
+<table class="data-table svc">
+  <thead><tr><th>Channel</th><th>Mechanism</th></tr></thead>
+  <tbody>
+    <tr><td>Email-to-Case</td><td>Dedicated support email; incoming emails auto-create Cases</td></tr>
+    <tr><td>On-Demand Email-to-Case</td><td>Salesforce's own email service — no firewall changes needed (recommended)</td></tr>
+    <tr><td>Web-to-Case</td><td>HTML form on website; submissions auto-create Cases</td></tr>
+    <tr><td>Live Agent / Chat</td><td>Chat sessions auto-create Cases at end of conversation</td></tr>
+    <tr><td>Social Customer Service</td><td>Twitter/Facebook mentions/DMs auto-create Cases</td></tr>
+    <tr><td>Einstein Bot</td><td>Bot collects info, creates Case, routes to agent if unresolved</td></tr>
+    <tr><td>Open CTI</td><td>Call center agent creates Case via CTI screen pop</td></tr>
+  </tbody>
+</table>
+
+<h3 class="sec-h2 svc">Email-to-Case — Configuration Steps</h3>
+<ol class="num-list svc">
+  <li>Setup → Feature Settings → Service → Email-to-Case → <strong>Enable Email-to-Case</strong></li>
+  <li>Choose <strong>On-Demand Email-to-Case</strong> (recommended — uses Salesforce email service)</li>
+  <li>Create a <strong>Routing Address</strong> — Salesforce generates a unique forwarding address</li>
+  <li>Set up <strong>email forwarding</strong> in your email server to Salesforce's generated address</li>
+  <li>Configure Case fields populated from email: Subject, Body, From → Contact lookup</li>
+  <li>Set up <strong>Assignment Rules</strong> to route cases to the correct queue or agent</li>
+</ol>
+
+<h3 class="sec-h2 svc">Escalation Rules</h3>
+<p class="prose">Escalation Rules automatically escalate cases that haven't been resolved within a time threshold — they set <span class="inline-code">IsEscalated = TRUE</span> and can reassign the case and send notification emails.</p>
+<ul class="bullet-list svc">
+  <li>Time trigger: Hours or Days since case creation OR last modification</li>
+  <li><strong>Business Hours:</strong> Escalation time can be calculated against business hours only (ignoring nights/weekends)</li>
+  <li>Actions: Reassign case, send email notification to manager or team</li>
+  <li>One active escalation rule per org with multiple rule entries evaluated top-down</li>
+</ul>
+</div>
+
+<hr class="section-divider">
+
+<!-- SV3 -->
+<div id="sv3" class="section-anchor">
+<h2 class="sec-h1 svc"><div class="h1-num">13</div>Entitlements & Milestones (SLA Management)</h2>
+<p class="prose">Entitlements define the specific support terms a customer is entitled to receive — essentially the contractual SLA. Milestones within Entitlements define measurable, time-based steps that must be completed to meet the SLA.</p>
+
+<table class="data-table svc">
+  <thead><tr><th>Object</th><th>Description</th></tr></thead>
+  <tbody>
+    <tr><td>Entitlement</td><td>Master record defining SLA terms. Linked to Account, Contact, or Asset</td></tr>
+    <tr><td>Entitlement Template</td><td>Reusable template to quickly create Entitlements with predefined settings</td></tr>
+    <tr><td>Service Contract</td><td>Contractual agreement. Entitlements can be linked to Service Contracts</td></tr>
+    <tr><td>Milestone</td><td>Time-bound step in Entitlement Process (e.g., First Response ≤ 1hr)</td></tr>
+    <tr><td>Entitlement Process</td><td>Sequence of Milestones that fires when a Case meets entry criteria</td></tr>
+  </tbody>
+</table>
+
+<div class="info-card svc">
+  <div class="info-card-title">📋 Example — Premium Support SLA</div>
+  <p><strong>Milestone 1: First Response</strong> — respond within 1 Business Hour. Completed when agent posts first reply. Violation: email to Support Manager.<br><br>
+  <strong>Milestone 2: Resolution</strong> — case resolved within 8 Business Hours. Completed when IsClosed = TRUE. Violation: escalate to Director, send apology to customer.</p>
+</div>
+
+<h3 class="sec-h2 svc">Milestone Key Properties</h3>
+<ul class="bullet-list svc">
+  <li><strong>Time Trigger:</strong> Minutes after case creation (or previous milestone completion)</li>
+  <li><strong>Success Criteria:</strong> Formula determining when milestone is 'completed'</li>
+  <li><strong>Business Hours:</strong> Milestone timers run on business hours only — fair SLA measurement</li>
+  <li><strong>Actions:</strong> Warning (at risk), Violated (breached), Success (completed) — each triggers different actions</li>
+  <li><strong>Recurrence:</strong> No recurrence, Independent (restarts on re-opening), or Sequential</li>
+</ul>
+</div>
+
+<hr class="section-divider">
+
+<!-- SV4 -->
+<div id="sv4" class="section-anchor">
+<h2 class="sec-h1 svc"><div class="h1-num">14</div>Knowledge Base (Salesforce Knowledge)</h2>
+<p class="prose">Salesforce Knowledge allows organisations to create, manage, publish, and report on articles — solutions, how-to guides, FAQs, and troubleshooting steps. Articles deflect cases (customers self-serve) and help agents resolve cases faster with the right information at their fingertips.</p>
+
+<h3 class="sec-h2 svc">Article Lifecycle</h3>
+<div class="process-flow">
+  <div class="process-step svc"><div class="process-step-left"><div class="process-step-dot">1</div><div class="process-step-line"></div></div><div class="process-step-content"><strong>Draft</strong><p>Article created and being authored. Not visible to agents or customers</p></div></div>
+  <div class="process-step svc"><div class="process-step-left"><div class="process-step-dot">2</div><div class="process-step-line"></div></div><div class="process-step-content"><strong>Review</strong><p>Submitted for editorial review. Awaiting approval via Approval Process</p></div></div>
+  <div class="process-step svc"><div class="process-step-left"><div class="process-step-dot">3</div><div class="process-step-line"></div></div><div class="process-step-content"><strong>Published</strong><p>Article is live — visible to agents and/or customers based on Data Category visibility settings</p></div></div>
+  <div class="process-step svc"><div class="process-step-left"><div class="process-step-dot">4</div><div class="process-step-line"></div></div><div class="process-step-content"><strong>Archived</strong><p>No longer current. Hidden from views but retained for audit purposes</p></div></div>
+</div>
+
+<h3 class="sec-h2 svc">Data Categories</h3>
+<p class="prose">Data Categories provide a hierarchical classification for Knowledge Articles, controlling which articles are visible to which users. Structure: <strong>Category Group → Categories → Sub-Categories</strong></p>
+<ul class="bullet-list svc">
+  <li>A Category Group is a top-level container (e.g., Products, Regions, Topics)</li>
+  <li>Each group has a hierarchy of values (e.g., Products → Hardware → Laptops)</li>
+  <li>Articles are tagged with one or more categories during authoring</li>
+  <li>Visibility controlled by assigning Data Category access to Profiles (internal) or Community members (external)</li>
+</ul>
+</div>
+
+<hr class="section-divider">
+
+<!-- SV5 -->
+<div id="sv5" class="section-anchor">
+<h2 class="sec-h1 svc"><div class="h1-num">15</div>Omni-Channel & Routing</h2>
+<p class="prose">Omni-Channel is Salesforce's intelligent work routing engine that automatically pushes work items (Cases, Chats, Messages) to the most appropriate available agent, eliminating manual queue management.</p>
+
+<table class="data-table svc">
+  <thead><tr><th>Component</th><th>Description</th></tr></thead>
+  <tbody>
+    <tr><td>Service Channel</td><td>Maps a Salesforce object (Case, Chat) to Omni-Channel routing</td></tr>
+    <tr><td>Routing Configuration</td><td>Rules: how work is prioritised and how capacity is measured</td></tr>
+    <tr><td>Queue</td><td>Container for work items. Agents subscribe to queues they handle</td></tr>
+    <tr><td>Presence Status</td><td>Agent's availability: Available, Busy, Away, On Break</td></tr>
+    <tr><td>Agent Capacity</td><td>Total capacity limit; each work item type consumes capacity units</td></tr>
+    <tr><td>Skills</td><td>Agents tagged with skills (Language, Product, Tier) for skill-based routing</td></tr>
+  </tbody>
+</table>
+
+<h3 class="sec-h2 svc">Routing Models</h3>
+<table class="data-table svc">
+  <thead><tr><th>Model</th><th>How It Works</th></tr></thead>
+  <tbody>
+    <tr><td>Least Active</td><td>Routes to agent with fewest open work items — promotes fairness</td></tr>
+    <tr><td>Most Available</td><td>Routes to agent with highest remaining capacity percentage</td></tr>
+    <tr><td>Skill-Based</td><td>Routes to agents with matching skills; falls back to any available</td></tr>
+    <tr><td>Omni-Channel Flow</td><td>Fully custom routing logic built in Flow — most powerful option</td></tr>
+  </tbody>
+</table>
+</div>
+
+<hr class="section-divider">
+
+<!-- SV6 -->
+<div id="sv6" class="section-anchor">
+<h2 class="sec-h1 svc"><div class="h1-num">16</div>Live Agent, Messaging & Einstein Bots</h2>
+
+<div class="qr-grid">
+  <div class="qr-card svc"><div class="qr-card-title">Live Agent (Web Chat)</div><div class="qr-card-body">Real-time, synchronous chat. Both parties online simultaneously. Session ends when either disconnects. Auto-creates Case transcript after session.</div></div>
+  <div class="qr-card svc"><div class="qr-card-title">Messaging (MIAW)</div><div class="qr-card-body">Asynchronous — conversations persist. Customer can close and resume later. Supports WhatsApp, SMS, Facebook, Apple Messages for Business.</div></div>
+  <div class="qr-card svc"><div class="qr-card-title">Voice (Service Cloud Voice)</div><div class="qr-card-body">Native telephony via Amazon Connect. AI transcribes calls in real-time. Einstein recommends Knowledge Articles during calls.</div></div>
+  <div class="qr-card svc"><div class="qr-card-title">Einstein Bot</div><div class="qr-card-body">NLP-powered chatbot for automated first-line support. Handles routine queries, collects case info, routes to human agent when needed.</div></div>
+</div>
+
+<h3 class="sec-h2 svc">Einstein Bot Components</h3>
+<table class="data-table svc">
+  <thead><tr><th>Component</th><th>Description</th></tr></thead>
+  <tbody>
+    <tr><td>Dialog</td><td>A conversation node — groups of messages and questions the bot handles</td></tr>
+    <tr><td>Intent</td><td>What the customer wants to do (e.g., 'Check Order Status', 'Reset Password')</td></tr>
+    <tr><td>Entity</td><td>Specific information extracted from customer input (Order Number, Date)</td></tr>
+    <tr><td>Training Data</td><td>Example phrases that train the NLP model to recognise each intent</td></tr>
+    <tr><td>Slot</td><td>Variable storing collected information (e.g., Customer Email = 'x@y.com')</td></tr>
+    <tr><td>Transfer to Agent</td><td>Hand-off dialog that routes session to human agent with full context</td></tr>
+  </tbody>
+</table>
+</div>
+
+<hr class="section-divider">
+
+<!-- SV7 -->
+<div id="sv7" class="section-anchor">
+<h2 class="sec-h1 svc"><div class="h1-num">17</div>Service Console</h2>
+<p class="prose">The Service Console is a specialised Lightning App for agents handling high volumes of interactions. Multiple records open simultaneously as tabs — agents see Case details, customer history, live chat, and knowledge articles all in one screen without losing context.</p>
+
+<table class="data-table svc">
+  <thead><tr><th>Feature</th><th>Description</th></tr></thead>
+  <tbody>
+    <tr><td>Workspace Tabs</td><td>Each customer case opens as a tab; agents manage multiple simultaneously</td></tr>
+    <tr><td>Subtabs</td><td>Related records (Account, Contact, Assets) as sub-tabs within a workspace</td></tr>
+    <tr><td>Omni-Channel Widget</td><td>Embedded presence/availability control in console footer</td></tr>
+    <tr><td>Macros</td><td>Recorded series of actions run in one click: update field + send email + close case</td></tr>
+    <tr><td>Quick Text</td><td>Pre-written message templates inserted via shortcut — reduces typing time</td></tr>
+    <tr><td>Knowledge Component</td><td>Suggested articles displayed alongside case based on subject/description</td></tr>
+    <tr><td>Case Feed</td><td>Chronological timeline of all emails, calls, chats, notes, and activities</td></tr>
+    <tr><td>Split View</td><td>List view of cases on left + case detail on right for efficient queue management</td></tr>
+  </tbody>
+</table>
+</div>
+
+<hr class="section-divider">
+
+<!-- SV8 -->
+<div id="sv8" class="section-anchor">
+<h2 class="sec-h1 svc"><div class="h1-num">18</div>Einstein for Service</h2>
+
+<table class="data-table svc">
+  <thead><tr><th>Einstein Feature</th><th>Value Delivered</th></tr></thead>
+  <tbody>
+    <tr><td>Case Classification</td><td>AI reads Subject/Description and auto-populates Type, Priority, Product — reduces manual triage</td></tr>
+    <tr><td>Article Recommendations</td><td>Suggests relevant Knowledge Articles to agents and customers during case handling</td></tr>
+    <tr><td>Reply Recommendations</td><td>Suggests response text to agents during chat based on past successful resolutions</td></tr>
+    <tr><td>Next Best Action</td><td>Recommends next step for agents (escalate, offer discount, send KB article) via AI</td></tr>
+    <tr><td>Conversation Mining</td><td>Analyses case transcripts to identify common topics and deflection opportunities</td></tr>
+    <tr><td>Work Summaries</td><td>Auto-generates handoff notes when transferring between agents or channels</td></tr>
+    <tr><td>Einstein Summarisation</td><td>Generative AI writes case summaries, saving agents from manual documentation</td></tr>
+  </tbody>
+</table>
+</div>
+
+<hr class="section-divider">
+
+<!-- SV9 -->
+<div id="sv9" class="section-anchor">
+<h2 class="sec-h1 svc"><div class="h1-num">19</div>Field Service Lightning (FSL)</h2>
+<p class="prose">Field Service manages the full lifecycle for organisations that dispatch technicians to customer locations — from work order creation through dispatching, field execution, and billing.</p>
+
+<table class="data-table svc">
+  <thead><tr><th>Object</th><th>Description</th></tr></thead>
+  <tbody>
+    <tr><td>Work Order</td><td>Service job to be performed at a customer site. Linked to Case and Account</td></tr>
+    <tr><td>Work Order Line Item</td><td>Individual task/step within a Work Order</td></tr>
+    <tr><td>Service Resource</td><td>The field technician — can be an employee or contractor</td></tr>
+    <tr><td>Service Territory</td><td>Geographic area of operations for scheduling</td></tr>
+    <tr><td>Service Appointment</td><td>Scheduled visit — date, time window, assigned resource</td></tr>
+    <tr><td>Scheduling Policy</td><td>Rules for optimised dispatch: travel time, skill match, working hours</td></tr>
+    <tr><td>Product Consumed</td><td>Tracks parts and materials used during a service visit</td></tr>
+  </tbody>
+</table>
+
+<div class="info-card svc">
+  <div class="info-card-title">📍 FSL Dispatcher Console</div>
+  <p>The Dispatcher Console is a real-time management tool for scheduling and monitoring field operations. Features: Gantt chart of all technicians and appointments, map view of technician locations, drag-and-drop scheduling, automated schedule optimisation (with FSL Optimisation license), and candidate sorting by skill/travel time/availability.</p>
+</div>
+</div>
+
+<hr class="section-divider">
+
+<!-- SV10 -->
+<div id="sv10" class="section-anchor">
+<h2 class="sec-h1 svc"><div class="h1-num">20</div>Service Cloud — Interview Questions & Answers</h2>
+<div class="info-card svc"><div class="info-card-title">📋 25 Expert Q&As</div><p>Covering Case Management, Entitlements, Knowledge, Omni-Channel, Service Console, Einstein, and Field Service. Expand each question for the complete answer.</p></div>
+<div class="qa-section" id="qa-svc"></div>
+</div>
+
+<!-- ══════════════════════════════════════════════ -->
+<!-- EXPERIENCE CLOUD                               -->
+<!-- ══════════════════════════════════════════════ -->
+<div id="exp-hero" class="cloud-hero exp" style="margin-top:60px">
+  <div class="hero-eyebrow">Part 3 of 3</div>
+  <div class="hero-title">Experience Cloud</div>
+  <div class="hero-sub">Build powerful branded portals, partner sites, and customer communities. Connect external audiences to Salesforce data with zero-code site building and enterprise-grade security.</div>
+  <div class="hero-pills">
+    <span class="hero-pill">Customer Portals</span>
+    <span class="hero-pill">Partner Portals</span>
+    <span class="hero-pill">Experience Builder</span>
+    <span class="hero-pill">Security & Sharing</span>
+    <span class="hero-pill">LWC & Aura</span>
+    <span class="hero-pill">18 Interview Q&As</span>
+  </div>
+</div>
+
+<!-- E1 -->
+<div id="e1" class="section-anchor">
+<h2 class="sec-h1 exp"><div class="h1-num">21</div>Introduction to Experience Cloud</h2>
+<p class="prose">Experience Cloud (formerly Community Cloud) enables organisations to build branded websites, portals, forums, and mobile apps connected to Salesforce data — without extensive coding. It extends Salesforce to external audiences: customers, partners, and employees.</p>
+
+<table class="data-table exp">
+  <thead><tr><th>Portal Type</th><th>Audience & Use Case</th></tr></thead>
+  <tbody>
+    <tr><td>Customer Self-Service</td><td>Customers log cases, track status, search Knowledge Base — reduces call volume 40–60%</td></tr>
+    <tr><td>Partner Portal</td><td>Resellers/distributors register deals, manage leads, access training, track commissions</td></tr>
+    <tr><td>Employee Community</td><td>Internal portal — HR self-service, IT help desk, company news, department pages</td></tr>
+    <tr><td>Commerce Storefront</td><td>B2B or B2C e-commerce powered by Salesforce B2B/B2C Commerce</td></tr>
+    <tr><td>Healthcare Patient Portal</td><td>Patients book appointments, view records, communicate with providers (HIPAA compliant)</td></tr>
+    <tr><td>Financial Client Portal</td><td>Clients view portfolio performance, submit applications, access advisors</td></tr>
+  </tbody>
+</table>
+</div>
+
+<hr class="section-divider">
+
+<!-- E2 -->
+<div id="e2" class="section-anchor">
+<h2 class="sec-h1 exp"><div class="h1-num">22</div>Licenses & Membership</h2>
+<p class="prose">Experience Cloud has its own licensing model. External users are NOT full Salesforce users — they use Experience Cloud licenses that grant limited, purpose-built access through the site.</p>
+
+<table class="data-table exp">
+  <thead><tr><th>License Type</th><th>Access Level & Use Case</th></tr></thead>
+  <tbody>
+    <tr><td>Customer Community</td><td>Cheapest. Access only to records where they are the Account/Contact. Standard case mgmt & knowledge</td></tr>
+    <tr><td>Customer Community Plus</td><td>Sharing Rules support. Account-level visibility for B2B customer portals</td></tr>
+    <tr><td>Partner Community</td><td>Full CRM access for resellers — Leads, Opportunities, Accounts they own or share. For PRM.</td></tr>
+    <tr><td>External Apps (Low/High Volume)</td><td>Highly scalable, low per-login cost for large public-facing sites</td></tr>
+  </tbody>
+</table>
+
+<h3 class="sec-h2 exp">Member vs Login Licensing</h3>
+<table class="data-table exp">
+  <thead><tr><th>Member License</th><th>Login License</th></tr></thead>
+  <tbody>
+    <tr><td>Flat monthly fee per user</td><td>Pay per login — cheaper for infrequent users</td></tr>
+    <tr><td>Unlimited logins per month</td><td>Each login consumes one credit from monthly pool</td></tr>
+    <tr><td>Best for daily active users</td><td>Best for occasional quarterly access</td></tr>
+    <tr><td>Predictable cost</td><td>Variable cost — harder to budget</td></tr>
+  </tbody>
+</table>
+</div>
+
+<hr class="section-divider">
+
+<!-- E3 -->
+<div id="e3" class="section-anchor">
+<h2 class="sec-h1 exp"><div class="h1-num">23</div>Building Sites & Templates</h2>
+<p class="prose">Experience Cloud sites are built using <strong>Experience Builder</strong> — a WYSIWYG drag-and-drop page builder. Sites start from Templates that provide pre-built page structures for common use cases.</p>
+
+<table class="data-table exp">
+  <thead><tr><th>Template</th><th>Best For</th></tr></thead>
+  <tbody>
+    <tr><td>Customer Service (Napili)</td><td>Self-service portals with Knowledge, Case Management, Q&A feeds</td></tr>
+    <tr><td>Build Your Own (Aura)</td><td>Fully custom portals — maximum flexibility, mature component ecosystem</td></tr>
+    <tr><td>Build Your Own (LWR)</td><td>Modern, faster, SEO-optimised, headless-ready Lightning Web Runtime</td></tr>
+    <tr><td>Partner Central</td><td>Partner portals with deal registration, lead sharing, dashboards</td></tr>
+    <tr><td>Help Center</td><td>Knowledge-focused self-service — article search as primary interaction</td></tr>
+    <tr><td>Microsites (LWR)</td><td>Simple, fast marketing landing pages</td></tr>
+  </tbody>
+</table>
+
+<h3 class="sec-h2 exp">Experience Builder Standard Components</h3>
+<table class="data-table exp">
+  <thead><tr><th>Component</th><th>Purpose</th></tr></thead>
+  <tbody>
+    <tr><td>Headline / Rich Text</td><td>Static content — titles, paragraphs, formatted text</td></tr>
+    <tr><td>Record List</td><td>Display list of related records from any Salesforce object</td></tr>
+    <tr><td>Knowledge Search</td><td>Federated search across Knowledge Articles</td></tr>
+    <tr><td>Case Creation Form</td><td>Guided form for creating Cases (authenticated or guest)</td></tr>
+    <tr><td>Topics</td><td>Group content by topic — auto-suggests related articles and discussions</td></tr>
+    <tr><td>Lightning Flow</td><td>Embed any Screen Flow directly in an Experience Cloud page</td></tr>
+    <tr><td>Login / Registration</td><td>Standard authentication flows for member access</td></tr>
+  </tbody>
+</table>
+</div>
+
+<hr class="section-divider">
+
+<!-- E4 -->
+<div id="e4" class="section-anchor">
+<h2 class="sec-h1 exp"><div class="h1-num">24</div>Content & Knowledge in Experience Cloud</h2>
+
+<h3 class="sec-h2 exp">Knowledge Integration</h3>
+<ul class="bullet-list exp">
+  <li>Articles made visible via Data Category assignments per profile</li>
+  <li>Guest users see publicly-accessible categories; authenticated members see more</li>
+  <li>Article ratings and feedback from members help improve content quality</li>
+  <li>Topics link to Knowledge Articles for navigation-based browsing</li>
+</ul>
+
+<h3 class="sec-h2 exp">Salesforce CMS</h3>
+<p class="prose">Salesforce CMS is a headless CMS embedded in Experience Cloud that allows teams to create structured, reusable content items — banners, news articles, product information — and publish them to sites and external channels via APIs.</p>
+<ul class="bullet-list exp">
+  <li><strong>Content Types:</strong> Define structured schemas (e.g., News Article with Title, Body, Image, Tags)</li>
+  <li><strong>Content Workspaces:</strong> Organise content by audience or site</li>
+  <li><strong>Content Collections:</strong> Group related items for Collection List components</li>
+  <li><strong>Translation:</strong> CMS supports multi-language content for international sites</li>
+</ul>
+</div>
+
+<hr class="section-divider">
+
+<!-- E5 -->
+<div id="e5" class="section-anchor">
+<h2 class="sec-h1 exp"><div class="h1-num">25</div>Security, Sharing & Visibility</h2>
+<p class="prose">Security in Experience Cloud is multi-layered. External users access a subset of Salesforce data through carefully configured sharing and visibility controls. Both over-sharing (data leak) and under-sharing (broken portal) are failures.</p>
+
+<div class="info-card warn">
+  <div class="info-card-title">⚠️ Guest User Security — Critical</div>
+  <p>Never give Guest Users more access than absolutely necessary. Salesforce enforces strict OWD for Guest Users — they can only access records where OWD is Public Read Only or higher. Always use 'Secure Guest User Record Access' (enabled by default in recent orgs). Over-permissioning Guest Users is a major security vulnerability.</p>
+</div>
+
+<table class="data-table exp">
+  <thead><tr><th>Sharing Mechanism</th><th>Description</th></tr></thead>
+  <tbody>
+    <tr><td>OWD (Org-Wide Default)</td><td>Set base visibility per object — Public Read Only or Private</td></tr>
+    <tr><td>Experience Cloud Sharing Sets</td><td>Share records with Community Users based on field relationship matching</td></tr>
+    <tr><td>Sharing Rules</td><td>Criteria-based rules for Customer Community Plus and Partner licenses</td></tr>
+    <tr><td>Super User Access</td><td>Partner Community feature — see all records within partner account</td></tr>
+    <tr><td>Manual Sharing</td><td>Record-level sharing done by owner or admin</td></tr>
+    <tr><td>Page Visibility</td><td>Individual pages can require authentication even in public sites</td></tr>
+  </tbody>
+</table>
+</div>
+
+<hr class="section-divider">
+
+<!-- E6 -->
+<div id="e6" class="section-anchor">
+<h2 class="sec-h1 exp"><div class="h1-num">26</div>Customisation with LWC & Aura</h2>
+
+<h3 class="sec-h2 exp">Exposing LWC in Experience Builder</h3>
+<ol class="num-list exp">
+  <li>In the component's <span class="inline-code">*.js-meta.xml</span>, add target <span class="inline-code">lightningCommunity__Page</span> in the &lt;targets&gt; section</li>
+  <li>Add &lt;targetConfigs&gt; with configurable properties — these appear in the Experience Builder properties panel</li>
+  <li>Deploy the component to the org</li>
+  <li>In Experience Builder, component appears under Custom Components — drag onto pages</li>
+  <li>Configure component properties via the right panel — no code changes needed by admins</li>
+</ol>
+
+<h3 class="sec-h2 exp">Aura vs LWR Comparison</h3>
+<table class="data-table exp">
+  <thead><tr><th>Aura Sites</th><th>LWR Sites</th></tr></thead>
+  <tbody>
+    <tr><td>Mature, large component ecosystem</td><td>Smaller but growing component set</td></tr>
+    <tr><td>Heavier page load (Aura runtime)</td><td>Significantly faster — outputs optimised HTML/CSS/JS</td></tr>
+    <tr><td>Standard SEO limitations</td><td>Server-side rendering for better SEO</td></tr>
+    <tr><td>Not headless</td><td>Headless-ready — React/Vue can consume Salesforce as backend</td></tr>
+    <tr><td>Most production portals today</td><td>Future direction — use for new builds</td></tr>
+  </tbody>
+</table>
+</div>
+
+<hr class="section-divider">
+
+<!-- E7 -->
+<div id="e7" class="section-anchor">
+<h2 class="sec-h1 exp"><div class="h1-num">27</div>Einstein & Personalisation</h2>
+
+<table class="data-table exp">
+  <thead><tr><th>Feature</th><th>Description</th></tr></thead>
+  <tbody>
+    <tr><td>Einstein Search Personalisation</td><td>Personalises search results based on each member's activity and profile history</td></tr>
+    <tr><td>Einstein Recommendations</td><td>Personalised article, product, or topic recommendations based on past behaviour</td></tr>
+    <tr><td>Einstein Engagement Scoring</td><td>Scores each member on engagement level — identify champions and at-risk members</td></tr>
+    <tr><td>Audience Targeting</td><td>Show/hide content based on segments (Profile, Location, Custom Fields) — no code</td></tr>
+    <tr><td>Einstein Bots in Experience Cloud</td><td>Embedded chatbot handles member queries before escalating to human agents</td></tr>
+    <tr><td>Content Personalisation</td><td>Different banners/content for different user segments — pure configuration</td></tr>
+  </tbody>
+</table>
+</div>
+
+<hr class="section-divider">
+
+<!-- E8 -->
+<div id="e8" class="section-anchor">
+<h2 class="sec-h1 exp"><div class="h1-num">28</div>Experience Cloud — Interview Questions & Answers</h2>
+<div class="info-card exp"><div class="info-card-title">📋 18 Expert Q&As</div><p>Covering site building, licenses, security, sharing, LWC customisation, and integration patterns. Tap to expand answers.</p></div>
+<div class="qa-section" id="qa-exp"></div>
+</div>
+
+<hr class="section-divider">
+
+<!-- FINAL QUICK REF -->
+<div id="quick-ref" class="section-anchor">
+<h2 class="sec-h1 teal" style="color:var(--teal);border-bottom:2px solid var(--teal-l)"><div class="h1-num" style="background:var(--teal)">★</div>Quick Reference — Key Differences</h2>
+
+<h3 class="sec-h2 sales">Sales Cloud</h3>
+<div class="qr-grid">
+  <div class="qr-card sales"><div class="qr-card-title">Lead vs Contact</div><div class="qr-card-body">Lead = unqualified prospect (no Account required). Contact = qualified person linked to an Account.</div></div>
+  <div class="qr-card sales"><div class="qr-card-title">Lookup vs Master-Detail</div><div class="qr-card-body">Lookup: optional parent, no rollup. Master-Detail: required parent, enables rollup summary, cascade delete.</div></div>
+  <div class="qr-card sales"><div class="qr-card-title">WFR vs Flow</div><div class="qr-card-body">WFR/Process Builder = legacy (being retired). Always use Flow for new automations.</div></div>
+  <div class="qr-card sales"><div class="qr-card-title">Profiles vs Roles</div><div class="qr-card-body">Profiles = what you CAN DO (access). Roles = what you CAN SEE (data visibility via hierarchy).</div></div>
+</div>
+
+<h3 class="sec-h2 svc">Service Cloud</h3>
+<div class="qr-grid">
+  <div class="qr-card svc"><div class="qr-card-title">Email-to-Case vs On-Demand</div><div class="qr-card-body">On-Demand: Salesforce email service, no firewall changes. Standard: requires local email agent on your server.</div></div>
+  <div class="qr-card svc"><div class="qr-card-title">Entitlement vs Milestone</div><div class="qr-card-body">Entitlement = overall SLA contract. Milestone = individual time-bound step within the SLA.</div></div>
+  <div class="qr-card svc"><div class="qr-card-title">Live Agent vs Messaging</div><div class="qr-card-body">Live Agent = synchronous (both online). Messaging = asynchronous (conversation persists over time).</div></div>
+  <div class="qr-card svc"><div class="qr-card-title">Macro vs Quick Text</div><div class="qr-card-body">Macro: series of agent ACTIONS in one click. Quick Text: pre-written MESSAGE snippet inserted with a shortcut.</div></div>
+</div>
+
+<h3 class="sec-h2 exp">Experience Cloud</h3>
+<div class="qr-grid">
+  <div class="qr-card exp"><div class="qr-card-title">Customer vs Partner License</div><div class="qr-card-body">Customer: B2C, limited object access. Partner: B2B, full CRM access for deal/lead management.</div></div>
+  <div class="qr-card exp"><div class="qr-card-title">Sharing Sets</div><div class="qr-card-body">Used for Customer Community license ONLY. Share records based on field relationships (AccountId match).</div></div>
+  <div class="qr-card exp"><div class="qr-card-title">Aura vs LWR</div><div class="qr-card-body">Aura: mature, more components. LWR: faster, better SEO, headless-ready — use for new sites.</div></div>
+  <div class="qr-card exp"><div class="qr-card-title">Guest User Security</div><div class="qr-card-body">Minimum access only. Never grant Create/Edit/Delete to sensitive objects. Secure Guest User Record Access must be enabled.</div></div>
+</div>
+</div>
+
+</main>
+</div>
+
+<!-- Back to top -->
+<button id="back-top" onclick="window.scrollTo({top:0,behavior:'smooth'})" title="Back to top">
+  <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M18 15l-6-6-6 6"/></svg>
+</button>
+
+<script>
+// ═══════════════════════════════ Q&A DATA ═══════════════════════════════
+const salesQA = [
+  {q:"What is the difference between a Lead and a Contact?",a:"A Lead is an unqualified prospect with no Account requirement — someone who's shown interest but hasn't been vetted as a real sales opportunity. A Contact is a qualified individual linked to an Account. The key difference: a Contact must have an Account, a Lead stands alone. When a Lead is converted, Salesforce creates a Contact (and Account + optionally Opportunity), graduating the Lead into the qualified pipeline. Leads have their own fields like Company (mapped to Account.Name) and Lead Source that transfer on conversion."},
+  {q:"Explain the Lead Conversion process in detail.",a:"Lead conversion is triggered by clicking 'Convert' on a Lead record. Salesforce searches for matching Accounts using fuzzy matching on Company name. The rep can create a new Account or merge into an existing one. A Contact record is created linked to the Account. Fields transfer via Lead Field Mapping (configured in Object Manager). Optionally, an Opportunity is created. The Lead's IsConverted is set to TRUE, ConveredDate is stamped, and ConvertedAccountId/ContactId/OpportunityId fields are populated. The Lead record becomes read-only. Activities transfer to the new Contact/Account."},
+  {q:"What are Lead Assignment Rules and how do they work?",a:"Lead Assignment Rules automatically assign newly created Leads to the appropriate user or queue. Only ONE rule can be active at a time, but it can contain multiple rule entries. Each rule entry has filter criteria (e.g., Country = India → assign to India Queue) and an assignee. Rule entries are evaluated in numeric order — the first matching entry wins. If no rule matches, the Lead goes to the default owner in the rule. Assignment rules fire when: (1) Lead created via Web-to-Lead, (2) Imported via Data Import Wizard, or (3) 'Assign using active assignment rule' is checked on the record."},
+  {q:"What is the difference between Opportunity Stage and Forecast Category?",a:"Opportunity Stage represents where a deal is in the sales process (Prospecting, Qualification, Negotiation). It's customisable per org and per Sales Process via Record Types. Forecast Category is a higher-level classification that maps to Stages and drives Collaborative Forecasting. Categories: Pipeline, Best Case, Commit, Most Likely, Closed, Omitted. Multiple Stages can map to the same Forecast Category. For example, both 'Prospecting' and 'Qualification' map to 'Pipeline'. The Forecast Category aggregates Opportunity amounts for management-level forecasting views and rollups through the role hierarchy."},
+  {q:"Explain Opportunity Contact Roles (OCR).",a:"Opportunity Contact Roles (OCR) is a junction object that associates Contacts with an Opportunity and defines each person's role in the buying process — Decision Maker, Evaluator, Technical Buyer, Economic Buyer, Champion, etc. One Contact can be marked as 'Primary'. OCRs matter because enterprise deals involve multiple stakeholders — without tracking roles, reps don't know who to prioritise. OCRs also appear in Account and Contact activity history, providing full touchpoint visibility. They enable reports to analyse win rates by buyer role type and are used in some CPQ and billing integrations."},
+  {q:"What is the difference between a Lookup and a Master-Detail relationship?",a:"Lookup: loosely coupled — child can exist without parent, deleting parent doesn't cascade to children, no rollup summary fields possible, OWD sharing is independent. Master-Detail: tightly coupled — child cannot exist without parent (required field, locked), deleting parent cascades to all children, Rollup Summary fields (SUM, COUNT, MIN, MAX) are possible on the master, and the child's OWD sharing is controlled by its parent. Master-Detail drives record-level sharing from parent to child, while Lookup does not."},
+  {q:"What are Roll-Up Summary Fields and when can they be used?",a:"Rollup Summary fields are available only on the Master side of a Master-Detail relationship. They aggregate child record values: COUNT (count of child records), SUM (sum of a numeric field), MIN (minimum value), MAX (maximum value). You can apply filter criteria so only matching children are included. Example: On Account (master), a Rollup Summary of SUM of Opportunity Amount where Stage = Closed Won gives total won revenue per Account. They cannot be used on Lookup relationships, self-relationships, or across more than one level."},
+  {q:"Explain the difference between Workflow Rules, Process Builder, and Flow.",a:"Workflow Rules (legacy): Simple single-action automations — email alerts, field updates, create tasks, outbound messages. Cannot create records or handle complex logic. Process Builder (legacy): More advanced — can create records, update related records, launch flows. Supports IF/THEN with multiple criteria groups. Flow (current/recommended): Salesforce's modern automation engine. Does everything WFR and PB do PLUS: complex logic, loops, Apex actions, subflows, screen interactions, queries, DML. Salesforce is retiring WFR and PB — all new automations should use Flow. For interviews: always recommend Flow."},
+  {q:"What is a Validation Rule? Give a real-world example.",a:"A Validation Rule is a formula that evaluates to TRUE when data is INVALID, preventing record save and displaying a custom error message. Example 1: Rep marks Opp as Closed Won without filling Close Date. Formula: AND(ISPICKVAL(StageName,'Closed Won'), ISBLANK(CloseDate)). Message: 'Close Date is required for Closed Won.' Example 2: Prevent negative amounts: Amount < 0. Validation Rules fire on ALL save operations — UI, API, mobile, data import — making them a reliable data quality enforcement tool regardless of entry channel."},
+  {q:"How does Collaborative Forecasting work?",a:"Collaborative Forecasting rolls up Opportunity amounts through the role hierarchy. Each user sees their own Opportunities plus subordinates'. Managers can override (adjust) forecasts — tracked separately from underlying Opportunities. Forecast Types determine what's being forecast: Amount, Quantity, Opportunity Splits, or Product Family. Quotas can be loaded for each user/period and displayed next to forecasts. Forecast Hierarchy is based on Role Hierarchy — users without roles are excluded. Period can be monthly or quarterly. Adjustments show as a separate 'adjusted' value alongside the original rollup."},
+  {q:"What is an Approval Process? Walk through a configuration example.",a:"An Approval Process automates routing a record to a designated person for approval. Configuration: (1) Entry Criteria: e.g., Opportunity Discount > 20%. (2) Initial Submission Actions: lock the record, send email to submitter. (3) Approval Steps: Step 1 — route to direct manager. Step 2 — if discount > 40%, route to VP. (4) Final Approval Actions: update Discount_Approved__c = TRUE, unlock record, send approval email. (5) Final Rejection Actions: update field = FALSE, send rejection email with reason. (6) Recall Actions: undo submission state. Multiple active processes can exist per object. Processes can require all approvers or just one (first response)."},
+  {q:"What are Record Types and how are they used?",a:"Record Types allow different picklist values, page layouts, and process associations for different user groups on the same object. Example: A company sells B2B software and B2C subscriptions. Two Record Types: 'B2B Software' (with complex stages, CPQ) and 'B2C Subscription' (simpler stages, standard pricing). Each gets its own page layout and Sales Process. Profiles control which Record Types are accessible. Record Types also drive different Validation Rules applying per type, Quick Actions visible per type, Path configurations, and Compact Layouts. They're the primary way to give different teams different experiences on the same object."},
+  {q:"Explain the difference between Roles, Profiles, and Permission Sets.",a:"Profiles control the MINIMUM access a user has: object CRUD, FLS (field-level security), app visibility, page layouts, login hours/IP restrictions, system permissions. Every user must have exactly one Profile. Roles control DATA VISIBILITY through record sharing — users in higher roles see records of users in lower roles (based on OWD). Permission Sets GRANT additional permissions beyond the Profile — they add access, never restrict. Permission Set Groups bundle multiple Permission Sets for easier assignment. Best practice: Use Profiles for minimum required access, Permission Sets for role-specific exceptions."},
+  {q:"What is OWD and how does the sharing model work?",a:"OWD (Org-Wide Default) sets the baseline record access for users who don't own the record. Options: Private (only owner + hierarchy), Public Read Only, Public Read/Write, Controlled by Parent (for Master-Detail children). Sharing is then OPENED beyond OWD using: Role Hierarchy (automatic — managers see subordinate records), Sharing Rules (criteria-based or ownership-based, configured per object), Manual Sharing (user-to-user), Teams (Account/Opportunity), Apex Managed Sharing (programmatic). Critical rule: OWD sets the FLOOR. Sharing can only open up access, never restrict below the floor. You cannot use sharing to give less than OWD."},
+  {q:"What is Data Loader and when would you use it over Data Import Wizard?",a:"Data Import Wizard: web-based UI, up to 50,000 records, limited objects (Leads, Contacts, Accounts, Opportunities, some custom objects), insert/update/upsert only. Data Loader: desktop application, up to 5 million records, ALL objects, supports insert/update/upsert/delete/hard delete/export/export all, command-line for automation, detailed error CSV logs. Use Data Loader when: volume > 50k records, need to delete records, working with objects not in Import Wizard, scheduling automated nightly/weekly data syncs, or need precise error tracking per record."},
+  {q:"What is Territory Management in Sales Cloud?",a:"Enterprise Territory Management allows defining territories based on Account characteristics (industry, geography, revenue) and assigning multiple reps/managers to accounts based on territory. Unlike Role Hierarchy (one manager per role), Territory Management supports multiple reps covering the same account for different product lines. Territory Models can be Planned, Active, or Archived — you can plan and preview before activating. Users, Accounts, and Opportunities can be assigned to territories. Territory Hierarchy provides rollup reporting. It requires separate Territory Management permissions and is distinct from the standard Role Hierarchy sharing model."},
+  {q:"What are External IDs and why are they important for data migration?",a:"External IDs are custom fields marked as 'External ID' that store unique identifiers from external systems (ERP IDs, legacy CRM IDs). During data migration, External IDs enable upsert operations — insert new records that don't exist, update existing records that do — all in one operation matched on External ID rather than Salesforce record ID. This avoids pre-querying Salesforce IDs. They can also serve as relationship keys in data uploads — reference a parent record by its External ID instead of its 18-character Salesforce ID. Only 3 External ID fields are allowed per object on standard orgs."},
+  {q:"What is Duplicate Management?",a:"Duplicate Management has two components: (1) Matching Rules — define the algorithm for comparing records (fuzzy matching on Name, Email, Phone) to identify potential duplicates. (2) Duplicate Rules — define what action to take when a match is found: Alert (warn but allow save), Block (prevent save), or Report (log without blocking). Standard matching and duplicate rules exist for Leads, Contacts, and Accounts. Custom rules work for any object. Duplicate Jobs proactively identify existing duplicates in the org. Together they prevent data quality issues that corrupt reporting, forecasting, and the customer experience."},
+  {q:"How do you configure Web-to-Lead?",a:"(1) Setup → Feature Settings → Marketing → Web-to-Lead → Enable. (2) Set the default lead creator (owns leads with no assignment rule match). (3) Click 'Create Web-to-Lead Form', select fields, set return URL (thank-you page), enable reCAPTCHA if needed. (4) Salesforce generates HTML/JS code. (5) Copy and embed on your website. (6) Configure Lead Assignment Rules to route submitted leads. (7) Configure Auto-Response Rules for confirmation emails. Daily limit: 500 leads/day by default — contact Salesforce Support to increase. Submissions also fire Validation Rules and duplicate checks."},
+  {q:"What are Compact Layouts?",a:"Compact Layouts define which fields appear in the record's highlight panel (top section in Lightning), mobile card views, hover details, and activity timeline entries. The first field is always the record Name (locked). Up to 10 additional fields can be included. They're assigned to Record Types (or use system default). A well-designed Compact Layout means reps see key fields (Close Date, Amount, Stage, Account Name) at a glance on mobile without opening the full record. This is especially impactful for high-velocity sales teams using the Salesforce mobile app throughout the day."},
+  {q:"What is Campaign Influence?",a:"Campaign Influence measures how much credit a Campaign gets for influencing an Opportunity. The default First Touch model gives 100% credit to the first Campaign that touched any Contact on the Opportunity. Customisable attribution models — Even Distribution (equal credit to all campaigns), Last Touch (100% to most recent), or custom Apex models — distribute credit differently. Campaign Influence is configured per Opportunity by linking Contact roles on the Opportunity to Campaign Members. Campaign Influence reports show which campaigns are truly driving revenue, enabling marketing ROI measurement beyond just Lead Source."},
+  {q:"Explain the difference between Report Types in Salesforce.",a:"Tabular: records in a simple list, no groupings, no subtotals. Cannot be used as dashboard source reports. Summary: records grouped by one or more fields with subtotals per group — most common for dashboards. Matrix: two-dimensional grouping — groupings in both rows AND columns — ideal for comparison (Revenue by Region by Quarter). Joined: multiple report blocks using different primary objects in a single report — side-by-side comparison of different datasets. Custom Report Types (CRT) define the object relationships available in a report — you can include parent and child object fields. CRTs are created in Setup and shared with users."},
+  {q:"What is a Sales Path and how is it configured?",a:"Sales Path is a visual guidance bar at the top of record pages that shows each stage/status value as a clickable step. For each stage, admins configure: (1) Key Fields — up to 5 fields from the record displayed inline in the Path component (e.g., show Close Date and Amount at Proposal stage). (2) Guidance for Success — rich text with tips, links, checklists, best practices for completing that stage. Configuration: Setup → User Interface → Path Settings → Enable. Create a Path, select object and field (usually StageName for Opportunity or Status for Lead/Case). Assign the Path to a page layout or Lightning App Builder page."},
+  {q:"What is the Schema Builder?",a:"Schema Builder is a visual, drag-and-drop interface in Salesforce Setup that displays all objects and their fields along with relationship connections in a graphical diagram. You can create new objects, fields, and relationships directly from Schema Builder without navigating individual Object Manager pages. Extremely useful for understanding complex data models — especially when onboarding to a new org or designing data architecture. Lookup relationships appear as different line styles from Master-Detail. You can filter which objects are shown to keep complex orgs manageable. Very popular in discovery meetings for communicating data model to stakeholders."},
+  {q:"What is a Price Book and how are multiple Price Books managed?",a:"A Price Book is a catalog of Products with their prices. The Standard Price Book is auto-created and holds standard list prices for all products. Custom Price Books allow different pricing for customer segments, regions, partner tiers, or currencies. When adding products to an Opportunity, select a Price Book first — only prices in that book are available. An Opportunity can only have ONE Price Book at a time. To switch Price Books, existing line items must be removed. Multi-currency orgs require a price for each active currency in each Price Book. Price Book entries also control whether a product is active/available for quoting."}
+];
+
+const svcQA = [
+  {q:"What is a Case and what are the main ways to create one?",a:"A Case represents a customer issue, question, complaint, or service request — the fundamental Service Cloud record. Creation channels: Email-to-Case (emails to support address auto-create cases), Web-to-Case (web form submissions), Live Agent/Chat (sessions auto-create cases at end), Social Customer Service (social media mentions), Open CTI (phone call screen pop), Einstein Bot (bot collects info then creates case), manual creation by agent, and API/integration from external systems. Each channel can be configured with different Assignment Rules, Record Types, default field values, and Auto-Response rules."},
+  {q:"Explain Email-to-Case vs On-Demand Email-to-Case.",a:"Standard Email-to-Case requires a local email agent installed on your email server that monitors a mailbox and forwards emails to Salesforce — requires firewall access and technical server configuration. On-Demand Email-to-Case (ODEC) uses Salesforce's own email service — Salesforce generates a unique email address and you set up forwarding from your support inbox to this Salesforce address. ODEC is simpler, requires no firewall changes, and is recommended for most implementations. Main ODEC limit: 25MB attachment size per email. Both support custom routing addresses for different products/regions."},
+  {q:"What is an Entitlement and how does it relate to SLAs?",a:"An Entitlement defines the support terms a customer is contractually entitled to receive — essentially the SLA parameters. Linked to Account, Contact, or Asset. When a Case is created for that customer, the system links the appropriate Entitlement. The Entitlement triggers an Entitlement Process containing Milestones — time-bound steps (First Response within 1hr, Resolution within 8hrs) that the team must complete. If a Milestone isn't met, automated escalation actions fire. This ensures SLA commitments are tracked, enforced, and reportable. Service Contracts house Entitlements for contract management."},
+  {q:"What is the difference between a Milestone and an Entitlement Process?",a:"An Entitlement Process is the overall container — a sequence of requirements defined for a level of service. A Milestone is an individual, time-bound step WITHIN an Entitlement Process. Think: Entitlement Process = the entire SLA contract. Milestone = individual checkpoints within that SLA. An Entitlement Process can have multiple Milestones in sequence: First Response → Acknowledgement → Resolution. Each Milestone has its own time limit (in minutes), success criteria (formula determining completion), and actions triggered on: start warning, violation, and completion."},
+  {q:"Explain Knowledge Data Categories.",a:"Data Categories are a hierarchical classification system for Knowledge Articles that control visibility and organisation. A Category Group (e.g., 'Products') contains a hierarchy of Category Values (Products → Hardware → Laptops). Articles are tagged with categories during creation. Visibility is controlled by assigning Data Category access at the Profile level for internal users and at the membership level for Experience Cloud users. This ensures articles about confidential processes are only visible to agents while customer-facing how-to articles are visible in the self-service portal. Data Categories also structure navigation in the portal."},
+  {q:"What is Omni-Channel and how does routing work?",a:"Omni-Channel automatically pushes work items (Cases, Chats, Messages) to the best available agent. Routing flow: (1) Work items assigned to an Omni-Channel Queue. (2) System evaluates which subscribed agents are Available (based on Presence Status). (3) Based on Routing Configuration model (Least Active, Most Available, or Skill-Based), selects optimal agent. (4) Work pushed to agent — notification appears in Omni-Channel widget. Agent accepts or declines. (5) Accepting consumes capacity from agent's total capacity limit. Omni-Channel Supervisor provides real-time visibility of all agent queues, capacities, and work assignments for managers."},
+  {q:"What is the Service Console and why is it used?",a:"The Service Console is a specialised Lightning App for high-volume agents. Standard Salesforce UI: one record open at a time, every navigation loses context. In Console: multiple records open simultaneously as workspace tabs, related records as sub-tabs. Agents see Case, related Account, Contact, recent case history, live chat, knowledge articles — all on one screen. Dramatically reduces Average Handle Time by eliminating context-switching. The console also embeds: Omni-Channel widget (agent availability), Macros (one-click multi-action sequences), Quick Text (canned responses), Knowledge Sidebar (suggested articles), and Case Feed (full communication timeline)."},
+  {q:"What is a Macro and how would you create one?",a:"A Macro records a sequence of agent actions executable in one click from the Service Console. A macro might: send an email using a specific template + update Case Status to Closed + add a standard Case Comment + attach a Knowledge Article — all in one click instead of four separate actions. Creation: App Launcher → Macros → New. Name the macro, set sharing (All Users or specific profiles). Add Instructions — choose actions: Email, Case Feed, Case Field Update, Quick Text. Test on a case. Bulk Macros can apply actions to multiple selected cases from a list view — extremely powerful for mass case closure or batch status updates."},
+  {q:"Explain Case Escalation Rules in detail.",a:"Case Escalation Rules automatically escalate cases that have been open too long. Configuration: Setup → Feature Settings → Service → Escalation Rules → New Rule → Add Rule Entries. Each entry specifies: (1) Filter criteria (e.g., Priority = Critical). (2) Time elapsed: hours/days since case creation OR last modification. (3) Whether to use Business Hours (time only counts during work hours). (4) Actions: reassign case to a different user/queue, send notification email. Escalation sets IsEscalated = TRUE on the Case — visible to agents and management. One active escalation rule per org with multiple entries evaluated top-to-bottom."},
+  {q:"What is SLA management in Salesforce?",a:"SLA management uses: Entitlements (holds SLA parameters), Entitlement Processes (sequences of Milestones), Milestones (individual time limits per step), and Business Hours (ensures milestones count only during working hours). Escalation actions fire when Milestones are at risk. Reports on Milestone Compliance measure SLA performance over time. CSAT surveys can trigger on Case Closure to measure customer satisfaction alongside SLA metrics. Multiple Entitlement Processes can exist for different support tiers (Gold/Silver/Bronze). Key metric: 'First Response Compliance %' and 'Resolution Time Compliance %' are tracked in Service Analytics dashboards."},
+  {q:"What is Salesforce Live Agent vs Messaging vs Voice?",a:"Live Agent (Embedded Service Chat): real-time, synchronous web chat — customer and agent must both be online simultaneously. Session ends when either disconnects. Chat transcript auto-created. Messaging (MIAW): asynchronous — conversations persist. Customer can close window and return hours later. Supports WhatsApp, SMS, Facebook Messenger, Apple Messages for Business. Voice (Service Cloud Voice): native telephony via Amazon Connect. AI transcribes calls in real-time, Einstein recommends Knowledge Articles during the call, all channels route through Omni-Channel. MIAW is the future direction — Salesforce is investing heavily in asynchronous messaging over synchronous chat."},
+  {q:"What is the Einstein Case Classification feature?",a:"Einstein Case Classification uses AI to read incoming Case subject and description and automatically predict values for categorical fields like Type, Priority, Product, and Reason. Agents don't manually categorise each case — AI does it automatically and agents can accept or override. The model is trained on your org's historical Cases, so it learns your specific taxonomy. It improves over time as agents provide feedback by accepting/overriding. Benefits: reduces Average Handle Time, improves routing accuracy (correctly categorised cases go to the right queue), and ensures consistent data quality for reporting."},
+  {q:"What is Field Service Lightning (FSL)?",a:"FSL manages the complete lifecycle for organisations dispatching field technicians: Case/Work Order creation → skill matching → scheduling → dispatch → field execution → completion → billing. Key objects: Work Order (service job), Work Order Line Item (task within job), Service Resource (technician), Service Territory (geographic area), Service Appointment (scheduled visit), Scheduling Policy (optimisation rules). FSL mobile app lets technicians receive assignments, navigate to sites, complete work orders, capture customer signatures, log parts used, and record time spent. Dispatcher Console provides Gantt/map view for real-time field operations management."},
+  {q:"What is Open CTI?",a:"Open CTI is a JavaScript API that allows Salesforce to integrate with telephony systems (CTI — Computer Telephony Integration). It embeds a softphone inside the Service Console. When a call comes in, Open CTI can: auto screen-pop the customer's Account and Case record based on caller ID, log call details as an Activity, create a new Case automatically, enable click-to-dial from Contact phone numbers, and transfer call notes on transfer. Open CTI is telephony-vendor agnostic — works with any system that provides a compatible adapter: Avaya, Cisco, Genesys, Amazon Connect, etc. It uses the Salesforce CTI Toolkit and doesn't require browser plugins."},
+  {q:"What are Queues in Salesforce?",a:"Queues are shared holding areas for work items — Cases, Leads, Opportunities, and custom objects. In Service Cloud, Queues act as shared inboxes where Cases wait before being assigned to individual agents. Multiple agents can be Queue members and pull Cases from the queue. With Omni-Channel, cases in a Queue are automatically pushed to available agents instead of waiting to be manually pulled. Queues have an email address — when a new item arrives, all members can be notified. Queue membership: individual users, Roles, Roles and Subordinates, or Public Groups. Queues are visible in list views and can have their own page layouts per Record Type."},
+  {q:"How does Case Merge work?",a:"Case Merge combines duplicate cases into a single master Case. Process: Select up to 3 Cases from a list view → choose which is the Master → select which field values to keep from each. The non-master Cases are marked as merged. All Case Comments, Emails, Attachments, Activities, and related records from merged cases transfer to the master Case. Merged cases are archived (not deleted) — customers accessing old case numbers get redirected to master. Merge is irreversible. Best practice: use Case Assignment Rules and Duplicate Rules to prevent duplicates at creation rather than relying on post-creation merging."},
+  {q:"What is Quick Text and how does it help agents?",a:"Quick Text is a library of pre-written message snippets that agents insert into emails, Case comments, and chat messages using a shortcut key. Example: typing '/greet' inserts a full personalised greeting automatically. Benefits: reduces typing time, ensures message consistency and compliance, eliminates spelling/grammar errors, significantly speeds Average Handle Time. Quick Text records have a Channel field (Email, Live Chat, Phone) controlling where each message can be used. Templates support merge fields — {First Name} is replaced with the customer's actual name. Quick Text is shared across teams and can be organised by Category."},
+  {q:"What are the standard Case Status categories?",a:"Salesforce ships with: New, Working, Escalated, On Hold, and Closed. Fully customisable — add any status values your process requires (Pending Customer, Pending Internal, Under Review, Resolved, Closed – Not Resolved, Duplicate, etc.). Each status must be designated as 'Open' (IsClosed = FALSE) or 'Closed' (IsClosed = TRUE). When a Case is set to a 'Closed' status, IsClosed = TRUE is auto-set and ClosedDate is stamped. Multiple statuses can map to 'Closed', enabling different end states (Resolved vs Duplicate vs Cannot Reproduce) while all marking the case as closed. Status values drive Escalation Rules, Milestone success criteria, and reporting."},
+  {q:"How do Business Hours work in Service Cloud?",a:"Business Hours define when your support team operates — specific days, hours, and timezone. Multiple Business Hours records can exist for different regions/tiers (US Support, India Support, 24/7 Critical Support). Uses in Service Cloud: (1) Escalation Rules — a Critical case opened at 5pm Friday doesn't escalate until 8am Monday with 9-5 Mon-Fri business hours. (2) Milestone time tracking — SLA clock only ticks during business hours, making SLA measurement fair. (3) Entitlements reference specific Business Hours. (4) Live Agent queues can use Business Hours to auto-show/hide chat buttons. (5) OWD reporting on support coverage by region."},
+  {q:"What is the difference between Case Comments and Emails in Case Feed?",a:"Case Comments are internal notes added to a Case — visible only to agents and management by default (unless marked as Public). They appear in Case Feed as internal activity records. Emails in Case Feed are the actual email correspondence with the customer — the external communication thread visible to both agent and customer. Key difference: Comments are for internal collaboration ('Spoke to billing team, waiting for refund confirmation'), while Emails are the customer-visible thread. Both appear chronologically in Case Feed, clearly labelled. Public Case Comments can be configured to be visible to customer portal users."},
+  {q:"What is Omni-Channel Supervisor?",a:"Omni-Channel Supervisor is a real-time management console for service managers. Features: live view of all agent availability/presence status, queue backlog by work item type, current work assignments per agent, capacity utilisation per agent, average handle time metrics, and agent status history. Supervisors can: reassign work items from one agent to another, change an agent's presence status, monitor live conversations without the agent knowing (silent monitoring), 'whisper' to agents during calls/chats (only agent hears), and barge into calls if necessary. It provides the operational visibility needed to manage real-time service delivery quality."},
+  {q:"What are Case Teams in Service Cloud?",a:"Case Teams allow multiple users to collaborate on a single complex Case by giving them specified access levels. Each Case Team member has a Role (Agent, Manager, Reviewer) and access level (Read/Write or Read Only). Use when: complex technical cases need L1 + L2 + Engineering collaboration, billing disputes involve support + billing teams, or VIP cases need management involvement. Predefined Case Team Templates can auto-add teams to cases matching certain criteria (e.g., Priority = Critical auto-adds the 'Critical Case Team'). Team members get notifications and can be tracked in reports to measure multi-agent collaboration patterns and identify knowledge gaps."},
+  {q:"What is Knowledge-Centred Service (KCS)?",a:"KCS is a methodology where agents create and improve Knowledge Articles as part of their normal support workflow — not as a separate task. When resolving a case, agents either attach an existing article or create a new draft article capturing the resolution. This ensures the knowledge base grows organically and stays current. Salesforce Knowledge supports KCS with: inline article creation from Cases (one click to draft new article with case context pre-filled), article feedback mechanisms (thumbs up/down from agents and customers), article usage reporting (which articles are most frequently attached to cases), and article link-to-case reporting (articles used most frequently on 'Closed Won' cases are promoted in search results)."},
+  {q:"How does Einstein Bot transfer work to a human agent?",a:"Einstein Bot transfer flow: (1) Customer starts a chat/messaging session — Bot handles initial conversation. (2) Bot collects context (case type, account number, issue description). (3) Transfer triggered — Bot can't resolve, customer requests agent, or defined intent matches 'transfer' dialog. (4) Bot creates Messaging Session record with all collected context. (5) Session transferred to Omni-Channel which routes to available human agent based on routing rules. (6) Agent receives session in console with full Bot conversation visible — customer doesn't repeat information. (7) Agent continues seamlessly from where Bot left off. Full Bot transcript appears in Case Feed after session ends."},
+  {q:"What is the purpose of Service Analytics?",a:"Service Analytics is a set of pre-built CRM Analytics (formerly Einstein Analytics) dashboards specifically designed for service operations. It provides: real-time case volume trends, First Contact Resolution (FCR) rate, Average Handle Time (AHT) by agent/team/channel, SLA Milestone compliance rates, case backlog by queue and priority, agent productivity rankings, customer satisfaction (CSAT) trend analysis, and channel mix analysis (% cases by phone/email/chat). Unlike standard Salesforce Reports, Service Analytics uses the CRM Analytics engine which handles millions of records with sub-second query performance. It also includes AI-powered anomaly detection and natural language querying."}
+];
+
+const expQA = [
+  {q:"What is Experience Cloud and what are its main use cases?",a:"Experience Cloud (formerly Community Cloud) is Salesforce's digital experience platform for building branded portals, websites, and mobile apps for external and internal audiences connected to Salesforce data. Main use cases: Customer Self-Service Portals (customers log and track cases, search Knowledge, reducing support call volume 40-60%), Partner Portals (channel partners manage leads, opportunities, deal registrations), Employee Communities/Intranets (HR self-service, internal apps), Commerce Storefronts (B2B/B2C shopping), Healthcare Patient Portals (appointment booking, medical records, HIPAA compliant), and Financial Services Client Portals (portfolio management, application submission)."},
+  {q:"What is the difference between Customer Community and Partner Community licenses?",a:"Customer Community is for B2C customers — individuals who are end-customers. Access only to records where the user is the Account holder or Contact. Limited object access, no role hierarchy participation. Cheapest option. Customer Community Plus adds sharing rule support and record ownership. Partner Community is for B2B channel partners — resellers, distributors, agents. Access to standard CRM objects (Leads, Opportunities, Accounts) that are shared to the partner. Partners can own records and participate in the role hierarchy. More expensive but significantly more CRM functionality. Choose based on how deep into your Salesforce data the external user needs to go."},
+  {q:"What are Experience Cloud Sharing Sets?",a:"Sharing Sets are used with Customer Community and Customer Community Plus licenses (not Partner) to share records with external users based on a field relationship chain. Example: Share all Cases where Case.AccountId = User.Contact.AccountId — every customer user in the same Account sees all their company's cases. This is the primary sharing mechanism for Customer Community license users since standard Sharing Rules don't support that license. Configuration: Setup → Digital Experiences → Settings → Sharing Sets. You define the object, access level (Read Only or Read/Write), and the relationship path (via Account or Contact on the User)."},
+  {q:"Explain the Guest User in Experience Cloud.",a:"Every Experience Cloud site has a Guest User — an anonymous identity used when unauthenticated visitors access the site. The Guest User has its own Guest User Profile controlling object permissions and FLS. Security implications: Over-permissioning Guest Users is a major security risk — it exposes sensitive data to anyone on the internet. Salesforce has tightened Guest User security progressively: (1) Guest Users can only see records with OWD Public Read Only or higher. (2) 'Secure Guest User Record Access' prevents accessing private records. (3) Best practice: minimum access — only grant Guest Users access to public-facing content like published Knowledge Articles."},
+  {q:"What are the template options in Experience Cloud?",a:"Templates: Customer Service (Napili) — optimised for self-service support with Knowledge, Case creation, Q&A. Build Your Own (Aura) — blank canvas with Aura components, maximum flexibility, mature ecosystem. Build Your Own (LWR) — blank canvas with Lightning Web Runtime, faster loading, better SEO, modern architecture. Partner Central — pre-configured for partner relationship management (deal registration, lead sharing). Help Center — Knowledge-focused, minimal case creation. Microsites (LWR) — single-page, fast, for marketing landing pages. Aloha — app-launcher tile layout for employee communities. Template choice determines available components, performance characteristics, and development approach."},
+  {q:"What is Experience Builder?",a:"Experience Builder is the WYSIWYG drag-and-drop page builder for creating and customising Experience Cloud sites. Features: visual canvas showing the page exactly as users will see it, component panel (drag standard or custom components onto the page), properties panel (configure component settings per instance), page management (create/delete/set visibility for pages), theme/branding tools (colors, fonts, CSS variables), audience-based personalisation rules, and publish controls. Admins and site builders create rich, data-driven pages without writing code. Developers extend the component library with custom LWC/Aura components exposed to Experience Builder through metadata configuration."},
+  {q:"How do you control component visibility in Experience Builder?",a:"Component visibility at three levels: (1) Audience Targeting — create Audience Segments based on User attributes (Profile, Custom Permissions, Field values on User record). Configure each component to 'Display Audience' — only users in that audience see the component. (2) Custom Components — LWC developers conditionally render using communityId context and reactive properties to show/hide content. (3) Page Visibility — entire pages can require authentication (only logged-in members see the page). These controls let a single site serve different experiences for guests, authenticated customers, and power users — without separate sites."},
+  {q:"What is the difference between Aura and LWR?",a:"Aura sites use the Aura component framework — established, widely supported, large ecosystem, but heavier page loading due to the Aura runtime bootstrap on every page load. LWR (Lightning Web Runtime) sites are built on a modern, lighter architecture outputting optimised HTML/CSS/JS — significantly faster First Contentful Paint and Time to Interactive. LWR supports server-side rendering for better SEO. LWR is headless-ready — Salesforce as backend while React/Vue handles rendering. However, LWR has a smaller set of compatible standard components. For new sites: use LWR unless you specifically need Aura-only components."},
+  {q:"How does Knowledge work in an Experience Cloud portal?",a:"Knowledge Articles surface in Experience Cloud through two mechanisms: (1) Data Category visibility — articles tagged with Data Categories made visible to specific member profiles. Guest users see public categories; authenticated members see more based on profile's Data Category access. (2) Component configuration — Knowledge Search, Article List, and Article Detail components added to pages in Experience Builder. When a customer searches, Salesforce queries the Knowledge base using the search term and returns articles visible to the current user. Portal article feedback (thumbs up/down) improves article quality. Customers can see suggested articles while filling the Web-to-Case form — potentially deflecting the case entirely."},
+  {q:"How does Self-Registration work?",a:"Self-Registration allows visitors to create their own account without admin manually creating them. Configuration: (1) Enable Self-Registration in site Administration → Login & Registration. (2) Choose Default New User Profile. (3) Optionally configure default Account for new registrants. (4) Customise registration page fields in Experience Builder. When a visitor registers: a Contact record is created, a User record is created with the default profile, and they're automatically added as a site member. Advanced: use a Flow or Apex handler to customise registration — route users to different accounts/profiles based on email domain. Self-registration dramatically reduces admin overhead for large customer-facing portals."},
+  {q:"What are Topics in Experience Cloud?",a:"Topics are tags that organise content — articles, discussions, posts — by theme. Example Topics: Billing, Installation, Network Issues. When members create posts, they tag topics. Knowledge Articles can be associated with topics. Members follow topics to receive updates. Topics List and Topics Detail components in Experience Builder display topic-based navigation. Navigational Topics defined by admins appear in site navigation menus as browsable categories. Topics provide intuitive browse-based content discovery vs search-based discovery — critical for members who don't know exactly what to search for. Trending Topics (based on engagement) automatically surface in community feeds."},
+  {q:"What is the Salesforce CMS?",a:"Salesforce CMS is a headless Content Management System embedded in Salesforce for creating structured content (News, Banners, Product Listings, FAQs) published to Experience Cloud sites and external channels via APIs. CMS Content Workspaces organise content by audience/site. Content Collections group related items. In Experience Builder, Collection List components connect to CMS Content Collections for dynamic display. CMS supports multi-language content for international sites. The headless capability means CMS content can be published to external websites or mobile apps — not just Experience Cloud — using the CMS Content API. Non-technical content authors can create and publish content without developer involvement."},
+  {q:"How do you expose an LWC in Experience Builder?",a:"(1) In the component's metadata file (*.js-meta.xml), add the target lightningCommunity__Page in the <targets> section. (2) Optionally add <targetConfigs> defining configurable properties — these appear in the Experience Builder properties panel for admin configuration. (3) Deploy the component to the org. (4) In Experience Builder, the component appears in the Custom Components section and can be dragged onto pages. (5) Admins configure component properties via the right panel — no code changes needed. Properties support: String, Integer, Boolean, ContentReference (for CMS content). Use NavigationMixin with 'comm/navigation' instead of 'lightning/navigation' for community-aware routing."},
+  {q:"What is headless Experience Cloud?",a:"Headless Experience Cloud decouples the Salesforce backend from the frontend presentation. Instead of using Experience Builder, developers build the frontend with React/Vue/Angular/Next.js and consume Salesforce data via: Experience Cloud REST APIs, Salesforce GraphQL, CMS Content API, and Salesforce Functions. LWR sites support headless architecture. Use cases: organisations with existing design systems, performance-critical consumer apps where LWR standard components are too heavy, highly custom UX requiring extreme component overriding, and multi-platform publishing (web + mobile native + kiosk) using the same Salesforce backend. Headless enables truly native web performance while keeping Salesforce as the system of record."},
+  {q:"What are key security considerations for Experience Cloud?",a:"(1) Guest User minimisation — absolute minimum access for unauthenticated users. (2) OWD settings — appropriate OWD per object (not Public Read/Write unless required). (3) Sharing Sets correctly configured for Customer Community users. (4) Field Level Security — sensitive fields not exposed in community page layouts. (5) Network settings — allowed domains, clickjack protection, HTTPS enforcement. (6) Content Security Policy (CSP) — trusted URLs for external scripts. (7) Session settings — appropriate timeout, secure cookies. (8) Never use the Guest User Profile for sensitive business processes. (9) Regularly audit Guest User permissions after Salesforce releases as defaults can change."},
+  {q:"What is the Audience feature in Experience Builder?",a:"Audiences define segments of users based on criteria (Profile, Location, Custom Permissions, User Object fields, or 'Is Authenticated' org-wide criteria). Each component can be configured with Audience rules — 'Display to: [Audience]' or 'Hide from: [Audience]'. Entire pages can be assigned to specific Audiences. Example: Show a 'Premium Support' banner only to users whose Contact.Service_Tier__c = 'Premium'. Show an 'Upgrade' call-to-action only to Standard tier users. Audiences evaluated at render time — same URL shows different content to different users without separate pages. This is the primary personalisation mechanism for zero-code customisation of community experiences."},
+  {q:"How is multi-language handled in Experience Cloud?",a:"Three levels: (1) Platform Language — Salesforce supports 300+ languages. Users set their language preference in their profile — standard components automatically render in the user's language. (2) Site Translation — Translation Workbench exports site labels (navigation items, component labels, custom text) for translation. Translators populate and import back. Site dynamically serves labels in user's language. (3) Content Translation — Salesforce CMS supports translated content versions of the same content item. Knowledge Articles support native translations — one article, multiple language versions. LWC custom labels use the standard Custom Label translation mechanism. Best practice: design for translation from the start — hard-coded strings in LWC are difficult to translate."},
+  {q:"What is the difference between a Community User and an Internal User?",a:"An Internal User has a full Salesforce license (Sales Cloud, Service Cloud, Platform) and accesses Salesforce through the standard Salesforce interface with full CRM capabilities. A Community User (Experience Cloud User) is an external user who accesses Salesforce data ONLY through an Experience Cloud site using a limited-access Experience Cloud license. They cannot access the standard Salesforce UI, only the Experience Cloud site. Community Users are associated with a Contact record and use external Profiles. They consume far fewer license costs. Key rule: if a person only needs portal access, give them an Experience Cloud license — never a full Salesforce license."},
+  {q:"What are the components of a good Experience Cloud governance model?",a:"A solid governance model covers: (1) Site Administration — who can publish changes, who reviews before publishing, branch/sandbox strategy. (2) Profile and Permission Management — who creates new community users, which profiles are available, how self-registration is controlled. (3) Content Governance — who can create Knowledge Articles, review and publish workflow, article retirement process. (4) Security Reviews — quarterly audit of Guest User permissions, OWD settings, and Sharing Set configurations. (5) Performance Monitoring — page load times, search performance, bot deflection rates. (6) Change Management — communication plan for portal updates, training for community admins, feedback mechanisms from members."}
+];
+
+// ═══════════════════════════════ RENDER QA ═══════════════════════════════
+function buildQA(items, containerId, cloudClass) {
+  const container = document.getElementById(containerId);
+  items.forEach((item, i) => {
+    const div = document.createElement('div');
+    div.className = `qa-item ${cloudClass}`;
+    div.innerHTML = `
+      <div class="qa-question" onclick="toggleQA(this)">
+        <div class="qa-num">${i+1}</div>
+        <div class="qa-q-text">${item.q}</div>
+        <div class="qa-chevron"><svg width="12" height="12" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></svg></div>
+      </div>
+      <div class="qa-answer">
+        <div class="qa-answer-inner">
+          <div class="qa-label">✦ Answer</div>
+          <p>${item.a}</p>
+        </div>
+      </div>`;
+    container.appendChild(div);
+  });
+}
+
+buildQA(salesQA, 'qa-sales', 'sales');
+buildQA(svcQA, 'qa-svc', 'svc');
+buildQA(expQA, 'qa-exp', 'exp');
+
+function toggleQA(el) {
+  el.parentElement.classList.toggle('open');
+}
+
+// ═══════════════════════════════ NAVIGATION ═══════════════════════════════
+function scrollToCloud(cloud) {
+  const map = { sales: 'sales-hero', svc: 'sv-hero', exp: 'exp-hero' };
+  const el = document.getElementById(map[cloud]);
+  if (el) { el.scrollIntoView({ behavior: 'smooth', block: 'start' }); }
+  document.querySelectorAll('.cloud-tab').forEach(t => t.classList.remove('active'));
+  document.querySelectorAll(`.cloud-tab.${cloud}`).forEach(t => t.classList.add('active'));
+}
+
+// ═══════════════════════════════ SCROLL TRACKING ═══════════════════════════════
+const navItems = document.querySelectorAll('.nav-item');
+const sections = [];
+navItems.forEach(item => {
+  const id = item.getAttribute('href').replace('#','');
+  const el = document.getElementById(id);
+  if (el) sections.push({ el, navItem: item, cloud: item.dataset.cloud });
+});
+
+function onScroll() {
+  const scrollY = window.scrollY + 120;
+  const maxScroll = document.body.scrollHeight - window.innerHeight;
+  const progress = Math.min(100, (window.scrollY / maxScroll) * 100);
+  document.getElementById('progress-fill').style.width = progress + '%';
+
+  // back to top
+  document.getElementById('back-top').classList.toggle('visible', window.scrollY > 400);
+
+  // active nav
+  let active = null;
+  sections.forEach(s => {
+    if (s.el.offsetTop <= scrollY) active = s;
+  });
+  if (active) {
+    navItems.forEach(n => n.classList.remove('active-nav'));
+    active.navItem.classList.add('active-nav');
+    // scroll sidebar to active item
+    const sidebar = document.getElementById('sidebar');
+    const itemTop = active.navItem.offsetTop;
+    const sidebarH = sidebar.clientHeight;
+    if (itemTop < sidebar.scrollTop || itemTop > sidebar.scrollTop + sidebarH - 60) {
+      sidebar.scrollTop = itemTop - sidebarH / 2;
+    }
+    // cloud tab
+    const cloud = active.cloud;
+    document.querySelectorAll('.cloud-tab').forEach(t => t.classList.remove('active'));
+    if (cloud) document.querySelectorAll(`.cloud-tab.${cloud}`).forEach(t => t.classList.add('active'));
+  }
+}
+
+window.addEventListener('scroll', onScroll, { passive: true });
+
+// ═══════════════════════════════ SEARCH ═══════════════════════════════
+const searchInput = document.getElementById('search-input');
+searchInput.addEventListener('input', () => {
+  const q = searchInput.value.trim().toLowerCase();
+  if (!q) {
+    document.querySelectorAll('.qa-item').forEach(el => {
+      el.classList.remove('hidden-by-search');
+      el.querySelectorAll('.search-highlight').forEach(h => {
+        const text = h.textContent;
+        h.replaceWith(document.createTextNode(text));
+      });
+    });
+    document.querySelectorAll('tr').forEach(r => r.classList.remove('hidden-by-search'));
+    return;
+  }
+  // Search QA items
+  document.querySelectorAll('.qa-item').forEach(el => {
+    const text = el.textContent.toLowerCase();
+    el.classList.toggle('hidden-by-search', !text.includes(q));
+    if (text.includes(q)) el.classList.add('open');
+  });
+  // Search table rows
+  document.querySelectorAll('tbody tr').forEach(r => {
+    r.classList.toggle('hidden-by-search', !r.textContent.toLowerCase().includes(q));
+  });
+});
+
+// ═══════════════════════════════ EXPAND ALL / KEYBOARD ═══════════════════════════════
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape') {
+    searchInput.value = '';
+    searchInput.dispatchEvent(new Event('input'));
+    searchInput.blur();
+  }
+});
+</script>
+</body>
+</html>
