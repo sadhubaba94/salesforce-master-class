@@ -4,27 +4,27 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>SF Interview Prep – Company Questions & Topic Guide</title>
-<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=JetBrains+Mono:wght@400;600&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,400&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,700;0,9..144,900;1,9..144,400&family=JetBrains+Mono:wght@400;600&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,400&display=swap" rel="stylesheet">
 <style>
 :root {
-  --bg: #f4f7ff;
+  --bg: #FAFAF7;
   --surface: #ffffff;
-  --surface2: #edf0fa;
-  --border: #d5dced;
-  --text: #0d1b3e;
-  --muted: #4a587a;
-  --c1: #1e40af; /* blue – primary */
-  --c2: #7c3aed; /* purple */
-  --c3: #d97706; /* amber */
-  --c4: #059669; /* green */
-  --c5: #dc2626; /* red */
-  --c6: #db2777; /* pink */
-  --c7: #0891b2; /* teal */
-  --c8: #4f46e5; /* indigo */
-  --font-head: 'Syne', sans-serif;
+  --surface2: #F0F0EE;
+  --border: #E8E8F0;
+  --text: #1A1A2E;
+  --muted: #5A5A7A;
+  --c1: #FF6B6B;
+  --c2: #4ECDC4;
+  --c3: #FFE66D;
+  --c4: #A8E6CF;
+  --c5: #FF8B94;
+  --c6: #B8B8FF;
+  --c7: #FFA07A;
+  --c8: #87CEEB;
+  --font-head: 'Fraunces', serif;
   --font-body: 'DM Sans', sans-serif;
   --font-code: 'JetBrains Mono', monospace;
-  --radius: 14px;
+  --radius: 16px;
 }
 *,*::before,*::after { box-sizing:border-box; margin:0; padding:0; }
 html { scroll-behavior:smooth; }
@@ -40,26 +40,25 @@ body::before {
 
 /* ── HERO ── */
 #hero {
-  background: linear-gradient(135deg, #1e3a8a 0%, #4c1d95 55%, #0e7490 100%);
+  background: var(--text);
   color: #fff; padding: 5rem 2rem 4rem; text-align:center; position:relative; overflow:hidden;
 }
 #hero::after {
   content:''; position:absolute; inset:0;
-  background: radial-gradient(ellipse 60% 80% at 50% 120%, rgba(255,255,255,.07) 0%, transparent 70%);
 }
 .hero-eyebrow {
   display:inline-flex; align-items:center; gap:.5rem;
-  background:rgba(255,255,255,.15); border:1px solid rgba(255,255,255,.25);
+  background:rgba(255,255,255,.1); border:1px solid rgba(255,255,255,.2);
   padding:.35rem 1rem; border-radius:999px; font-size:.78rem;
   font-family:var(--font-head); letter-spacing:.1em; text-transform:uppercase;
   margin-bottom:1.5rem; position:relative; z-index:1;
 }
-#hero h1 { font-family:var(--font-head); font-size:clamp(2.2rem,6vw,4.5rem); font-weight:800; line-height:1.05; position:relative; z-index:1; }
-#hero h1 span { color:#7dd3fc; }
+#hero h1 { font-family:var(--font-head); font-size:clamp(2.2rem,6vw,4.5rem); font-weight:700; line-height:1.05; position:relative; z-index:1; }
+#hero h1 span { color:var(--c1); }
 #hero p { max-width:580px; margin:1rem auto 0; color:rgba(255,255,255,.8); font-size:1.05rem; position:relative; z-index:1; }
 .back-btn {
   display:inline-flex; align-items:center; gap:.5rem; margin-bottom:1.5rem;
-  background:rgba(255,255,255,.15); border:1px solid rgba(255,255,255,.3);
+  background:rgba(255,255,255,.1); border:1px solid rgba(255,255,255,.2);
   color:#fff; text-decoration:none; padding:.5rem 1.1rem; border-radius:10px;
   font-family:var(--font-head); font-size:.82rem; font-weight:600; transition:.2s;
   position:relative; z-index:1;
@@ -69,17 +68,17 @@ body::before {
 /* stats strip */
 .stats-strip {
   display:flex; flex-wrap:wrap; justify-content:center; gap:1.5rem;
-  padding:1.5rem; background:rgba(255,255,255,.1); border-top:1px solid rgba(255,255,255,.15);
+  padding:1.5rem; background:rgba(255,255,255,.05); border-top:1px solid rgba(255,255,255,.1);
   position:relative; z-index:1;
 }
 .stat-item { text-align:center; }
-.stat-num { font-family:var(--font-head); font-size:2rem; font-weight:800; }
+.stat-num { font-family:var(--font-head); font-size:2rem; font-weight:700; }
 .stat-lbl { font-size:.75rem; opacity:.75; text-transform:uppercase; letter-spacing:.08em; }
 
 /* ── NAV ── */
 #topnav {
   position:sticky; top:0; z-index:100;
-  background:rgba(244,247,255,.92); backdrop-filter:blur(20px);
+  background:rgba(250,250,247,.92); backdrop-filter:blur(16px);
   border-bottom:1px solid var(--border); padding:0 1.5rem;
   display:flex; align-items:center; gap:1.5rem; overflow-x:auto; scrollbar-width:none;
 }
@@ -90,7 +89,7 @@ body::before {
   font-size:.76rem; font-family:var(--font-head); font-weight:600; padding:.45rem .8rem;
   border-radius:6px; white-space:nowrap; color:var(--muted); text-decoration:none; transition:.2s;
 }
-.nav-links a:hover { color:var(--text); background:rgba(30,64,175,.07); }
+.nav-links a:hover { color:var(--text); background:rgba(26,26,46,.07); }
 #progress { position:fixed; top:0; left:0; height:3px; background:linear-gradient(90deg,var(--c1),var(--c2),var(--c7)); z-index:200; }
 
 /* ── MAIN ── */
@@ -99,7 +98,7 @@ main { max-width:1100px; margin:0 auto; padding:3rem 1.5rem 8rem; }
 /* ── SECTION HEADER ── */
 .sec-header { display:flex; align-items:center; gap:1rem; margin-bottom:2rem; padding-bottom:1.2rem; border-bottom:2px solid var(--border); }
 .sec-icon { width:50px; height:50px; border-radius:14px; display:flex; align-items:center; justify-content:center; font-size:1.4rem; flex-shrink:0; }
-.sec-title { font-family:var(--font-head); font-size:2rem; font-weight:800; line-height:1.1; }
+.sec-title { font-family:var(--font-head); font-size:2rem; font-weight:700; line-height:1.1; }
 .sec-sub { color:var(--muted); font-size:.9rem; margin-top:.25rem; }
 section { padding:4rem 0 2.5rem; border-bottom:1px solid rgba(0,0,0,.06); opacity:0; transform:translateY(24px); transition:.55s; }
 section.visible { opacity:1; transform:none; }
@@ -110,18 +109,18 @@ section.visible { opacity:1; transform:none; }
   background:var(--surface); border:1px solid var(--border); border-radius:var(--radius);
   overflow:hidden; transition:.2s; cursor:pointer;
 }
-.company-card:hover { border-color:rgba(30,64,175,.3); box-shadow:0 6px 24px rgba(30,64,175,.1); transform:translateY(-2px); }
+.company-card:hover { border-color:var(--c1); box-shadow:0 12px 48px rgba(26,26,46,.12); transform:translateY(-2px); }
 .company-header {
   display:flex; align-items:center; gap:.9rem; padding:1.2rem 1.4rem;
   border-bottom:1px solid var(--border);
 }
 .company-logo {
-  width:44px; height:44px; border-radius:12px;
+  width:44px; height:44px; border-radius:16px;
   display:flex; align-items:center; justify-content:center; font-size:1.3rem;
   flex-shrink:0; font-family:var(--font-head); font-weight:800; font-size:1rem;
 }
 .company-name { font-family:var(--font-head); font-weight:700; font-size:1.05rem; }
-.company-meta { color:var(--muted); font-size:.78rem; margin-top:.1rem; }
+.company-meta { color:var(--muted); font-size:.78rem; margin-top:.1rem; font-family:var(--font-body); }
 .company-body { padding:1rem 1.4rem 1.2rem; }
 .round-badge {
   display:inline-block; padding:.2rem .7rem; border-radius:6px; font-size:.72rem;
@@ -153,11 +152,11 @@ section.visible { opacity:1; transform:none; }
 /* ── PREP TOPICS ── */
 .prep-grid { display:grid; grid-template-columns:repeat(auto-fit, minmax(300px,1fr)); gap:1rem; }
 .prep-card {
-  background:var(--surface); border:1px solid var(--border); border-radius:var(--radius); padding:1.3rem 1.5rem;
+  background:var(--surface); border:1.5px solid var(--border); border-radius:var(--radius); padding:1.3rem 1.5rem;
   border-top:4px solid; transition:.2s;
 }
 .prep-card:hover { box-shadow:0 4px 20px rgba(0,0,0,.08); transform:translateY(-2px); }
-.prep-card h3 { font-family:var(--font-head); font-weight:800; font-size:1rem; margin-bottom:.6rem; }
+.prep-card h3 { font-family:var(--font-head); font-weight:700; font-size:1rem; margin-bottom:.6rem; }
 .prep-q-list { list-style:none; padding:0; }
 .prep-q-list li { padding:.3rem 0 .3rem 1.2rem; position:relative; font-size:.84rem; color:var(--muted); }
 .prep-q-list li::before { content:'▸'; position:absolute; left:0; font-size:.7rem; top:.5rem; }
@@ -173,7 +172,7 @@ section.visible { opacity:1; transform:none; }
 /* ── SCENARIO TABLE ── */
 .scenario-block { background:var(--surface); border:1px solid var(--border); border-radius:var(--radius); overflow:hidden; margin:.8rem 0; }
 .scenario-header { padding:1rem 1.3rem; display:flex; align-items:center; gap:.8rem; border-bottom:1px solid var(--border); cursor:pointer; }
-.scenario-header:hover { background:rgba(30,64,175,.03); }
+.scenario-header:hover { background:var(--bg); }
 .scenario-header::after { content:'＋'; margin-left:auto; color:var(--muted); font-size:1.1rem; flex-shrink:0; }
 .scenario-block.open .scenario-header::after { content:'－'; }
 .scenario-body { display:none; padding:1rem 1.3rem; background:var(--surface2); }
@@ -181,7 +180,7 @@ section.visible { opacity:1; transform:none; }
 .sc-q { font-family:var(--font-head); font-weight:700; font-size:.92rem; }
 .sc-company { font-size:.72rem; font-family:var(--font-head); font-weight:700; padding:.2rem .6rem; border-radius:6px; }
 .sc-a { color:var(--muted); font-size:.86rem; line-height:1.65; margin-top:.5rem; }
-.sc-a code { background:rgba(30,64,175,.08); color:var(--c1); padding:.1em .35em; border-radius:4px; font-family:var(--font-code); font-size:.82em; }
+.sc-a code { background:rgba(26,26,46,.08); color:var(--text); padding:.1em .35em; border-radius:4px; font-family:var(--font-code); font-size:.82em; }
 
 /* ── SHARING TABLE ── */
 .table-wrap { overflow-x:auto; border-radius:var(--radius); border:1px solid var(--border); margin:.8rem 0; }
@@ -189,21 +188,21 @@ table { width:100%; border-collapse:collapse; font-size:.86rem; }
 thead tr { background:var(--surface2); }
 th { font-family:var(--font-head); font-weight:700; padding:.9rem 1.1rem; text-align:left; color:var(--muted); font-size:.73rem; text-transform:uppercase; letter-spacing:.06em; white-space:nowrap; }
 td { padding:.85rem 1.1rem; border-top:1px solid var(--border); vertical-align:top; color:var(--muted); font-size:.86rem; }
-tr:hover td { background:rgba(30,64,175,.02); }
+tr:hover td { background:var(--bg); }
 .tag { display:inline-block; font-size:.7rem; padding:.18em .6em; border-radius:999px; font-weight:600; font-family:var(--font-head); }
 .tag-yes { background:rgba(5,150,105,.12); color:#065f46; border:1px solid rgba(5,150,105,.25); }
 .tag-no  { background:rgba(220,38,38,.1); color:#991b1b; border:1px solid rgba(220,38,38,.2); }
 .tag-maybe { background:rgba(217,119,6,.1); color:#92400e; border:1px solid rgba(217,119,6,.2); }
 
 /* ── COMPANY COLOR MAP ── */
-.co-deloitte { background:linear-gradient(135deg,#86efac,#22d3ee); color:#065f46; }
-.co-airindia { background:linear-gradient(135deg,#fca5a5,#f97316); color:#7f1d1d; }
-.co-veeva { background:linear-gradient(135px,#c4b5fd,#a78bfa); color:#3b0764; }
-.co-hcl { background:linear-gradient(135deg,#93c5fd,#3b82f6); color:#1e3a8a; }
-.co-lti { background:linear-gradient(135deg,#fde68a,#f59e0b); color:#78350f; }
-.co-jeevan { background:linear-gradient(135deg,#d9f99d,#84cc16); color:#365314; }
-.co-salesforce { background:linear-gradient(135deg,#67e8f9,#0891b2); color:#0c4a6e; }
-.co-notmentioned { background:linear-gradient(135deg,#e2e8f0,#cbd5e1); color:#334155; }
+.co-deloitte { background:var(--c4); color:var(--text); }
+.co-airindia { background:var(--c1); color:var(--text); }
+.co-veeva { background:var(--c6); color:var(--text); }
+.co-hcl { background:var(--c2); color:var(--text); }
+.co-lti { background:var(--c3); color:var(--text); }
+.co-jeevan { background:var(--c8); color:var(--text); }
+.co-salesforce { background:var(--c7); color:var(--text); }
+.co-notmentioned { background:var(--border); color:var(--text); }
 
 /* ── ROUNDS BADGE COLORS ── */
 .round-tech { background:#eff6ff; color:#1e40af; border:1px solid #bfdbfe; }
@@ -218,11 +217,11 @@ tr:hover td { background:rgba(30,64,175,.02); }
 
 /* ── INFO BOX ── */
 .infobox { border-left:4px solid; border-radius:0 10px 10px 0; padding:1rem 1.2rem; margin:.8rem 0; }
-.infobox.blue { background:#eff6ff; border-color:var(--c1); }
-.infobox.green { background:#f0fdf4; border-color:var(--c4); }
-.infobox.amber { background:#fffbeb; border-color:var(--c3); }
-.infobox.red { background:#fef2f2; border-color:var(--c5); }
-.infobox.purple { background:#faf5ff; border-color:var(--c2); }
+.infobox.blue { background:var(--c8); border-color:var(--text); color:var(--text); }
+.infobox.green { background:var(--c4); border-color:var(--text); color:var(--text); }
+.infobox.amber { background:var(--c3); border-color:var(--text); color:var(--text); }
+.infobox.red { background:var(--c1); border-color:var(--text); color:var(--text); }
+.infobox.purple { background:var(--c6); border-color:var(--text); color:var(--text); }
 .infobox strong { display:block; font-family:var(--font-head); margin-bottom:.4rem; font-size:.9rem; }
 
 /* ── FILTER CHIPS ── */
@@ -250,7 +249,7 @@ tr:hover td { background:rgba(30,64,175,.02); }
 ul.fancy { list-style:none; padding:0; }
 ul.fancy li { padding:.35rem 0 .35rem 1.4rem; position:relative; color:var(--muted); font-size:.88rem; }
 ul.fancy li::before { content:'▸'; position:absolute; left:0; color:var(--c1); }
-code { font-family:var(--font-code); font-size:.84em; background:rgba(30,64,175,.08); color:var(--c1); padding:.1em .35em; border-radius:4px; }
+code { font-family:var(--font-code); font-size:.84em; background:rgba(26,26,46,.08); color:var(--text); padding:.1em .35em; border-radius:4px; }
 .highlight { background:linear-gradient(120deg,rgba(254,215,170,.6) 0%,rgba(254,215,170,.2) 100%); border-radius:4px; padding:.05em .2em; }
 
 @media(max-width:768px){ 
@@ -258,9 +257,9 @@ code { font-family:var(--font-code); font-size:.84em; background:rgba(30,64,175,
   .company-grid, .prep-grid { grid-template-columns: 1fr; }
 }
 
-#btt { position:fixed; bottom:2rem; right:2rem; z-index:100; width:42px; height:42px; border-radius:50%; background:#1e40af; color:#fff; font-size:1.1rem; display:flex; align-items:center; justify-content:center; cursor:pointer; text-decoration:none; opacity:0; pointer-events:none; transition:.2s; box-shadow:0 4px 16px rgba(30,64,175,.3); }
+#btt { position:fixed; bottom:2rem; right:2rem; z-index:100; width:42px; height:42px; border-radius:50%; background:var(--text); color:#fff; font-size:1.1rem; display:flex; align-items:center; justify-content:center; cursor:pointer; text-decoration:none; opacity:0; pointer-events:none; transition:.2s; box-shadow:0 4px 16px rgba(26,26,46,.12); }
 #btt.show { opacity:1; pointer-events:all; }
-#btt:hover { background:#1d4ed8; }
+#btt:hover { transform:translateY(-2px); }
 </style>
 </head>
 <body>
@@ -274,17 +273,16 @@ code { font-family:var(--font-code); font-size:.84em; background:rgba(30,64,175,
   <h1>Real Questions from<br><span>Real Companies</span></h1>
   <p>Curated from actual Salesforce developer interviews at Deloitte, Air India, Veeva CRM, HCL, LTI, Jeevan Technologies &amp; more — with topic-wise prep guide.</p>
   <div class="stats-strip">
-    <div class="stat-item"><div class="stat-num" style="color:#7dd3fc">8+</div><div class="stat-lbl">Companies</div></div>
-    <div class="stat-item"><div class="stat-num" style="color:#86efac">200+</div><div class="stat-lbl">Real Questions</div></div>
-    <div class="stat-item"><div class="stat-num" style="color:#fde68a">15+</div><div class="stat-lbl">Topics Covered</div></div>
-    <div class="stat-item"><div class="stat-num" style="color:#f9a8d4">3</div><div class="stat-lbl">Experience Levels</div></div>
+    <div class="stat-item"><div class="stat-num" style="color:var(--c8)">8+</div><div class="stat-lbl">Companies</div></div>
+    <div class="stat-item"><div class="stat-num" style="color:var(--c4)">200+</div><div class="stat-lbl">Real Questions</div></div>
+    <div class="stat-item"><div class="stat-num" style="color:var(--c3)">15+</div><div class="stat-lbl">Topics Covered</div></div>
+    <div class="stat-item"><div class="stat-num" style="color:var(--c5)">3</div><div class="stat-lbl">Experience Levels</div></div>
   </div>
 </div>
 
 <!-- ═══ NAV ═══ -->
 <nav id="topnav">
-  <a class="nav-logo" href="#hero">🎯 SF Interview</a>
-  <a href="index.html" style="display:inline-flex;align-items:center;gap:5px;padding:4px 12px;background:rgba(30,64,175,0.08);border:1px solid rgba(30,64,175,0.2);border-radius:100px;font-size:0.74rem;font-weight:600;font-family:var(--font-head);color:var(--c1);text-decoration:none;white-space:nowrap;flex-shrink:0;transition:all 0.2s" onmouseover="this.style.background='rgba(30,64,175,0.15)'" onmouseout="this.style.background='rgba(30,64,175,0.08)'">← Dev Guide</a>
+  <a class="nav-logo" href="#hero">🎯 Serr.tiilex;align-items:center;gap:5px;padding:4px 12px;background:rgba(26,26,46,0.08);border:1px solid rgba(26,26,46,0.2);border-radius:100px;font-size:0.74rem;font-weight:600;font-family:var(--font-head);color:var(--text);text-decoration:none;white-space:nowrap;flex-shrink:0;transition:all 0.2s" onmouseover="this.style.background='rgba(26,26,46,0.15)'" onmouseout="this.style.background='rgba(26,26,46,0.08)'">← Dev Guide</a>
   <div class="nav-links">
     <a href="#companies">By Company</a>
     <a href="#frequency">Topic Frequency</a>
@@ -304,7 +302,7 @@ code { font-family:var(--font-code); font-size:.84em; background:rgba(30,64,175,
 <!-- ═══ 1. BY COMPANY ═══ -->
 <section id="companies">
   <div class="sec-header">
-    <div class="sec-icon" style="background:#eff6ff;color:var(--c1)">🏢</div>
+    <div class="sec-icon" style="background:var(--c8);color:var(--text)">🏢</div>
     <div>
       <div class="sec-title">Questions by Company</div>
       <div class="sec-sub">Real interview experiences shared by candidates — rounds, topics, and actual questions asked</div>
@@ -548,7 +546,7 @@ code { font-family:var(--font-code); font-size:.84em; background:rgba(30,64,175,
 <!-- ═══ 2. TOPIC FREQUENCY ═══ -->
 <section id="frequency">
   <div class="sec-header">
-    <div class="sec-icon" style="background:#f0fdf4;color:var(--c4)">📊</div>
+    <div class="sec-icon" style="background:var(--c4);color:var(--text)">📊</div>
     <div>
       <div class="sec-title">Topic Frequency Analysis</div>
       <div class="sec-sub">Based on all company interviews — topics sorted by how often they appear</div>
@@ -562,97 +560,97 @@ code { font-family:var(--font-code); font-size:.84em; background:rgba(30,64,175,
       <div class="topic-icon">🔒</div>
       <div class="topic-bar-container">
         <div class="topic-name">Security & Sharing (OWD, Profiles, Roles)</div>
-        <div class="topic-track"><div class="topic-fill" style="width:96%;background:linear-gradient(90deg,#1e40af,#3b82f6)"></div></div>
+        <div class="topic-track"><div class="topic-fill" style="width:96%;background:var(--c1)"></div></div>
       </div>
-      <div class="topic-pct" style="color:#1e40af">96%</div>
+      <div class="topic-pct" style="color:var(--text)">96%</div>
     </div>
     <div class="topic-item">
       <div class="topic-icon">⚡</div>
       <div class="topic-bar-container">
         <div class="topic-name">Apex Triggers (Bulkify, Handler Pattern)</div>
-        <div class="topic-track"><div class="topic-fill" style="width:92%;background:linear-gradient(90deg,#7c3aed,#a78bfa)"></div></div>
+        <div class="topic-track"><div class="topic-fill" style="width:92%;background:var(--c2)"></div></div>
       </div>
-      <div class="topic-pct" style="color:#7c3aed">92%</div>
+      <div class="topic-pct" style="color:var(--text)">92%</div>
     </div>
     <div class="topic-item">
       <div class="topic-icon">🌊</div>
       <div class="topic-bar-container">
         <div class="topic-name">Async Apex (Future, Batch, Queueable)</div>
-        <div class="topic-track"><div class="topic-fill" style="width:88%;background:linear-gradient(90deg,#0891b2,#67e8f9)"></div></div>
+        <div class="topic-track"><div class="topic-fill" style="width:88%;background:var(--c6)"></div></div>
       </div>
-      <div class="topic-pct" style="color:#0891b2">88%</div>
+      <div class="topic-pct" style="color:var(--text)">88%</div>
     </div>
     <div class="topic-item">
       <div class="topic-icon">🌩️</div>
       <div class="topic-bar-container">
         <div class="topic-name">LWC (Lifecycle, Communication, Wire)</div>
-        <div class="topic-track"><div class="topic-fill" style="width:85%;background:linear-gradient(90deg,#d97706,#fbbf24)"></div></div>
+        <div class="topic-track"><div class="topic-fill" style="width:85%;background:var(--c3)"></div></div>
       </div>
-      <div class="topic-pct" style="color:#d97706">85%</div>
+      <div class="topic-pct" style="color:var(--text)">85%</div>
     </div>
     <div class="topic-item">
       <div class="topic-icon">⚙️</div>
       <div class="topic-bar-container">
         <div class="topic-name">Governor Limits (SOQL, DML, CPU)</div>
-        <div class="topic-track"><div class="topic-fill" style="width:82%;background:linear-gradient(90deg,#dc2626,#f87171)"></div></div>
+        <div class="topic-track"><div class="topic-fill" style="width:82%;background:var(--c5)"></div></div>
       </div>
-      <div class="topic-pct" style="color:#dc2626">82%</div>
+      <div class="topic-pct" style="color:var(--text)">82%</div>
     </div>
     <div class="topic-item">
       <div class="topic-icon">🔌</div>
       <div class="topic-bar-container">
         <div class="topic-name">Integration (REST, SOAP, OAuth)</div>
-        <div class="topic-track"><div class="topic-fill" style="width:78%;background:linear-gradient(90deg,#059669,#34d399)"></div></div>
+        <div class="topic-track"><div class="topic-fill" style="width:78%;background:var(--c4)"></div></div>
       </div>
-      <div class="topic-pct" style="color:#059669">78%</div>
+      <div class="topic-pct" style="color:var(--text)">78%</div>
     </div>
     <div class="topic-item">
       <div class="topic-icon">🔀</div>
       <div class="topic-bar-container">
         <div class="topic-name">Salesforce Flow (Types, Subflow, Apex Action)</div>
-        <div class="topic-track"><div class="topic-fill" style="width:73%;background:linear-gradient(90deg,#db2777,#f9a8d4)"></div></div>
+        <div class="topic-track"><div class="topic-fill" style="width:73%;background:var(--c7)"></div></div>
       </div>
-      <div class="topic-pct" style="color:#db2777">73%</div>
+      <div class="topic-pct" style="color:var(--text)">73%</div>
     </div>
     <div class="topic-item">
       <div class="topic-icon">🔍</div>
       <div class="topic-bar-container">
         <div class="topic-name">SOQL / SOSL (Relationships, Optimization)</div>
-        <div class="topic-track"><div class="topic-fill" style="width:68%;background:linear-gradient(90deg,#4f46e5,#818cf8)"></div></div>
+        <div class="topic-track"><div class="topic-fill" style="width:68%;background:var(--c8)"></div></div>
       </div>
-      <div class="topic-pct" style="color:#4f46e5">68%</div>
+      <div class="topic-pct" style="color:var(--text)">68%</div>
     </div>
     <div class="topic-item">
       <div class="topic-icon">🏗️</div>
       <div class="topic-bar-container">
         <div class="topic-name">Data Modeling (Relationships, Objects)</div>
-        <div class="topic-track"><div class="topic-fill" style="width:60%;background:linear-gradient(90deg,#0891b2,#38bdf8)"></div></div>
+        <div class="topic-track"><div class="topic-fill" style="width:60%;background:var(--c2)"></div></div>
       </div>
-      <div class="topic-pct" style="color:#0891b2">60%</div>
+      <div class="topic-pct" style="color:var(--text)">60%</div>
     </div>
     <div class="topic-item">
       <div class="topic-icon">🧪</div>
       <div class="topic-bar-container">
         <div class="topic-name">Test Classes (Best Practices, Mocking)</div>
-        <div class="topic-track"><div class="topic-fill" style="width:56%;background:linear-gradient(90deg,#7c3aed,#c4b5fd)"></div></div>
+        <div class="topic-track"><div class="topic-fill" style="width:56%;background:var(--c1)"></div></div>
       </div>
-      <div class="topic-pct" style="color:#7c3aed">56%</div>
+      <div class="topic-pct" style="color:var(--text)">56%</div>
     </div>
     <div class="topic-item">
       <div class="topic-icon">📊</div>
       <div class="topic-bar-container">
         <div class="topic-name">Reports &amp; Dashboards</div>
-        <div class="topic-track"><div class="topic-fill" style="width:40%;background:linear-gradient(90deg,#d97706,#fde68a)"></div></div>
+        <div class="topic-track"><div class="topic-fill" style="width:40%;background:var(--c3)"></div></div>
       </div>
-      <div class="topic-pct" style="color:#d97706">40%</div>
+      <div class="topic-pct" style="color:var(--text)">40%</div>
     </div>
     <div class="topic-item">
       <div class="topic-icon">🌐</div>
       <div class="topic-bar-container">
         <div class="topic-name">Experience Cloud / Community</div>
-        <div class="topic-track"><div class="topic-fill" style="width:30%;background:linear-gradient(90deg,#059669,#6ee7b7)"></div></div>
+        <div class="topic-track"><div class="topic-fill" style="width:30%;background:var(--c6)"></div></div>
       </div>
-      <div class="topic-pct" style="color:#059669">30%</div>
+      <div class="topic-pct" style="color:var(--text)">30%</div>
     </div>
   </div>
 </section>
@@ -660,7 +658,7 @@ code { font-family:var(--font-code); font-size:.84em; background:rgba(30,64,175,
 <!-- ═══ 3. SECURITY Q's ═══ -->
 <section id="security">
   <div class="sec-header">
-    <div class="sec-icon" style="background:#eff6ff;color:var(--c1)">🔒</div>
+    <div class="sec-icon" style="background:var(--c8);color:var(--text)">🔒</div>
     <div>
       <div class="sec-title">Security &amp; Sharing Questions</div>
       <div class="sec-sub">Most asked topic across ALL companies — know every layer</div>
@@ -671,7 +669,7 @@ code { font-family:var(--font-code); font-size:.84em; background:rgba(30,64,175,
 
   <div class="scenario-block">
     <div class="scenario-header">
-      <span class="sc-company" style="background:#eff6ff;color:#1e40af">Deloitte · Techno-Managerial</span>
+      <span class="sc-company" style="background:var(--c8);color:var(--text)">Deloitte · Techno-Managerial</span>
       <div class="sc-q" style="margin-left:.5rem">User A can share case with colleague — how? Always share specific type? Complex logic?</div>
     </div>
     <div class="scenario-body">
@@ -685,7 +683,7 @@ code { font-family:var(--font-code); font-size:.84em; background:rgba(30,64,175,
 
   <div class="scenario-block">
     <div class="scenario-header">
-      <span class="sc-company" style="background:#eff6ff;color:#1e40af">Deloitte · Technical</span>
+      <span class="sc-company" style="background:var(--c8);color:var(--text)">Deloitte · Technical</span>
       <div class="sc-q" style="margin-left:.5rem">Same profile + role, one user sees 10 records, other sees 100. Why?</div>
     </div>
     <div class="scenario-body">
@@ -704,7 +702,7 @@ code { font-family:var(--font-code); font-size:.84em; background:rgba(30,64,175,
 
   <div class="scenario-block">
     <div class="scenario-header">
-      <span class="sc-company" style="background:#eff6ff;color:#1e40af">General</span>
+      <span class="sc-company" style="background:var(--c8);color:var(--text)">General</span>
       <div class="sc-q" style="margin-left:.5rem">Ownership changed on Account (OWD=Private). Which of 5 persons still has access?</div>
     </div>
     <div class="scenario-body">
@@ -740,7 +738,7 @@ code { font-family:var(--font-code); font-size:.84em; background:rgba(30,64,175,
   <h3 style="font-family:var(--font-head);margin:2rem 0 .8rem">More Interview Scenarios</h3>
   <div class="scenario-block">
     <div class="scenario-header">
-      <span class="sc-company" style="background:#eff6ff;color:#1e40af">General</span>
+      <span class="sc-company" style="background:var(--c8);color:var(--text)">General</span>
       <div class="sc-q" style="margin-left:.5rem">1000 users, all with CRUD at profile level. Want to give one user Read-Only only. How?</div>
     </div>
     <div class="scenario-body">
@@ -754,7 +752,7 @@ code { font-family:var(--font-code); font-size:.84em; background:rgba(30,64,175,
   </div>
   <div class="scenario-block">
     <div class="scenario-header">
-      <span class="sc-company" style="background:#eff6ff;color:#1e40af">General</span>
+      <span class="sc-company" style="background:var(--c8);color:var(--text)">General</span>
       <div class="sc-q" style="margin-left:.5rem">Two users, same profile, both can READ Contact. A can't see B's records and B can't see A's. Cause?</div>
     </div>
     <div class="scenario-body">
@@ -766,7 +764,7 @@ code { font-family:var(--font-code); font-size:.84em; background:rgba(30,64,175,
 <!-- ═══ 4. APEX Q's ═══ -->
 <section id="apex-qs">
   <div class="sec-header">
-    <div class="sec-icon" style="background:#faf5ff;color:var(--c2)">⬡</div>
+    <div class="sec-icon" style="background:var(--c6);color:var(--text)">⬡</div>
     <div>
       <div class="sec-title">Apex Interview Questions</div>
       <div class="sec-sub">Access modifiers, sharing, constructors, test classes — frequently tested</div>
@@ -805,7 +803,7 @@ code { font-family:var(--font-code); font-size:.84em; background:rgba(30,64,175,
   <h3 style="font-family:var(--font-head);margin:2rem 0 .8rem">Complex Scenario: Batch Failure Handling</h3>
   <div class="scenario-block">
     <div class="scenario-header">
-      <span class="sc-company" style="background:#faf5ff;color:#7c3aed">Deloitte</span>
+      <span class="sc-company" style="background:var(--c6);color:var(--text)">Deloitte</span>
       <div class="sc-q" style="margin-left:.5rem">4000 records in batch, 3000 processed, 1000 failed. How to resolve and track?</div>
     </div>
     <div class="scenario-body">
@@ -819,7 +817,7 @@ code { font-family:var(--font-code); font-size:.84em; background:rgba(30,64,175,
 <!-- ═══ 5. LWC Q's ═══ -->
 <section id="lwc-qs">
   <div class="sec-header">
-    <div class="sec-icon" style="background:#fffbeb;color:var(--c3)">🌩️</div>
+    <div class="sec-icon" style="background:var(--c3);color:var(--text)">🌩️</div>
     <div>
       <div class="sec-title">LWC Interview Questions</div>
       <div class="sec-sub">Lifecycle, decorators, communication patterns, wire vs imperative</div>
@@ -873,7 +871,7 @@ code { font-family:var(--font-code); font-size:.84em; background:rgba(30,64,175,
 <!-- ═══ 6. FLOW Q's ═══ -->
 <section id="flow-qs">
   <div class="sec-header">
-    <div class="sec-icon" style="background:#fdf4ff;color:var(--c6)">🔀</div>
+    <div class="sec-icon" style="background:var(--c7);color:var(--text)">🔀</div>
     <div>
       <div class="sec-title">Flow Interview Questions</div>
       <div class="sec-sub">Types, building blocks, debug, Apex integration, transactions</div>
@@ -904,7 +902,7 @@ code { font-family:var(--font-code); font-size:.84em; background:rgba(30,64,175,
 
   <div class="scenario-block">
     <div class="scenario-header">
-      <span class="sc-company" style="background:#fdf4ff;color:#7c3aed">Deloitte · Scenario</span>
+      <span class="sc-company" style="background:var(--c7);color:var(--text)">Deloitte · Scenario</span>
       <div class="sc-q" style="margin-left:.5rem">Flow: Account picklist (open/pending/closed) — capture date each time status changes into payment_date field</div>
     </div>
     <div class="scenario-body">
@@ -918,7 +916,7 @@ code { font-family:var(--font-code); font-size:.84em; background:rgba(30,64,175,
 <!-- ═══ 7. ASYNC APEX ═══ -->
 <section id="async-qs">
   <div class="sec-header">
-    <div class="sec-icon" style="background:#faf5ff;color:var(--c2)">⏳</div>
+    <div class="sec-icon" style="background:var(--c6);color:var(--text)">⏳</div>
     <div>
       <div class="sec-title">Asynchronous Apex Questions</div>
       <div class="sec-sub">Future, Queueable, Batch, Scheduled — limits, differences, when to use</div>
@@ -944,7 +942,7 @@ code { font-family:var(--font-code); font-size:.84em; background:rgba(30,64,175,
   <h3 style="font-family:var(--font-head);margin:2rem 0 .8rem">Key Interview Scenarios</h3>
   <div class="scenario-block">
     <div class="scenario-header">
-      <span class="sc-company" style="background:#faf5ff;color:#7c3aed">Deloitte (3 Exp)</span>
+      <span class="sc-company" style="background:var(--c6);color:var(--text)">Deloitte (3 Exp)</span>
       <div class="sc-q" style="margin-left:.5rem">Need to sync 1 million Contact records to external system nightly. What approach?</div>
     </div>
     <div class="scenario-body">
@@ -953,7 +951,7 @@ code { font-family:var(--font-code); font-size:.84em; background:rgba(30,64,175,
   </div>
   <div class="scenario-block">
     <div class="scenario-header">
-      <span class="sc-company" style="background:#faf5ff;color:#7c3aed">Deloitte (2nd Round)</span>
+      <span class="sc-company" style="background:var(--c6);color:var(--text)">Deloitte (2nd Round)</span>
       <div class="sc-q" style="margin-left:.5rem">99 SOQL in 1st chunk of Batch — what happens in next chunk?</div>
     </div>
     <div class="scenario-body">
@@ -962,7 +960,7 @@ code { font-family:var(--font-code); font-size:.84em; background:rgba(30,64,175,
   </div>
   <div class="scenario-block">
     <div class="scenario-header">
-      <span class="sc-company" style="background:#faf5ff;color:#7c3aed">General</span>
+      <span class="sc-company" style="background:var(--c6);color:var(--text)">General</span>
       <div class="sc-q" style="margin-left:.5rem">Batch class is running on Account (inserting records), trigger fires, trigger has future method. What happens?</div>
     </div>
     <div class="scenario-body">
@@ -974,7 +972,7 @@ code { font-family:var(--font-code); font-size:.84em; background:rgba(30,64,175,
 <!-- ═══ 8. INTEGRATION Q's ═══ -->
 <section id="integration-qs">
   <div class="sec-header">
-    <div class="sec-icon" style="background:#f0fdf4;color:var(--c4)">🔌</div>
+    <div class="sec-icon" style="background:var(--c4);color:var(--text)">🔌</div>
     <div>
       <div class="sec-title">Integration Questions</div>
       <div class="sec-sub">REST, SOAP, OAuth, Named Credentials, callout patterns</div>
@@ -1003,7 +1001,7 @@ code { font-family:var(--font-code); font-size:.84em; background:rgba(30,64,175,
 
   <div class="scenario-block">
     <div class="scenario-header">
-      <span class="sc-company" style="background:#f0fdf4;color:#059669">Veeva CRM Style</span>
+      <span class="sc-company" style="background:var(--c4);color:var(--text)">Veeva CRM Style</span>
       <div class="sc-q" style="margin-left:.5rem">Given JSON with nested arrays — write Apex inner class structure and deserialize</div>
     </div>
     <div class="scenario-body">
@@ -1017,7 +1015,7 @@ code { font-family:var(--font-code); font-size:.84em; background:rgba(30,64,175,
 <!-- ═══ 9. SCENARIO Q's ═══ -->
 <section id="scenarios">
   <div class="sec-header">
-    <div class="sec-icon" style="background:#fff7ed;color:var(--c3)">🎭</div>
+    <div class="sec-icon" style="background:var(--c3);color:var(--text)">🎭</div>
     <div>
       <div class="sec-title">Scenario-Based Questions</div>
       <div class="sec-sub">Design + coding scenarios asked in actual interviews — click to see approach</div>
@@ -1028,7 +1026,7 @@ code { font-family:var(--font-code); font-size:.84em; background:rgba(30,64,175,
 
   <div class="scenario-block">
     <div class="scenario-header">
-      <span class="sc-company" style="background:#eff6ff;color:#1e40af">Deloitte · Design</span>
+      <span class="sc-company" style="background:var(--c8);color:var(--text)">Deloitte · Design</span>
       <div class="sc-q" style="margin-left:.5rem">Build Service Center search UI with Google Maps, real-time filtering, no downtime for new centers</div>
     </div>
     <div class="scenario-body">
@@ -1044,7 +1042,7 @@ code { font-family:var(--font-code); font-size:.84em; background:rgba(30,64,175,
 
   <div class="scenario-block">
     <div class="scenario-header">
-      <span class="sc-company" style="background:#eff6ff;color:#1e40af">Deloitte · Scenario</span>
+      <span class="sc-company" style="background:var(--c8);color:var(--text)">Deloitte · Scenario</span>
       <div class="sc-q" style="margin-left:.5rem">Email arrives in Salesforce → create Case (In-Progress, Medium) → assign to queue → check if Contact with same email exists → link or create</div>
     </div>
     <div class="scenario-body">
@@ -1057,7 +1055,7 @@ code { font-family:var(--font-code); font-size:.84em; background:rgba(30,64,175,
 
   <div class="scenario-block">
     <div class="scenario-header">
-      <span class="sc-company" style="background:#dcfce7;color:#166534">LTI · Architecture</span>
+      <span class="sc-company" style="background:var(--c4);color:var(--text)">LTI · Architecture</span>
       <div class="sc-q" style="margin-left:.5rem">Amazon app: Items, Add Items, Cart objects. What relationships? Junction object? Calculate total? Delete behavior?</div>
     </div>
     <div class="scenario-body">
@@ -1072,7 +1070,7 @@ code { font-family:var(--font-code); font-size:.84em; background:rgba(30,64,175,
 
   <div class="scenario-block">
     <div class="scenario-header">
-      <span class="sc-company" style="background:#fef3c7;color:#92400e">General · Data Migration</span>
+      <span class="sc-company" style="background:var(--c3);color:var(--text)">General · Data Migration</span>
       <div class="sc-q" style="margin-left:.5rem">Import Account, Opportunity, Contact from Excel (old org) to new org. What tool? How to avoid errors?</div>
     </div>
     <div class="scenario-body">
@@ -1087,7 +1085,7 @@ code { font-family:var(--font-code); font-size:.84em; background:rgba(30,64,175,
 
   <div class="scenario-block">
     <div class="scenario-header">
-      <span class="sc-company" style="background:#eff6ff;color:#1e40af">Deloitte · Coding</span>
+      <span class="sc-company" style="background:var(--c8);color:var(--text)">Deloitte · Coding</span>
       <div class="sc-q" style="margin-left:.5rem">Write Batch on User to update related Account and Opportunity</div>
     </div>
     <div class="scenario-body">
@@ -1112,7 +1110,7 @@ code { font-family:var(--font-code); font-size:.84em; background:rgba(30,64,175,
 <!-- ═══ 10. PREP GUIDE ═══ -->
 <section id="prepguide">
   <div class="sec-header">
-    <div class="sec-icon" style="background:#f0fdf4;color:var(--c4)">📚</div>
+    <div class="sec-icon" style="background:var(--c4);color:var(--text)">📚</div>
     <div>
       <div class="sec-title">Topic-by-Topic Prep Guide</div>
       <div class="sec-sub">What to study, key questions to master, and difficulty level — from interview data</div>
@@ -1278,10 +1276,8 @@ code { font-family:var(--font-code); font-size:.84em; background:rgba(30,64,175,
 
 </main>
 
-<footer style="background:var(--surface2);border-top:1px solid var(--border);padding:2rem;text-align:center;color:var(--muted);font-size:.83rem">
-  <div style="font-family:var(--font-head);font-weight:800;color:var(--text);margin-bottom:.4rem">Salesforce Interview Intelligence</div>
-  <p>Curated from real company interviews — Deloitte, Air India, Veeva CRM, HCL, LTI, Jeevan Technologies, Salesforce Inc. &amp; more.</p>
-</footer>
+<footer style="background:var(--text);color:rgba(255,255,255,0.55);padding:2.5rem 2rem;text-align:center;font-size:.85rem">
+  <div style="font-family:var(--font-head);font-weight:800;color:#fff;margin-bottom:.4rem">StellerSync Labs</div>
 
 <script>
 window.addEventListener('scroll', () => {
