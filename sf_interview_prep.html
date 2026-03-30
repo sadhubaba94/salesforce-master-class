@@ -118,7 +118,9 @@ section.visible { opacity:1; transform:none; }
   width:44px; height:44px; border-radius:16px;
   display:flex; align-items:center; justify-content:center; font-size:1.3rem;
   flex-shrink:0; font-family:var(--font-head); font-weight:800; font-size:1rem;
+  overflow:hidden;
 }
+.company-logo img { width:100%; height:100%; object-fit:contain; background:#fff; }
 .company-name { font-family:var(--font-head); font-weight:700; font-size:1.05rem; }
 .company-meta { color:var(--muted); font-size:.78rem; margin-top:.1rem; font-family:var(--font-body); }
 .company-body { padding:1rem 1.4rem 1.2rem; }
@@ -196,12 +198,23 @@ tr:hover td { background:var(--bg); }
 
 /* ── COMPANY COLOR MAP ── */
 .co-deloitte { background:var(--c4); color:var(--text); }
+.co-infosys { background:var(--c5); color:var(--text); }
 .co-airindia { background:var(--c1); color:var(--text); }
 .co-veeva { background:var(--c6); color:var(--text); }
 .co-hcl { background:var(--c2); color:var(--text); }
 .co-lti { background:var(--c3); color:var(--text); }
 .co-jeevan { background:var(--c8); color:var(--text); }
 .co-salesforce { background:var(--c7); color:var(--text); }
+.co-ey { background:#FFE600; color:var(--text); }
+.co-capgemini { background:#0070AD; color:#fff; }
+.co-tcs { background:#3E63F6; color:#fff; }
+.co-accenture { background:#A100FF; color:#fff; }
+.co-peopletech { background:#FF7F50; color:#fff; }
+.co-jpmc { background:#383838; color:#fff; }
+.co-techmahindra { background:#E60023; color:#fff; }
+.co-nttdata { background:#005C97; color:#fff; }
+.co-genpact { background:#00A99D; color:#fff; }
+.co-pletra { background:#E53935; color:#fff; }
 .co-notmentioned { background:var(--border); color:var(--text); }
 
 /* ── ROUNDS BADGE COLORS ── */
@@ -273,7 +286,7 @@ code { font-family:var(--font-code); font-size:.84em; background:rgba(26,26,46,.
   <h1>Real Questions from<br><span>Real Companies</span></h1>
   <p>Curated from actual Salesforce developer interviews at Deloitte, Air India, Veeva CRM, HCL, LTI, Jeevan Technologies &amp; more — with topic-wise prep guide.</p>
   <div class="stats-strip">
-    <div class="stat-item"><div class="stat-num" style="color:var(--c8)">8+</div><div class="stat-lbl">Companies</div></div>
+    <div class="stat-item"><div class="stat-num" style="color:var(--c8)">9+</div><div class="stat-lbl">Companies</div></div>
     <div class="stat-item"><div class="stat-num" style="color:var(--c4)">200+</div><div class="stat-lbl">Real Questions</div></div>
     <div class="stat-item"><div class="stat-num" style="color:var(--c3)">15+</div><div class="stat-lbl">Topics Covered</div></div>
     <div class="stat-item"><div class="stat-num" style="color:var(--c5)">3</div><div class="stat-lbl">Experience Levels</div></div>
@@ -282,7 +295,8 @@ code { font-family:var(--font-code); font-size:.84em; background:rgba(26,26,46,.
 
 <!-- ═══ NAV ═══ -->
 <nav id="topnav">
-  <a class="nav-logo" href="#hero">🎯 Serr.tiilex;align-items:center;gap:5px;padding:4px 12px;background:rgba(26,26,46,0.08);border:1px solid rgba(26,26,46,0.2);border-radius:100px;font-size:0.74rem;font-weight:600;font-family:var(--font-head);color:var(--text);text-decoration:none;white-space:nowrap;flex-shrink:0;transition:all 0.2s" onmouseover="this.style.background='rgba(26,26,46,0.15)'" onmouseout="this.style.background='rgba(26,26,46,0.08)'">← Dev Guide</a>
+  <a class="nav-logo" href="#hero">🎯 SF Prep</a>
+  <a href="index.html" style="display:flex; align-items:center; gap:5px; padding:6px 14px; background:rgba(26,26,46,0.08); border:1px solid rgba(26,26,46,0.2); border-radius:100px; font-size:0.75rem; font-weight:600; font-family:var(--font-head); color:var(--text); text-decoration:none; white-space:nowrap; flex-shrink:0; transition:all 0.2s;" onmouseover="this.style.background='rgba(26,26,46,0.15)'" onmouseout="this.style.background='rgba(26,26,46,0.08)'">← Dev Guide</a>
   <div class="nav-links">
     <a href="#companies">By Company</a>
     <a href="#frequency">Topic Frequency</a>
@@ -294,6 +308,7 @@ code { font-family:var(--font-code); font-size:.84em; background:rgba(26,26,46,.
     <a href="#integration-qs">Integration</a>
     <a href="#scenarios">Scenario Q's</a>
     <a href="#prepguide">Prep Guide</a>
+    <a href="#contribute">Contribute</a>
   </div>
 </nav>
 
@@ -316,7 +331,7 @@ code { font-family:var(--font-code); font-size:.84em; background:rgba(26,26,46,.
     <!-- DELOITTE -->
     <div class="company-card">
       <div class="company-header">
-        <div class="company-logo co-deloitte">DL</div>
+        <div class="company-logo co-deloitte"><img src="https://logo.clearbit.com/deloitte.com" alt="Deloitte" onerror="this.outerHTML='DL'"></div>
         <div>
           <div class="company-name">Deloitte</div>
           <div class="company-meta">Multiple rounds · 2–3 years exp · Most frequently appearing</div>
@@ -376,10 +391,97 @@ code { font-family:var(--font-code); font-size:.84em; background:rgba(26,26,46,.
       </div>
     </div>
 
+    <!-- INFOSYS L1 -->
+    <div class="company-card">
+      <div class="company-header">
+        <div class="company-logo co-infosys"><img src="https://logo.clearbit.com/infosys.com" alt="Infosys" onerror="this.outerHTML='IN'"></div>
+        <div>
+          <div class="company-name">Infosys</div>
+          <div class="company-meta">L1 Round · Foundational Concepts</div>
+        </div>
+      </div>
+      <div class="company-body">
+        <span class="round-badge round-tech">L1 Round</span>
+        <ul class="q-list">
+          <li>Difference between Process Builder & Workflows?</li>
+          <li>What are the methods in future methods?</li>
+          <li>In which case you will use Database.stateful?</li>
+          <li>Difference between Static and Dynamic dashboards?</li>
+          <li>What are the different types of Reports?</li>
+          <li>What do you mean by Governor limits?</li>
+          <li>Write the syntax for Batch Apex.</li>
+          <li>Write a Trigger to create an associated contact whenever an account is created.</li>
+          <li>What are the best practices for Test classes?</li>
+          <li>What are the different events in Triggers?</li>
+          <li>What is the order of execution in Salesforce?</li>
+          <li>What is Email-to-case?</li>
+          <li>Can we delete a user in production?</li>
+          <li>How can you bypass a validation rule?</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- INFOSYS L2 -->
+    <div class="company-card">
+      <div class="company-header">
+        <div class="company-logo co-infosys"><img src="https://logo.clearbit.com/infosys.com" alt="Infosys" onerror="this.outerHTML='IN'"></div>
+        <div>
+          <div class="company-name">Infosys</div>
+          <div class="company-meta">L2 Round · LWC, Apex & Scenarios</div>
+        </div>
+      </div>
+      <div class="company-body">
+        <span class="round-badge round-tech">L2 / Scenario Round</span>
+        <ul class="q-list">
+            <li>Difference between == and === in JavaScript?</li>
+            <li>Explain LWC lifecycle hooks.</li>
+            <li>Order of execution: what will be called first, a before-insert flow or a trigger?</li>
+            <li>Write a trigger to copy shipping city to billing city while creating a new account.</li>
+            <li>How can we prevent a trigger from being in a recursion loop?</li>
+            <li>What kind of parameters can a Future method take? What are the limitations?</li>
+            <li>Can we call another batch from a future method, or a future from another future?</li>
+            <li>What do Test.startTest() and Test.stopTest() do?</li>
+            <li>How do you test a REST class in a test class?</li>
+            <li>How do you implement a pop-up modal in an LWC?</li>
+            <li>How did you resolve a record lock exception?</li>
+            <li>How would you debug a CPU time limit exception?</li>
+            <li>Write a trigger to calculate the total sum of opportunity Amount on an account custom field.</li>
+            <li>Write an LWC to display Account and related Contacts records in a datatable.</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- INFOSYS MIXED -->
+    <div class="company-card">
+      <div class="company-header">
+        <div class="company-logo co-infosys"><img src="https://logo.clearbit.com/infosys.com" alt="Infosys" onerror="this.outerHTML='IN'"></div>
+        <div>
+          <div class="company-name">Infosys</div>
+          <div class="company-meta">Technical Round · Mixed Topics</div>
+        </div>
+      </div>
+      <div class="company-body">
+        <span class="round-badge round-tech">Technical Round</span>
+        <ul class="q-list">
+            <li>OWD is private, but 'View All' on a profile is checked. What will happen?</li>
+            <li>Explain the sales process and Sales Cloud.</li>
+            <li>Write a trigger to display a message if a duplicate account exists.</li>
+            <li>What are some common Service Cloud tools?</li>
+            <li>Write a SOQL query to restore records from the recycle bin.</li>
+            <li>Write a trigger to update related contact emails when the account email is updated.</li>
+            <li>Explain LWC communication patterns (parent-to-child, child-to-parent).</li>
+            <li>A user is facing an issue seeing data after a deployment. How do you troubleshoot?</li>
+            <li>Difference between @track and @api decorators.</li>
+            <li>Why do we need asynchronous Apex? Explain types and a project example.</li>
+            <li>Is it good practice to make changes directly in a production org? Why or why not?</li>
+        </ul>
+      </div>
+    </div>
+
     <!-- AIR INDIA -->
     <div class="company-card">
       <div class="company-header">
-        <div class="company-logo co-airindia">AI</div>
+        <div class="company-logo co-airindia"><img src="https://logo.clearbit.com/airindia.com" alt="Air India" onerror="this.outerHTML='AI'"></div>
         <div>
           <div class="company-name">Air India</div>
           <div class="company-meta">Tech Round 1 — Declarative + Apex focus</div>
@@ -396,10 +498,33 @@ code { font-family:var(--font-code); font-size:.84em; background:rgba(26,26,46,.
       </div>
     </div>
 
+    <!-- LTI MINDTREE - LWC & APEX -->
+    <div class="company-card">
+      <div class="company-header">
+        <div class="company-logo co-lti"><img src="https://logo.clearbit.com/ltimindtree.com" alt="LTI" onerror="this.outerHTML='LTI'"></div>
+        <div>
+          <div class="company-name">LTI Mindtree</div>
+          <div class="company-meta">LWC &amp; Apex Scenarios (2.5 Yrs Exp)</div>
+        </div>
+      </div>
+      <div class="company-body">
+        <span class="round-badge round-tech">Technical Round</span>
+        <ul class="q-list">
+          <li>Why implement LWC instead of a standard Dashboard for a requirement?</li>
+          <li>Difference between wire and imperative Apex calls. How can an imperative call be made reactive?</li>
+          <li>Write a trigger to create a roll-up summary on Contact to show the count of related 'Application' records.</li>
+          <li>What are setup vs. non-setup objects? How do you resolve a Mixed DML error?</li>
+          <li>Write a trigger to delete related contacts when an account is deleted.</li>
+          <li>How do you avoid Trigger Recursion using a static boolean variable?</li>
+          <li>How do you control heap size and handle CPU limit exceeded errors?</li>
+        </ul>
+      </div>
+    </div>
+    
     <!-- VEEVA CRM -->
     <div class="company-card">
       <div class="company-header">
-        <div class="company-logo co-veeva">VV</div>
+        <div class="company-logo co-veeva"><img src="https://logo.clearbit.com/veeva.com" alt="Veeva" onerror="this.outerHTML='VV'"></div>
         <div>
           <div class="company-name">Veeva CRM</div>
           <div class="company-meta">Performance + Security focus</div>
@@ -421,7 +546,7 @@ code { font-family:var(--font-code); font-size:.84em; background:rgba(26,26,46,.
     <!-- HCL -->
     <div class="company-card">
       <div class="company-header">
-        <div class="company-logo co-hcl">HCL</div>
+        <div class="company-logo co-hcl"><img src="https://logo.clearbit.com/hcltech.com" alt="HCL" onerror="this.outerHTML='HCL'"></div>
         <div>
           <div class="company-name">HCL Technologies</div>
           <div class="company-meta">Admin + Developer hybrid round</div>
@@ -449,29 +574,56 @@ code { font-family:var(--font-code); font-size:.84em; background:rgba(26,26,46,.
       </div>
     </div>
 
-    <!-- LTI -->
+    <!-- LTI SCENARIOS -->
     <div class="company-card">
       <div class="company-header">
-        <div class="company-logo co-lti">LTI</div>
+        <div class="company-logo co-lti"><img src="https://logo.clearbit.com/ltimindtree.com" alt="LTI" onerror="this.outerHTML='LTI'"></div>
         <div>
-          <div class="company-name">LTI (Larsen &amp; Toubro Infotech)</div>
-          <div class="company-meta">Architecture + Design focus</div>
+          <div class="company-name">LTI Mindtree</div>
+          <div class="company-meta">Scenario Based Questions</div>
         </div>
       </div>
       <div class="company-body">
-        <span class="round-badge round-tech">Technical</span>
+        <span class="round-badge round-opb">Scenarios & Architecture</span>
         <ul class="q-list">
-          <li>Amazon app scenario: Items, Add Items, Cart objects — what relationships? Junction object? Calculate total cart cost. Delete cascade behavior?</li>
-          <li>Import Account, Opportunity, Contact from one org to another via Excel — what tool? How to avoid errors? Explain detail.</li>
+          <li>Amazon App Scenario: Given 'items', 'add items', and 'cart' objects, define the relationships. How do you calculate total cost? Is a junction object needed? What happens if a cart item is deleted?</li>
+          <li>Data Migration: You have Account, Opportunity, and Contact data in Excel from one org. What tool would you use to import this into another org? Explain in detail how you would manage the process to avoid errors.</li>
         </ul>
-        <div class="infobox green" style="margin-top:.8rem"><strong>📌 Insight</strong>LTI tests data architecture thinking. For the Amazon question: Items→Cart (M-D or Junction), calculate total via Roll-Up, cascade delete depends on relationship type.</div>
       </div>
     </div>
 
+    <!-- LTI TECHNICAL -->
+    <div class="company-card">
+      <div class="company-header">
+        <div class="company-logo co-lti"><img src="https://logo.clearbit.com/ltimindtree.com" alt="LTI" onerror="this.outerHTML='LTI'"></div>
+        <div>
+          <div class="company-name">LTI Mindtree</div>
+          <div class="company-meta">Technical Round</div>
+        </div>
+      </div>
+      <div class="company-body">
+        <span class="round-badge round-tech">Technical Round</span>
+        <ul class="q-list">
+          <li>What are custom metadata and custom settings? Have you worked on any?</li>
+          <li>What are platform events?</li>
+          <li>How many LWC components have you written? Explain a couple of them.</li>
+          <li>How do you call an LWC from a quick action?</li>
+          <li>What are permission sets?</li>
+          <li>How many ways can we call Apex in LWC? (wire, imperative)</li>
+          <li>Difference between base components of LDS? (record-form, record-edit-form, record-view-form)</li>
+          <li>How do you delete a record using LWC? Is it possible without Apex? (Yes, using `deleteRecord` from `uiRecordApi`).</li>
+          <li>What is a mixed DML exception and how do you resolve it?</li>
+          <li>Difference between future and queueable apex.</li>
+          <li>Can we call a third-party API in LWC? (Yes, via Apex callout).</li>
+          <li>What is the value of `Trigger.new` and `Trigger.newMap` in a 'before insert' context? (`newMap` is null).</li>
+        </ul>
+      </div>
+    </div>
+    
     <!-- JEEVAN TECHNOLOGIES -->
     <div class="company-card">
       <div class="company-header">
-        <div class="company-logo co-jeevan">JT</div>
+        <div class="company-logo co-jeevan"><img src="https://logo.clearbit.com/jeevantechnologies.com" alt="Jeevan" onerror="this.outerHTML='JT'"></div>
         <div>
           <div class="company-name">Jeevan Technologies</div>
           <div class="company-meta">General Salesforce developer round</div>
@@ -490,7 +642,7 @@ code { font-family:var(--font-code); font-size:.84em; background:rgba(26,26,46,.
     <!-- SALESFORCE (Company) -->
     <div class="company-card">
       <div class="company-header">
-        <div class="company-logo co-salesforce">SF</div>
+        <div class="company-logo co-salesforce"><img src="https://logo.clearbit.com/salesforce.com" alt="Salesforce" onerror="this.outerHTML='SF'"></div>
         <div>
           <div class="company-name">Salesforce Inc.</div>
           <div class="company-meta">Technical Consultant role</div>
@@ -505,6 +657,628 @@ code { font-family:var(--font-code); font-size:.84em; background:rgba(26,26,46,.
           <li>Full working component with wire + imperative + event handling</li>
         </ul>
         <div class="infobox blue" style="margin-top:.8rem"><strong>📌 Insight</strong>Salesforce themselves focus on real working code. Know the full lifecycle — SOQL → Wire/Imperative → datatable → navigation.</div>
+      </div>
+    </div>
+
+    <!-- SALESFORCE L1 ROUND -->
+    <div class="company-card">
+      <div class="company-header">
+        <div class="company-logo" style="background:var(--c2);color:var(--text)"><img src="https://logo.clearbit.com/salesforce.com" alt="Salesforce" onerror="this.outerHTML='SF'"></div>
+        <div>
+          <div class="company-name">Salesforce Developer</div>
+          <div class="company-meta">L1 Round · Resume &amp; Core Concepts</div>
+        </div>
+      </div>
+      <div class="company-body">
+        <span class="round-badge round-tech">L1 Round (Resume)</span>
+        <ul class="q-list">
+          <li>Walk me through your resume and explain your recent Salesforce project, role, and challenges faced.</li>
+          <li>Password policy: All users must reset passwords every 3 months, except one specific user. How to handle?</li>
+          <li>What is the difference between Profile and Permission Set?</li>
+          <li>What are Sharing Settings in Salesforce?</li>
+          <li>What is the difference between Profile and Sharing Rules?</li>
+          <li>Different types of Flows? Difference between Auto-Launched Flow and Record-Triggered Flow?</li>
+          <li>What are the latest features/enhancements in Flows?</li>
+          <li>Write a validation rule on Case: Status cannot be "Closed" if Description is blank.</li>
+          <li>Write a trigger on Account to prevent deletion if it has related Contacts.</li>
+          <li>Batch Apex: Syntax, methods, and can we call Batch inside another Batch?</li>
+          <li>Integration: REST methods, and handling inbound vs outbound integrations.</li>
+          <li>Platform Events: What is it, how is its trigger executed, and in which context?</li>
+        </ul>
+        <div class="infobox red" style="margin-top:.8rem"><strong>📌 Coding Task</strong>The interviewer explicitly asked to write the code for the Validation Rule, Account Trigger, and the Batch Apex structure.</div>
+      </div>
+    </div>
+
+    <!-- EY L1 -->
+    <div class="company-card">
+      <div class="company-header">
+        <div class="company-logo co-ey"><img src="https://logo.clearbit.com/ey.com" alt="EY" onerror="this.outerHTML='EY'"></div>
+        <div>
+          <div class="company-name">Ernst &amp; Young (EY)</div>
+          <div class="company-meta">L1 Round · 3 Years Experience</div>
+        </div>
+      </div>
+      <div class="company-body">
+        <span class="round-badge round-tech">Technical Round</span>
+        <ul class="q-list">
+          <li>10 users have Create/Read/Edit access. How to remove Edit/Create access for just two of them?</li>
+          <li>Difference between Queue and Public Group.</li>
+          <li>Best practices for Flows, Triggers, and Test Classes.</li>
+          <li>Usage of <code>Test.isRunningTest()</code>, <code>Test.startTest()</code>, and <code>Test.stopTest()</code>.</li>
+          <li>10 managed packages have triggers on Contact (10 SOQL each). A user creates a new trigger with 5 SOQL. Will it throw an error?</li>
+          <li>Can we call a Queueable from a Batch class? Can we call a Future method from a Trigger?</li>
+          <li>How to call a Screen Flow from an LWC?</li>
+          <li>Write a SOQL query to select Accounts that do not have any Contacts.</li>
+          <li>When a "Create Task" checkbox is checked on Case, automatically create a follow-up task for the primary Contact of the Account.</li>
+          <li>Can we edit Apex Triggers, Classes, or VF Pages directly in Production?</li>
+          <li>How to avoid trigger recursion without using a static boolean variable?</li>
+          <li>How to get the current userId in LWC without using Apex?</li>
+          <li>How to pass data to a grandparent component in LWC? Explain LMS.</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- EY 3+ YEARS -->
+    <div class="company-card">
+      <div class="company-header">
+        <div class="company-logo co-ey"><img src="https://logo.clearbit.com/ey.com" alt="EY" onerror="this.outerHTML='EY'"></div>
+        <div>
+          <div class="company-name">Ernst &amp; Young (EY)</div>
+          <div class="company-meta">Mid-Level · 3+ Years Experience</div>
+        </div>
+      </div>
+      <div class="company-body">
+        <span class="round-badge round-tech">Technical Round</span>
+        <ul class="q-list">
+          <li>Write a trigger: Whenever an Account's email is updated, update the related Contacts' emails.</li>
+          <li>OWD is Private. Make a Phone field mandatory for Profile A but optional for Profile B. How?</li>
+          <li>Status picklist: Once 'Approved', only a System Admin can change it back to 'Submit' or 'Pending'. How to achieve this?</li>
+          <li>Explain Email-to-Case.</li>
+          <li>Sequence of method calling in LWC: <code>connectedCallback()</code>, <code>renderedCallback()</code>, and <code>@wire</code>.</li>
+          <li>What is Asynchronous Apex and its types? Explain Batch Apex.</li>
+          <li>Tell a use case where you have written code in the Batch <code>finish()</code> method.</li>
+          <li>How can we check the status of our batch job? How to schedule a batch for every 30 minutes?</li>
+          <li>OWD is Private. User A owns Account X. Account X has a lookup to User B. How can User B see the Account? Can sharing rules be used on a lookup field?</li>
+          <li>How do you call an Apex method in LWC?</li>
+          <li>LWC is placed on a record page. How do you get the record ID dynamically?</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- EY 4+ YEARS -->
+    <div class="company-card">
+      <div class="company-header">
+        <div class="company-logo co-ey"><img src="https://logo.clearbit.com/ey.com" alt="EY" onerror="this.outerHTML='EY'"></div>
+        <div>
+          <div class="company-name">Ernst &amp; Young (EY)</div>
+          <div class="company-meta">Senior · 4+ Years Experience</div>
+        </div>
+      </div>
+      <div class="company-body">
+        <span class="round-badge round-tech">Advanced Technical</span>
+        <ul class="q-list">
+          <li>Write a SOQL query to fetch the Account with the most number of Contacts.</li>
+          <li>Create a list of integers, sort them, and remove the duplicates.</li>
+          <li>Why is DML not enabled in <code>cacheable=true</code> Apex classes?</li>
+          <li>How do you pass parameters from the Lightning App Builder to an LWC component?</li>
+          <li>How do you see private variables in test classes? (Hint: <code>@TestVisible</code>)</li>
+          <li>Which exceptions cannot be caught in an Apex class?</li>
+          <li>Why don't we generally use <code>SeeAllData=true</code> in test classes?</li>
+          <li>What is Custom Permission?</li>
+          <li>What standard Master-Detail relationship objects exist in Salesforce? (e.g., Campaign-Member, Opp-LineItem)</li>
+          <li>How does Apex-based sharing work?</li>
+          <li>What is the return type of an <code>@InvocableMethod</code>? Can we have multiple flows on a single object?</li>
+          <li>Criteria-based sharing rule grants Edit access if State='Karnataka'. If State is changed via Apex, does the user lose access?</li>
+          <li>What parameter did you pass to your Future method? What parameters are acceptable?</li>
+          <li>What is a Field Filter Validation Exception?</li>
+          <li>What security does <code>System.runAs()</code> enforce? Field level or record level?</li>
+          <li>Can we call LWC from Aura? Is the reverse possible? How do they communicate?</li>
+          <li>Data Loader vs Workbench limits? Custom Metadata vs Custom Settings?</li>
+          <li>Dynamic Forms: Control visibility of layouts for different users based on conditions.</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- EY INTEGRATION & SCENARIOS -->
+    <div class="company-card">
+      <div class="company-header">
+        <div class="company-logo co-ey"><img src="https://logo.clearbit.com/ey.com" alt="EY" onerror="this.outerHTML='EY'"></div>
+        <div>
+          <div class="company-name">Ernst &amp; Young (EY)</div>
+          <div class="company-meta">Integration &amp; Scenario Focus</div>
+        </div>
+      </div>
+      <div class="company-body">
+        <span class="round-badge round-opb">Scenarios &amp; Integration</span>
+        <ul class="q-list">
+          <li>Two users have the same role. How can you restrict records so they only see records by their location? (Hint: OWD Private + Sharing Rules)</li>
+          <li>How to fetch related object data in a Flow?</li>
+          <li>Why use an Apex Trigger compared to a Flow?</li>
+          <li>Write a SOQL query to count the number of Opportunities grouped by StageName.</li>
+          <li>Write a trigger to show the count of only "Male" Contacts on the related Account record.</li>
+          <li>Integration Scenario: Sync data bi-directionally between Salesforce and ERP, including bulk updates. What is the approach?</li>
+          <li>Why do we use a Connected App in integrations?</li>
+          <li>When do we use GET vs POST methods in REST integrations?</li>
+        </ul>
+        <div class="infobox amber" style="margin-top:.8rem">
+          <strong>📌 Key Insight</strong>
+          EY focuses heavily on architecture limitations, testing practices, and declarative vs programmatic decision-making (Flows vs Triggers) across all experience levels.
+        </div>
+      </div>
+    </div>
+
+    <!-- CAPGEMINI L1 CORE -->
+    <div class="company-card">
+      <div class="company-header">
+        <div class="company-logo co-capgemini"><img src="https://logo.clearbit.com/capgemini.com" alt="Capgemini" onerror="this.outerHTML='CG'"></div>
+        <div>
+          <div class="company-name">Capgemini</div>
+          <div class="company-meta">L1 Round · Core &amp; Declarative</div>
+        </div>
+      </div>
+      <div class="company-body">
+        <span class="round-badge round-tech">Technical Round</span>
+        <ul class="q-list">
+          <li>Difference between Sales Cloud and Service Cloud.</li>
+          <li>How many ways can we make a field mandatory?</li>
+          <li>Difference between Custom Settings and Custom Metadata.</li>
+          <li>Difference between Queue and Public Groups.</li>
+          <li>Ways to share a record in Salesforce (Security model).</li>
+          <li>Four users with the same profile have Read/Write access. How to remove Write access from just one user?</li>
+          <li>How to bypass a validation rule for certain profiles? Can we use formulas in validation rules?</li>
+          <li>Master-Detail vs Lookup differences. How do you convert one to the other?</li>
+          <li>What is a Bucket field in Reports?</li>
+          <li>Types of Flows. Can we call one flow from another flow? Explain flow screen elements.</li>
+          <li>What are the various debug modes in Salesforce?</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- CAPGEMINI L1 APEX -->
+    <div class="company-card">
+      <div class="company-header">
+        <div class="company-logo co-capgemini"><img src="https://logo.clearbit.com/capgemini.com" alt="Capgemini" onerror="this.outerHTML='CG'"></div>
+        <div>
+          <div class="company-name">Capgemini</div>
+          <div class="company-meta">L1 Round · Apex, Async &amp; Integration</div>
+        </div>
+      </div>
+      <div class="company-body">
+        <span class="round-badge round-tech">Technical Round</span>
+        <ul class="q-list">
+          <li>Write a trigger: Update child field whenever corresponding parent field is updated.</li>
+          <li>Write a trigger: Sum the Amount of all Opportunities and update it on the Account.</li>
+          <li>Can we make a field mandatory via an Apex trigger?</li>
+          <li>What is Apex Sharing and how do you achieve it?</li>
+          <li>Security enforcement in Apex code (apart from <code>with sharing</code>).</li>
+          <li>Can we handle Salesforce governor limits in Apex using <code>try-catch</code>? What are the limits?</li>
+          <li>Write a SOQL query to fetch Accounts that have related Contacts.</li>
+          <li>Write a SOQL query to fetch Lead records created in the last 4 years.</li>
+          <li>Mixed DML error: Methods to bypass it apart from using a future method.</li>
+          <li>Batch Apex syntax. Can we call a batch from another batch? If yes, from where and why?</li>
+          <li>Why can't we call other async operations from the <code>start()</code> or <code>execute()</code> methods in Batch Apex?</li>
+          <li>Can we call a future method from another future method?</li>
+          <li>What is the use of test classes and what are the best practices?</li>
+          <li>Difference between Named Credentials, Connected Apps, and Remote Site Settings.</li>
+          <li>Basic concepts of OAuth, SAML, and SSO.</li>
+          <li>When to use REST integration? Can we do SOAP integration without a WSDL?</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- CAPGEMINI L2 LWC -->
+    <div class="company-card">
+      <div class="company-header">
+        <div class="company-logo co-capgemini"><img src="https://logo.clearbit.com/capgemini.com" alt="Capgemini" onerror="this.outerHTML='CG'"></div>
+        <div>
+          <div class="company-name">Capgemini</div>
+          <div class="company-meta">L2 Round · LWC &amp; UI Development</div>
+        </div>
+      </div>
+      <div class="company-body">
+        <span class="round-badge round-tech">Advanced Technical</span>
+        <ul class="q-list">
+          <li>Explain LWC lifecycle hooks.</li>
+          <li>What are decorators in LWC? Explain their uses.</li>
+          <li>Lightning Data Service (LDS) and its importance.</li>
+          <li>What is <code>uiRecordApi</code> and why do we use it?</li>
+          <li>Different ways to communicate between components in Aura and LWC (Parent to Child, Child to Parent).</li>
+          <li>How do you display wired method data into a <code>lightning-datatable</code>?</li>
+          <li>How do we create and use a channel in the Pub/Sub model (Create, Subscribe, Publish)?</li>
+          <li>How to show toast notifications in LWC? What are the different types?</li>
+          <li>How can we retrieve data from the backend in LWC?</li>
+          <li>Explain Navigation services in LWC.</li>
+        </ul>
+        <div class="infobox blue" style="margin-top:.8rem">
+          <strong>📌 Key Insight</strong>
+          Capgemini's L2 round focuses heavily on Lightning Web Components (LWC), UI events, and data retrieval methods without writing Apex (like LDS and uiRecordApi).
+        </div>
+      </div>
+    </div>
+
+    <!-- TCS CORE -->
+    <div class="company-card">
+      <div class="company-header">
+        <div class="company-logo co-tcs"><img src="https://logo.clearbit.com/tcs.com" alt="TCS" onerror="this.outerHTML='TCS'"></div>
+        <div>
+          <div class="company-name">Tata Consultancy Services (TCS)</div>
+          <div class="company-meta">Technical Round · Core Concepts</div>
+        </div>
+      </div>
+      <div class="company-body">
+        <span class="round-badge round-tech">Technical Round</span>
+        <ul class="q-list">
+          <li>What is the data security model your organization is following?</li>
+          <li>OWD is Public Read/Write. How can you make records private for a specific user? (Hint: You can't restrict, only open up. OWD must be changed to Private first).</li>
+          <li>What are collections in Apex? Explain the use cases for List, Set, and Map.</li>
+          <li>How can you restrict one user from deleting records if they share the same profile as another user who can? (Hint: Trigger, Flow, or Custom Permission).</li>
+          <li>Can you convert a Lookup relationship to Master-Detail? What is the prerequisite? (Lookup field on all child records must be populated).</li>
+          <li>What is a Roll-Up Summary Field? How can you achieve this functionality for a Lookup relationship? (Flow or Apex Trigger).</li>
+          <li>Is the `finish()` method mandatory in Batch Apex? When do we use Batch Apex?</li>
+          <li>REST vs SOAP API - Which one is better and why?</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- TCS LWC & SCENARIOS -->
+    <div class="company-card">
+      <div class="company-header">
+        <div class="company-logo co-tcs"><img src="https://logo.clearbit.com/tcs.com" alt="TCS" onerror="this.outerHTML='TCS'"></div>
+        <div>
+          <div class="company-name">Tata Consultancy Services (TCS)</div>
+          <div class="company-meta">Technical Round · LWC & Scenarios</div>
+        </div>
+      </div>
+      <div class="company-body">
+        <span class="round-badge round-tech">Advanced Scenarios</span>
+        <ul class="q-list">
+          <li>LWC Communication: Component C is a grandchild of A. How do you send data from C to A directly? (Custom Event with `bubbles:true, composed:true`). How from A to C? (Pass data down through B).</li>
+          <li>You send 10 fields from Apex to an LWC, but only 5 are visible. What could be the reason? (FLS for the user, incorrect `@api` property name, HTML template issue).</li>
+          <li>Trigger Scenario: When a Contact is created, check for an Account named `[ContactLastName]-Account`. If it exists, link the Contact. If not, create the Account and then link it.</li>
+          <li>Trigger Scenario: On a Department object with a lookup to Employee, calculate the total salary of all employees and store it on the Department record.</li>
+          <li>How will a change in a Parent LWC component reflect in a Child component? (`@api` properties).</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- TCS VLOCITY -->
+    <div class="company-card">
+      <div class="company-header">
+        <div class="company-logo co-tcs"><img src="https://logo.clearbit.com/tcs.com" alt="TCS" onerror="this.outerHTML='TCS'"></div>
+        <div>
+          <div class="company-name">Tata Consultancy Services (TCS)</div>
+          <div class="company-meta">Vlocity / OmniStudio Round</div>
+        </div>
+      </div>
+      <div class="company-body">
+        <span class="round-badge round-opb">Vlocity / OmniStudio</span>
+        <ul class="q-list">
+          <li>What are OmniScripts and FlexCards, and their differences?</li>
+          <li>What is a DataRaptor and what are the different types? (Turbo, Extract, Load).</li>
+          <li>Explain a scenario where you used a DataRaptor Extract.</li>
+          <li>What is a Remote Action in an Integration Procedure (IP)?</li>
+          <li>What is the difference between OmniStudio and Salesforce Flow? Which is more complex?</li>
+          <li>What is Order Management in Vlocity?</li>
+          <li>How do you decompose commercial products into technical products?</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- ACCENTURE CORE -->
+    <div class="company-card">
+      <div class="company-header">
+        <div class="company-logo co-accenture"><img src="https://logo.clearbit.com/accenture.com" alt="Accenture" onerror="this.outerHTML='AC'"></div>
+        <div>
+          <div class="company-name">Accenture</div>
+          <div class="company-meta">Technical Round · Core &amp; Apex</div>
+        </div>
+      </div>
+      <div class="company-body">
+        <span class="round-badge round-tech">Technical Round</span>
+        <ul class="q-list">
+          <li>What are the best practices for Apex Triggers? What is the advantage of a handler class?</li>
+          <li>Explain Trigger Context Variables.</li>
+          <li>Write a trigger to create a new Contact upon the insertion of an Account.</li>
+          <li>Difference between `insert` and `Database.insert`?</li>
+          <li>How would you handle a `NullPointerException`? When does an `IndexOutOfBoundsException` occur?</li>
+          <li>What is a Trigger Framework?</li>
+          <li>If OWD is private, but an Apex class gives a user Read access, what happens? (Depends on `with sharing` vs `without sharing`).</li>
+          <li>What is the "Too many SOQL queries: 101" error?</li>
+          <li>Explain REST and SOAP integration.</li>
+          <li>What is the syntax of Batch Apex? What is the default size and max size?</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- ACCENTURE LWC -->
+    <div class="company-card">
+      <div class="company-header">
+        <div class="company-logo co-accenture"><img src="https://logo.clearbit.com/accenture.com" alt="Accenture" onerror="this.outerHTML='AC'"></div>
+        <div>
+          <div class="company-name">Accenture</div>
+          <div class="company-meta">Technical Round · LWC Focus</div>
+        </div>
+      </div>
+      <div class="company-body">
+        <span class="round-badge round-tech">LWC Round</span>
+        <ul class="q-list">
+          <li>What are the decorators in LWC and their use cases? (`@api`, `@track`, `@wire`).</li>
+          <li>Difference between a wire call and an imperative call?</li>
+          <li>Explain LWC component communication: parent-child, child-parent, and unrelated components.</li>
+          <li>How do you communicate from a child to a grandparent component? (Event bubbling with `bubbles: true`).</li>
+          <li>How can two child components of the same parent communicate? (Parent acts as mediator or use LMS/PubSub).</li>
+          <li>Explain Lightning Data Service (LDS) and its benefits.</li>
+          <li>Explain the lifecycle hooks of LWC. When would you use `connectedCallback` vs `@wire`?</li>
+          <li>How do you get data from Apex into an LWC?</li>
+          <li>Can we call a Flow from an LWC component? If yes, how? (`lightning-flow` component).</li>
+          <li>Scenario: You are fetching Account data, it's available in the JS file, but not displaying on the UI. How do you debug? (Check template `if:true`, property name mismatch, FLS).</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- PEOPLE TECH GROUP -->
+    <div class="company-card">
+      <div class="company-header">
+        <div class="company-logo co-peopletech"><img src="https://logo.clearbit.com/peopletechgroup.com" alt="PTG" onerror="this.outerHTML='PTG'"></div>
+        <div>
+          <div class="company-name">People Tech Group</div>
+          <div class="company-meta">L1/L2 Round</div>
+        </div>
+      </div>
+      <div class="company-body">
+        <span class="round-badge round-tech">Technical Round</span>
+        <ul class="q-list">
+          <li>Write a trigger: When a new Case is created, get the email from the 'Email' field and send a welcome email to that address.</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- JPMC -->
+    <div class="company-card">
+      <div class="company-header">
+        <div class="company-logo co-jpmc"><img src="https://logo.clearbit.com/jpmorganchase.com" alt="JPMC" onerror="this.outerHTML='JPMC'"></div>
+        <div>
+          <div class="company-name">JPMorgan Chase (JPMC)</div>
+          <div class="company-meta">L1 Round (3-15 YOE)</div>
+        </div>
+      </div>
+      <div class="company-body">
+        <span class="round-badge round-tech">L1 Technical Round</span>
+        <ul class="q-list">
+          <li>Explain the Order of Execution in Salesforce.</li>
+          <li>What are the best practices for LWC?</li>
+          <li>How do you get the recordId in an LWC on a record page? (`@api recordId`).</li>
+          <li>What are decorators in LWC?</li>
+          <li>How can you get related record data in LWC without using Apex? (`getRecord` wire adapter with optional fields).</li>
+          <li>What are the different ways to get data from Salesforce in LWC? (LDS, wire, imperative).</li>
+          <li>Explain Connected Apps, Callback URL, and Named Credentials.</li>
+          <li>Explain the JWT bearer and other OAuth flows.</li>
+          <li>Write a trigger to achieve a roll-up summary on a lookup relationship.</li>
+          <li>Name some common exceptions you have encountered.</li>
+          <li>Write a reusable and configurable LWC component.</li>
+          <li>Write an Apex REST service that receives a request and responds with Account Name and Address.</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- TECH MAHINDRA L1 -->
+    <div class="company-card">
+      <div class="company-header">
+        <div class="company-logo co-techmahindra"><img src="https://logo.clearbit.com/techmahindra.com" alt="TM" onerror="this.outerHTML='TM'"></div>
+        <div>
+          <div class="company-name">Tech Mahindra</div>
+          <div class="company-meta">L1 Round</div>
+        </div>
+      </div>
+      <div class="company-body">
+        <span class="round-badge round-tech">L1 Technical Round</span>
+        <ul class="q-list">
+          <li>What is the lead conversion process in Sales Cloud?</li>
+          <li>How do you map a custom field from a Lead to an Opportunity upon conversion? (Map Lead Fields button).</li>
+          <li>What are the best practices for writing Apex triggers?</li>
+          <li>How do you write a test class for a Batch class?</li>
+          <li>How do you check if a string is null, empty, or contains only whitespace? (`String.isBlank()`).</li>
+          <li>When do you use the `===` operator in JavaScript?</li>
+          <li>What is an imperative Apex call in LWC?</li>
+          <li>How do you handle child-to-parent communication in LWC? (CustomEvent).</li>
+          <li>Can you create a Roll-Up Summary on a Date field? (Yes, for MIN and MAX).</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- TECH MAHINDRA GENERAL -->
+    <div class="company-card">
+      <div class="company-header">
+        <div class="company-logo co-techmahindra"><img src="https://logo.clearbit.com/techmahindra.com" alt="TM" onerror="this.outerHTML='TM'"></div>
+        <div>
+          <div class="company-name">Tech Mahindra</div>
+          <div class="company-meta">General Technical Questions</div>
+        </div>
+      </div>
+      <div class="company-body">
+        <span class="round-badge round-tech">Technical Round</span>
+        <ul class="q-list">
+          <li>A user has all permissions but cannot find a record in Global Search. Why? (Record not indexed yet, Search Layout not configured for the object/field).</li>
+          <li>How do you call an LWC from a Flow? (Place the LWC on a Flow screen).</li>
+          <li>How do you disable a trigger for certain users? (Use a Custom Permission and check `FeatureManagement.checkPermission()` in the trigger).</li>
+          <li>Custom Settings vs. Custom Metadata.</li>
+          <li>How can changes in the backend reflect on the UI without a page refresh? (Platform Events + CometD, or Streaming API).</li>
+          <li>What is a 101 SOQL error, even when following best practices? (Could be from a managed package, or a recursive trigger firing multiple times).</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- NTT DATA L1 CORE -->
+    <div class="company-card">
+      <div class="company-header">
+        <div class="company-logo co-nttdata"><img src="https://logo.clearbit.com/nttdata.com" alt="NTT Data" onerror="this.outerHTML='NTT'"></div>
+        <div>
+          <div class="company-name">NTT Data</div>
+          <div class="company-meta">L1 Round · Core, SOQL &amp; LWC Basics</div>
+        </div>
+      </div>
+      <div class="company-body">
+        <span class="round-badge round-tech">Technical Round</span>
+        <ul class="q-list">
+          <li>What is Event Bubbling and Event Capturing in JS?</li>
+          <li>Difference between LWC, Aura, and Visualforce pages.</li>
+          <li>Difference between <code>constructor()</code> and <code>connectedCallback()</code> in LWC.</li>
+          <li>What is <code>cacheable=true</code> in <code>@wire</code>?</li>
+          <li>What is a semi-join and anti-join in SOQL?</li>
+          <li>Write a SOQL query to get the User Roles which are not assigned to any user. (Hint: <code>WHERE Id NOT IN (SELECT UserRoleId FROM User)</code>)</li>
+          <li>Difference between Deactivating a user and Freezing a user.</li>
+          <li>What could cause an error when converting a Master-Detail relationship to a Lookup?</li>
+          <li>Object A is Public Read-Only, Object B is Private. Object C is a junction object between A and B. What will be the sharing model of C?</li>
+          <li>Can we create a related Contact record in an Account's <code>before insert</code> trigger? (Hint: No, Account Id doesn't exist yet).</li>
+          <li>How can you send data from an LWC to an Aura component using navigation?</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- NTT DATA L1 APEX -->
+    <div class="company-card">
+      <div class="company-header">
+        <div class="company-logo co-nttdata"><img src="https://logo.clearbit.com/nttdata.com" alt="NTT Data" onerror="this.outerHTML='NTT'"></div>
+        <div>
+          <div class="company-name">NTT Data</div>
+          <div class="company-meta">L1 Round · Apex, Async &amp; Triggers</div>
+        </div>
+      </div>
+      <div class="company-body">
+        <span class="round-badge round-tech">Technical Round</span>
+        <ul class="q-list">
+          <li>How to keep track of records processed in a batch job? (Hint: Query <code>AsyncApexJob</code>).</li>
+          <li>In which trigger contexts can we use both <code>Trigger.newMap</code> and <code>Trigger.oldMap</code>?</li>
+          <li>Write a trigger to roll up the total number of Opportunities on an Account.</li>
+          <li>Write a trigger: Prevent Account deletion if any related Contact has a 'Potential Buyer' checkbox checked.</li>
+          <li>Opportunity Discount field: Manager can edit, subordinate can only read. How to achieve this WITHOUT Permission Sets, FLS, or Page Layouts? (Hint: Validation Rule using <code>$UserRole.Name</code>).</li>
+          <li>Account lookup to User: Give read/edit access to the selected user on the Account, related Contacts, and Opps. (Hint: Apex Sharing).</li>
+          <li>Can we make a callout from a trigger? If yes, how?</li>
+          <li>Can we call a Batch class from another Batch class? If yes, from where?</li>
+          <li>Can a Future method call another Future method? Can we call Future from a Queueable?</li>
+          <li>How to avoid Mixed DML errors and Row-Lock errors in Apex?</li>
+          <li>Explain <code>Database.stateful</code> in Batch Apex.</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- NTT DATA L2 ADVANCED -->
+    <div class="company-card">
+      <div class="company-header">
+        <div class="company-logo co-nttdata"><img src="https://logo.clearbit.com/nttdata.com" alt="NTT Data" onerror="this.outerHTML='NTT'"></div>
+        <div>
+          <div class="company-name">NTT Data</div>
+          <div class="company-meta">L2 Round · Architecture &amp; Advanced LWC</div>
+        </div>
+      </div>
+      <div class="company-body">
+        <span class="round-badge round-tech">Advanced Technical</span>
+        <ul class="q-list">
+          <li>How to handle upserting 10k-15k records in a synchronous Apex method to avoid exceptions? (Hint: Move to Batch Apex or Bulk API).</li>
+          <li>What is <code>Database.setSavepoint()</code> and rollback? What is the use case?</li>
+          <li>How do you choose between using Apex, Flow, or Async Apex (Batch) for a requirement?</li>
+          <li>How do you test an integration callback/webhook in a test method?</li>
+          <li>I have parent A with child components B and C. How can B and C communicate WITHOUT using the parent? (Hint: LMS or Pub/Sub).</li>
+          <li>How do you implement multi-language support in LWC? (Hint: Custom Labels and Translation Workbench).</li>
+          <li>How do you dynamically get the <code>recordId</code> if an LWC is launched via a Quick Action (not on a record page directly)?</li>
+          <li>How to load external CSS and JS files in LWC?</li>
+          <li>How do you get records from Salesforce in LWC without writing Apex? (Hint: LDS, Wire adapters).</li>
+          <li>What are the different details stored in a Named Credential? What is the Grant_Type in OAuth 2.0?</li>
+          <li>How do you track the exact time an Order spends in each status picklist value? (Hint: Custom history object/Track History).</li>
+          <li>Code coverage decreased when deployed to production. What could be the reasons?</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- GENPACT CORE & APEX -->
+    <div class="company-card">
+      <div class="company-header">
+        <div class="company-logo co-genpact"><img src="https://logo.clearbit.com/genpact.com" alt="Genpact" onerror="this.outerHTML='GP'"></div>
+        <div>
+          <div class="company-name">Genpact</div>
+          <div class="company-meta">Technical Round · Core &amp; Apex</div>
+        </div>
+      </div>
+      <div class="company-body">
+        <span class="round-badge round-tech">Technical Round</span>
+        <ul class="q-list">
+          <li>Explain Trigger Context Variables (new, old, newMap, oldMap).</li>
+          <li>What is Batch Apex, why do we use it, and what is the `scope` parameter?</li>
+          <li>Write a trigger to calculate the total sum of Opportunity Amount on an Account's custom field when an Opportunity is updated.</li>
+          <li>Explain the Order of Execution.</li>
+          <li>What are the key differences between Flows and Triggers?</li>
+          <li>Can we delete a user in production?</li>
+          <li>How can you bypass a validation rule for a specific user or profile?</li>
+          <li>What are the advantages of using Apex over Flow for complex automation?</li>
+          <li>What is the difference between `Limits.getQueryRows()` and `Limits.getLimitQueryRows()`?</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- GENPACT LWC & ADVANCED -->
+    <div class="company-card">
+      <div class="company-header">
+        <div class="company-logo co-genpact"><img src="https://logo.clearbit.com/genpact.com" alt="Genpact" onerror="this.outerHTML='GP'"></div>
+        <div>
+          <div class="company-name">Genpact</div>
+          <div class="company-meta">Technical Round · LWC &amp; Advanced Topics</div>
+        </div>
+      </div>
+      <div class="company-body">
+        <span class="round-badge round-tech">Advanced Technical</span>
+        <ul class="q-list">
+          <li>Write an LWC to display Account and its related Contacts in a lightning-datatable.</li>
+          <li>Explain LWC communication patterns (Parent-to-Child and Child-to-Parent).</li>
+          <li>What are decorators in LWC?</li>
+          <li>How do you show a toast message in LWC?</li>
+          <li>What is a Wrapper Class and provide a use case?</li>
+          <li>Data migration tools: When to use Data Import Wizard vs. Data Loader?</li>
+          <li>What is Queueable Apex? How do you handle errors in Batch Apex? What is `Database.stateful`?</li>
+          <li>Best practices to resolve the 'Too many SOQL queries: 101' error.</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- PLETRA TECHNOLOGY - TRIGGERS -->
+    <div class="company-card">
+      <div class="company-header">
+        <div class="company-logo co-pletra"><img src="https://logo.clearbit.com/pletratech.com" alt="Pletra" onerror="this.outerHTML='PT'"></div>
+        <div>
+          <div class="company-name">Pletra Technology</div>
+          <div class="company-meta">Round 1 · Trigger Scenarios</div>
+        </div>
+      </div>
+      <div class="company-body">
+        <span class="round-badge round-tech">Trigger Round</span>
+        <ul class="q-list">
+          <li>Write a trigger to create a duplicate Lead when a new Lead is inserted.</li>
+          <li>When an Account's BillingCity is updated, write a trigger to update all its related Contacts' MailingCity.</li>
+          <li>Write a trigger to automatically populate the Account Shipping Address from the Billing Address on insert.</li>
+          <li>Write a trigger to allow only a user with the 'System Administrator' profile to delete a Task record.</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- PLETRA TECHNOLOGY - SOQL & LWC -->
+    <div class="company-card">
+      <div class="company-header">
+        <div class="company-logo co-pletra"><img src="https://logo.clearbit.com/pletratech.com" alt="Pletra" onerror="this.outerHTML='PT'"></div>
+        <div>
+          <div class="company-name">Pletra Technology</div>
+          <div class="company-meta">Round 2 & 3 · SOQL, LWC &amp; Security</div>
+        </div>
+      </div>
+      <div class="company-body">
+        <span class="round-badge round-tech">Advanced Rounds</span>
+        <ul class="q-list">
+          <li>Write a SOQL query to retrieve Accounts and their related Contacts using a nested query.</li>
+          <li>From the above query result, how would you populate a `Map<Id, List<Contact>>`?</li>
+          <li>Validation Rule Scenario: If a Case Reason is "Other", the 'Other Reason' text field must contain a value.</li>
+          <li>Explain decorators and lifecycle hooks in LWC.</li>
+          <li>How do you communicate between two unrelated LWC components? (LMS or Pub/Sub).</li>
+          <li>Explain the record-level security model in Salesforce.</li>
+          <li>Scenario: How do you assign read-only access for an object to one profile, and read/edit access to another profile?</li>
+        </ul>
       </div>
     </div>
 
@@ -1274,6 +2048,32 @@ code { font-family:var(--font-code); font-size:.84em; background:rgba(26,26,46,.
   </div>
 </section>
 
+<!-- ═══ 11. CONTRIBUTE ═══ -->
+<section id="contribute">
+  <div class="sec-header">
+    <div class="sec-icon" style="background:var(--c5);color:var(--text)">✍️</div>
+    <div>
+      <div class="sec-title">Contribute Your Experience</div>
+      <div class="sec-sub">Help the community by adding questions from your recent interviews</div>
+    </div>
+  </div>
+
+  <div style="background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:1.5rem;margin-bottom:2rem;">
+    <form id="contributeForm" style="display:flex;flex-direction:column;gap:1rem;">
+      <input type="text" id="contribCompany" placeholder="Company Name (e.g., Google)" required style="padding:0.8rem;border:1px solid var(--border);border-radius:8px;font-family:var(--font-body);">
+      <input type="text" id="contribRound" placeholder="Round (e.g., Technical Round 1)" required style="padding:0.8rem;border:1px solid var(--border);border-radius:8px;font-family:var(--font-body);">
+      <textarea id="contribQuestions" placeholder="Enter questions here (one per line)..." required rows="5" style="padding:0.8rem;border:1px solid var(--border);border-radius:8px;font-family:var(--font-body);resize:vertical;"></textarea>
+      <button type="submit" style="background:var(--c1);color:#fff;border:none;padding:0.8rem 1.5rem;border-radius:8px;font-family:var(--font-head);font-weight:700;cursor:pointer;font-size:1rem;transition:opacity 0.2s;">Submit Contribution</button>
+      <div style="font-size:0.75rem;color:var(--muted);text-align:center;margin-top:-0.5rem;">Note: As this is a static site, your contributions are saved locally in your browser.</div>
+    </form>
+  </div>
+
+  <h3 style="font-family:var(--font-head);margin:2rem 0 1rem">Community Contributions</h3>
+  <div id="contributionsList" class="company-grid">
+    <!-- Dynamically injected contributions will appear here -->
+  </div>
+</section>
+
 </main>
 
 <footer style="background:var(--text);color:rgba(255,255,255,0.55);padding:2.5rem 2rem;text-align:center;font-size:.85rem">
@@ -1289,6 +2089,53 @@ window.addEventListener('scroll', () => {
 const obs = new IntersectionObserver(e => e.forEach(x => x.isIntersecting && x.target.classList.add('visible')), {threshold:.04});
 document.querySelectorAll('section').forEach(s => obs.observe(s));
 document.querySelectorAll('.scenario-header').forEach(h => h.addEventListener('click', () => h.parentElement.classList.toggle('open')));
+
+// ── CONTRIBUTE LOGIC ──
+const contributeForm = document.getElementById('contributeForm');
+const contributionsList = document.getElementById('contributionsList');
+
+function loadContributions() {
+  if(!contributionsList) return;
+  const contributions = JSON.parse(localStorage.getItem('sf_contributions') || '[]');
+  contributionsList.innerHTML = '';
+  if (contributions.length === 0) {
+    contributionsList.innerHTML = '<p style="color:var(--muted);font-size:0.9rem;">No community contributions yet. Be the first to add one!</p>';
+    return;
+  }
+  contributions.forEach(c => {
+    const card = document.createElement('div');
+    card.className = 'company-card';
+    const qListHtml = c.questions.split('\n').filter(q => q.trim() !== '').map(q => `<li>${q}</li>`).join('');
+    card.innerHTML = `
+      <div class="company-header">
+        <div class="company-logo" style="background:var(--c8);color:var(--text)"><img src="https://logo.clearbit.com/${c.company.toLowerCase().replace(/\s+/g, '')}.com" alt="${c.company}" onerror="this.outerHTML='${c.company.substring(0,2).toUpperCase()}'"></div>
+        <div>
+          <div class="company-name">${c.company}</div>
+          <div class="company-meta">Community Contribution</div>
+        </div>
+      </div>
+      <div class="company-body">
+        <span class="round-badge round-tech">${c.round}</span>
+        <ul class="q-list">${qListHtml}</ul>
+      </div>
+    `;
+    contributionsList.appendChild(card);
+  });
+}
+
+if (contributeForm) {
+  contributeForm.addEventListener('submit', (e) => {
+    e.preventDefault();
+    const company = document.getElementById('contribCompany').value.trim(), round = document.getElementById('contribRound').value.trim(), questions = document.getElementById('contribQuestions').value.trim();
+    if (!company || !questions) return;
+    const contributions = JSON.parse(localStorage.getItem('sf_contributions') || '[]');
+    contributions.unshift({ company, round, questions });
+    localStorage.setItem('sf_contributions', JSON.stringify(contributions));
+    contributeForm.reset();
+    loadContributions();
+  });
+  loadContributions();
+}
 </script>
 </body>
 </html>
