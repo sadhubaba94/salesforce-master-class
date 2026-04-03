@@ -1,0 +1,564 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Salesforce Industry Clouds Guide</title>
+    <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,700;0,9..144,900;1,9..144,400&family=JetBrains+Mono:wght@400;600&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,400&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg: #FAFAF7;
+            --surface: #ffffff;
+            --surface2: #F0F0EE;
+            --border: #E8E8F0;
+            --text: #1A1A2E;
+            --muted: #5A5A7A;
+            --c1: #FF6B6B;
+            --c2: #4ECDC4;
+            --c3: #FFE66D;
+            --c4: #A8E6CF;
+            --c5: #FF8B94;
+            --c6: #B8B8FF;
+            --c7: #FFA07A;
+            --c8: #87CEEB;
+            --font-head: 'Fraunces', serif;
+            --font-body: 'DM Sans', sans-serif;
+            --font-code: 'JetBrains Mono', monospace;
+            --radius: 16px;
+        }
+
+        body {
+            font-family: var(--font-body);
+            background: var(--bg);
+            color: var(--text);
+            line-height: 1.7;
+            margin: 0;
+            padding: 0;
+            overflow-x: hidden;
+        }
+
+        header {
+            background: linear-gradient(135deg, var(--c1) 0%, var(--c2) 50%, var(--c6) 100%);
+            color: var(--surface);
+            padding: 4rem 2rem;
+            text-align: center;
+        }
+
+        header h1 {
+            margin: 0;
+            font-family: var(--font-head);
+            font-size: clamp(2.8rem,8vw,4.5rem);
+            font-weight: 900;
+            line-height: 1.05;
+        }
+
+        header p {
+            margin: 1rem auto 0;
+            font-size: 1.15rem;
+            opacity: 0.9;
+            max-width: 600px;
+        }
+
+        .container {
+            max-width: 1100px;
+            margin: 3rem auto;
+            padding: 0 2rem 8rem;
+        }
+
+        .tabs {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 0.6rem;
+            margin-bottom: 3rem;
+        }
+
+        .tab-btn {
+            background-color: transparent;
+            border: 1px solid var(--border);
+            padding: 0.5rem 1.2rem;
+            font-size: 0.85rem;
+            font-family: var(--font-head);
+            font-weight: 600;
+            color: var(--muted);
+            border-radius: 999px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .tab-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(0,0,0,0.1);
+            color: var(--text);
+            background: rgba(0,100,200,0.05);
+        }
+
+        .tab-btn.active[data-target="fsc"] {
+            background-color: rgba(255,107,107,.08);
+            border-color: rgba(255,107,107,.35);
+            color: var(--c1);
+        }
+
+        .tab-btn.active[data-target="health"] {
+            background-color: rgba(168,230,207,.15);
+            border-color: rgba(168,230,207,.4);
+            color: #059669;
+        }
+
+        .tab-btn.active[data-target="revenue"] {
+            background-color: rgba(78,205,196,.08);
+            border-color: rgba(78,205,196,.35);
+            color: var(--c2);
+        }
+
+        .tab-btn.active[data-target="comparison"] {
+            background-color: rgba(245,158,11,.15);
+            border-color: rgba(245,158,11,.4);
+            color: #b45309;
+        }
+
+        .tab-content {
+            display: none;
+            animation: fadeIn 0.5s ease-in-out;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .card {
+            background: var(--surface);
+            border-radius: var(--radius);
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+            border: 1.5px solid var(--border);
+            transition: border-color 0.2s, transform 0.2s, box-shadow 0.2s;
+        }
+        
+        .card:hover {
+            border-color: transparent;
+            transform: translateY(-2px);
+            box-shadow: 0 12px 48px rgba(26,26,46,.12);
+        }
+
+        #fsc .card { border-top: 3px solid var(--c1); }
+        #health .card { border-top: 3px solid var(--c4); }
+        #revenue .card { border-top: 3px solid var(--c2); }
+        #comparison .card { border-top: 3px solid var(--c3); }
+
+        h2 { 
+            font-family: var(--font-head); 
+            font-size: 2.2rem; 
+            color: var(--text); 
+            border-bottom: 1px solid var(--border); 
+            padding-bottom: 1.5rem; 
+            margin-bottom: 1.5rem; 
+        }
+        h3 { 
+            font-family: var(--font-head); 
+            font-size: 1.05rem; 
+            color: var(--text); 
+            margin-top: 2rem; 
+            margin-bottom: 0.5rem; 
+        }
+
+        ul { padding-left: 0; list-style: none; }
+        li { padding: 0.4rem 0 0.4rem 1.6rem; position: relative; color: var(--text); font-size: 0.93rem; }
+        li::before { content: '▸'; position: absolute; left: 0; color: var(--c1); }
+        #health li::before { color: var(--c4); }
+        #revenue li::before { color: var(--c2); }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.88rem;
+        }
+
+        .table-wrap { 
+            overflow-x: auto; 
+            margin: 1.5rem 0; 
+            border-radius: var(--radius); 
+            border: 1px solid var(--border); 
+        }
+
+        th, td {
+            padding: 12px 16px;
+            text-align: left;
+            border-bottom: 1px solid var(--border);
+            vertical-align: top;
+        }
+
+        th { 
+            background-color: var(--surface2); 
+            color: var(--text); 
+            font-family: var(--font-head); 
+            font-weight: 700; 
+            font-size: 0.78rem; 
+            text-transform: uppercase; 
+            letter-spacing: 0.06em; 
+            white-space: nowrap; 
+        }
+        tr:hover td { background-color: var(--bg); }
+        tr:last-child td { border-bottom: none; }
+
+        .qa-box {
+            background-color: var(--surface);
+            border-radius: var(--radius);
+            padding: 1.5rem 1.8rem;
+            margin-top: 1.5rem;
+            border: 1px solid var(--border);
+            border-left: 4px solid var(--c8);
+            position: relative;
+        }
+
+        .qa-box h4 { margin: 0 0 0.5rem 0; color: var(--text); font-family: var(--font-head); font-size: 0.95rem; }
+        .model-answer { margin-bottom: 0.5rem; color: var(--muted); font-size: 0.88rem; line-height: 1.6; }
+        .pro-tip { 
+            font-size: 0.85rem; 
+            color: var(--muted); 
+            background: rgba(245,158,11,0.05); 
+            border: 1px solid var(--c3); 
+            padding: 0.8rem 1rem; 
+            border-radius: 8px; 
+            margin-top: 1rem; 
+        }
+        .new-badge { 
+            background: rgba(239,68,68,0.15); 
+            color: #f87171; 
+            border: 1px solid rgba(239,68,68,0.3); 
+            font-size: 0.72rem; 
+            padding: 0.2em 0.7em; 
+            border-radius: 999px; 
+            vertical-align: middle; 
+            margin-left: 8px; 
+            font-weight: 600;
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>Salesforce Industry Clouds</h1>
+        <p>Complete Guide with Scenarios & Interview Preparation</p>
+    </header>
+
+    <div class="container">
+        <div class="tabs">
+            <button class="tab-btn active" data-target="fsc">Financial Services Cloud</button>
+            <button class="tab-btn" data-target="health">Health Cloud</button>
+            <button class="tab-btn" data-target="revenue">Revenue Cloud</button>
+            <button class="tab-btn" data-target="comparison">Quick Comparison</button>
+        </div>
+
+        <div id="fsc" class="tab-content active">
+            <div class="card">
+                <h2>Overview & Core Purpose</h2>
+                <p>Salesforce Financial Services Cloud (FSC) is purpose-built for the financial industry — banks, insurance companies, wealth management firms, and lending institutions. It extends core Salesforce CRM with industry-specific data models, automation, and compliance tools designed to deepen client relationships while meeting regulatory requirements.</p>
+                
+                <h3>Key Features & Capabilities</h3>
+                <ul>
+                    <li><strong>Financial Account Hierarchy</strong> — Link individuals, households, and businesses in one unified view.</li>
+                    <li><strong>Actionable Relationship Center (ARC)</strong> — A visual map of a client's financial network including advisors, family members, and linked accounts.</li>
+                    <li><strong>Referral Management</strong> — Track and manage intra-bank referrals across departments seamlessly.</li>
+                    <li><strong>Interaction Summaries</strong> — Log and associate advisor-client meeting notes directly to financial accounts.</li>
+                    <li><strong>Compliant Data Model</strong> — Pre-built for FINRA, GDPR, and AML regulatory frameworks.</li>
+                    <li><strong>Einstein Analytics for FSC</strong> — AI-driven dashboards to monitor AUM, net new assets, and book of business.</li>
+                    <li><strong>Document Tracking</strong> — KYC (Know Your Customer) document checklist management.</li>
+                </ul>
+
+                <h3>Industry Segments Served</h3>
+                <table>
+                    <tr><th>Segment</th><th>Focus Areas</th></tr>
+                    <tr><td>Wealth Management</td><td>Portfolio views, goal-based planning, advisor productivity tools</td></tr>
+                    <tr><td>Retail Banking</td><td>360-degree customer profiles, onboarding workflows, loan processing</td></tr>
+                    <tr><td>Insurance</td><td>Policy management, claims handling, agent-broker portals</td></tr>
+                    <tr><td>Mortgage / Lending</td><td>Application pipelines, document collection, decisioning automation</td></tr>
+                </table>
+            </div>
+
+            <div class="card">
+                <h2>Implementation Scenarios</h2>
+                
+                <div class="qa-box">
+                    <h4>SCENARIO: Wealth Management Firm — 360 Client View</h4>
+                    <p><strong>Business Problem:</strong> A wealth management firm's advisors used multiple disconnected systems (CRM, portfolio tool, email), leading to missed cross-sell opportunities and poor client experience.</p>
+                    <p><strong>Salesforce Solution:</strong> Implemented FSC with ARC to give advisors a single unified dashboard showing household relationships, financial goals, held-away assets, and life events. Advisors now receive AI-driven next best action suggestions, leading to a 28% increase in product cross-sell within 6 months.</p>
+                </div>
+
+                <div class="qa-box">
+                    <h4>SCENARIO: Regional Bank — Referral Management</h4>
+                    <p><strong>Business Problem:</strong> A regional bank's retail and commercial divisions operated in silos — mortgage advisors couldn't systematically refer clients to business banking, losing revenue.</p>
+                    <p><strong>Salesforce Solution:</strong> Deployed FSC's Referral Management module with automation rules. When a retail client's profile met commercial banking thresholds, a referral task was auto-created and routed. Referral conversion rate improved by 40% in the first quarter post-go-live.</p>
+                </div>
+
+                <div class="qa-box">
+                    <h4>SCENARIO: Insurance Company — Policy & Claims Integration</h4>
+                    <p><strong>Business Problem:</strong> An insurer's agents lacked real-time policy data visibility during client calls, leading to poor service and high call-handle times.</p>
+                    <p><strong>Salesforce Solution:</strong> Integrated FSC with the core insurance system via MuleSoft API. Policy objects, claim statuses, and renewal dates surfaced in FSC. Agents reduced handle time by 35% and first-call resolution improved significantly.</p>
+                </div>
+            </div>
+
+            <div class="card">
+                <h2>Interview Preparation (FSC)</h2>
+                <p>These scenario-based questions test your ability to apply Salesforce cloud knowledge to real business problems. Use the STAR method (Situation, Task, Action, Result) for behavioral questions.</p>
+
+                <div class="qa-box">
+                    <h4>Q1: A bank wants to give advisors visibility into the full household financial picture. How would you approach this in FSC?</h4>
+                    <div class="model-answer"><strong>Model Answer:</strong> I would leverage FSC's Household data model, which allows grouping of individual clients under a Household record. Using the Actionable Relationship Center (ARC), advisors get a visual graph of household members, their financial accounts, held-away assets, and life events. I'd configure ARC cards to show AUM summaries, open opportunities, and interaction history — all surfaced in one view. I'd also set up Einstein Next Best Action to recommend relevant products based on household financial goals.</div>
+                    <div class="pro-tip">Pro Tip: Mention ARC by name — it signals deep FSC product knowledge. If you can quantify advisor productivity gains, even hypothetical ones, that resonates with interviewers.</div>
+                </div>
+
+                <div class="qa-box">
+                    <h4>Q2: How would you handle compliance and data privacy requirements in a Salesforce FSC implementation for a regulated bank?</h4>
+                    <div class="model-answer"><strong>Model Answer:</strong> FSC includes a compliant data model pre-built for FINRA and GDPR. I'd implement Salesforce Shield for field-level encryption on sensitive PII (SSNs, account numbers) and Event Monitoring for audit trails. Platform Encryption would secure data at rest. For data residency requirements, I'd configure Salesforce Data Residency Options. I'd also use Permission Sets and role hierarchy to enforce data access control, ensuring advisors only see their assigned book of business.</div>
+                    <div class="pro-tip">Pro Tip: Interviewers love hearing Salesforce Shield, Event Monitoring, and Field Audit Trail — these show you understand compliance at a technical level, not just conceptually.</div>
+                </div>
+
+                <div class="qa-box">
+                    <h4>Q3: Describe a scenario where referral management in FSC could solve a cross-selling problem.</h4>
+                    <div class="model-answer"><strong>Model Answer:</strong> At a regional bank, retail bankers often encounter clients who qualify for business banking products but have no structured way to refer them. In FSC, I'd configure Referral records with source advisor, target product area, and SLA tracking. Flow automation would auto-create a referral when a retail client's deposit balance exceeds a threshold. The commercial banking team receives a task with full client context. A leaderboard in the FSC home page tracks referral conversion by advisor, driving adoption.</div>
+                    <div class="pro-tip">Pro Tip: Referral Management is a differentiator of FSC — most candidates don't know it exists. Mentioning SLA tracking and gamification elements shows implementation depth.</div>
+                </div>
+
+                <div class="qa-box">
+                    <h4>Q4: How do Interaction Summaries in FSC improve advisor productivity? <span class="new-badge">New</span></h4>
+                    <div class="model-answer"><strong>Model Answer:</strong> Interaction Summaries allow wealth managers and advisors to quickly log meeting notes and tie them directly to specific clients, households, and financial accounts. This removes the need to track meeting outcomes in separate documents or generic CRM task fields. I would configure sharing settings so that sensitive notes are only visible to specific compliant roles, while keeping the rest of the firm informed about client touchpoints.</div>
+                    <div class="pro-tip">Pro Tip: Tie Interaction Summaries to compliance—demonstrating that logging notes securely is a requirement, not just a convenience, in heavily regulated industries.</div>
+                </div>
+            </div>
+        </div>
+
+        <div id="health" class="tab-content">
+            <div class="card">
+                <h2>Overview & Core Purpose</h2>
+                <p>Salesforce Health Cloud is a patient relationship management platform designed for healthcare providers, health plans (payers), life sciences companies, and pharmaceutical firms. It unifies clinical and non-clinical data to give care teams a complete patient view, enabling proactive, personalized care delivery and streamlined care coordination.</p>
+                
+                <h3>Key Features & Capabilities</h3>
+                <ul>
+                    <li><strong>Care Plans & Gaps in Care</strong> — Structured care plans with milestones, tasks, and automated gap detection based on clinical protocols.</li>
+                    <li><strong>Intelligent Appointment Management</strong> — Smart scheduling with provider capacity matching and patient preference routing.</li>
+                    <li><strong>Utilization Management</strong> — Handles prior authorizations, referral tracking, and escalation workflows.</li>
+                    <li><strong>Provider Relationship Management</strong> — Maintains a curated provider directory and manages complex referral networks.</li>
+                    <li><strong>FHIR Integration</strong> — Native support for HL7 FHIR R4 to pull data from EHR systems like Epic and Cerner.</li>
+                    <li><strong>Crisis Support Center</strong> — Outreach tools for mental health, crisis response, and proactive wellness programs.</li>
+                    <li><strong>Medication Management</strong> — Track prescriptions, adherence flags, and pharmacy coordination.</li>
+                </ul>
+
+                <h3>Industry Segments Served</h3>
+                <table>
+                    <tr><th>Segment</th><th>Focus Areas</th></tr>
+                    <tr><td>Providers</td><td>Hospitals, clinics, specialty practices — patient journeys and care coordination</td></tr>
+                    <tr><td>Payers</td><td>Insurance plans managing member engagement, utilization, and care management</td></tr>
+                    <tr><td>Life Sciences</td><td>Pharma reps, patient support programs, clinical trial management</td></tr>
+                </table>
+            </div>
+
+            <div class="card">
+                <h2>Implementation Scenarios</h2>
+                
+                <div class="qa-box">
+                    <h4>SCENARIO: Hospital Network — Care Coordination for Chronic Patients</h4>
+                    <p><strong>Business Problem:</strong> A hospital system managing 50,000+ diabetic patients had no systematic way to track care gaps (missed HbA1c tests, overdue nephrology referrals), resulting in preventable readmissions.</p>
+                    <p><strong>Salesforce Solution:</strong> Deployed Health Cloud with FHIR integration to Epic EHR. Care plans were auto-generated for high-risk patients. Gaps in care alerts notified care coordinators proactively. The readmission rate dropped by 18% within the first year, saving the system $4M annually.</p>
+                </div>
+
+                <div class="qa-box">
+                    <h4>SCENARIO: Health Plan — Member Engagement & Prior Auth</h4>
+                    <p><strong>Business Problem:</strong> A regional health plan received 3,000+ prior authorization requests per week via fax and phone. Manual processing led to 7-day average turnaround times and member dissatisfaction.</p>
+                    <p><strong>Salesforce Solution:</strong> Implemented Health Cloud's Utilization Management module with automated intake workflows and clinical criteria checks. Digital prior auth portal integrated with provider EHRs. Turnaround time reduced from 7 days to 18 hours; 62% of requests now auto-approved via rules engine.</p>
+                </div>
+
+                <div class="qa-box">
+                    <h4>SCENARIO: Pharmaceutical Company — Patient Support Program</h4>
+                    <p><strong>Business Problem:</strong> A pharma company launching a specialty drug needed a Patient Support Program (PSP) to assist patients with affordability, onboarding, and adherence — managed by hub services.</p>
+                    <p><strong>Salesforce Solution:</strong> Built a Health Cloud solution with case management for hub agents. Automated benefit verification, co-pay card enrollment, and specialty pharmacy routing workflows. Patient adherence rate improved by 31% through proactive outreach triggered by missed refill events.</p>
+                </div>
+            </div>
+
+            <div class="card">
+                <h2>Interview Preparation (Health Cloud)</h2>
+
+                <div class="qa-box">
+                    <h4>Q1: How would you implement a care management program for high-risk patients using Health Cloud?</h4>
+                    <div class="model-answer"><strong>Model Answer:</strong> I'd start by defining risk stratification criteria — for example, patients with HbA1c > 9 and two or more chronic conditions flagged as high-risk via a data integration with the EHR (using FHIR R4 APIs). In Health Cloud, I'd create a Care Plan template for diabetic high-risk patients with standardized goals, tasks, and milestones. A Flow would auto-assign care coordinators from a queue based on geography. Care gap records would auto-generate when a clinical action is overdue, triggering outreach via Omni-Channel to the patient's preferred contact method.</div>
+                    <div class="pro-tip">Pro Tip: Name-drop FHIR R4, Care Plans, and Omni-Channel. These specific terms show you've worked with the product, not just read about it. Quantify the expected impact if asked.</div>
+                </div>
+
+                <div class="qa-box">
+                    <h4>Q2: A health insurance company wants to reduce prior authorization turnaround time. How would you design this in Health Cloud?</h4>
+                    <div class="model-answer"><strong>Model Answer:</strong> I'd implement the Utilization Management feature in Health Cloud. Inbound PA requests from providers would arrive via an integrated portal or API and create a Prior Authorization record. A decision-support rules engine would auto-approve standard requests that meet clinical criteria (InterQual/MCG) without human review. Complex cases would route to a clinical reviewer queue with configurable SLA timers. Status updates would automatically notify the requesting provider via Experience Cloud portal or real-time API. Dashboards would track approval rates, turnaround times, and denial reasons.</div>
+                    <div class="pro-tip">Pro Tip: Mentioning InterQual or MCG clinical criteria shows domain knowledge beyond Salesforce. PA automation is a hot topic for payer clients — frame it around member satisfaction and cost reduction.</div>
+                </div>
+
+                <div class="qa-box">
+                    <h4>Q3: How would you ensure HIPAA compliance in a Health Cloud implementation?</h4>
+                    <div class="model-answer"><strong>Model Answer:</strong> HIPAA compliance in Health Cloud involves multiple layers. First, sign a BAA (Business Associate Agreement) with Salesforce — this is foundational. Then enable Salesforce Shield: Platform Encryption for PHI fields (diagnosis codes, SSNs, dates of birth), Event Monitoring for access auditing, and Field Audit Trail for 7-year retention. I'd restrict PHI access using Permission Sets, enforce MFA for all users, and configure IP whitelisting. For integrations, all data in transit must use TLS 1.2+. Regular security health checks using the Salesforce Security Health Check tool would be mandatory.</div>
+                    <div class="pro-tip">Pro Tip: Lead with the BAA — many candidates miss this basic but critical first step. Then layer in Shield components. Interviewers at payer or provider clients will almost always ask this question.</div>
+                </div>
+
+                <div class="qa-box">
+                    <h4>Q4: How does Health Cloud handle Provider Relationship Management (PRM)? <span class="new-badge">New</span></h4>
+                    <div class="model-answer"><strong>Model Answer:</strong> I would utilize Health Cloud's Provider data model to create a comprehensive provider directory. This helps healthcare organizations track practitioner credentials, specialties, facility affiliations, and operating hours. Furthermore, I would set up Provider Search functionality so call center agents and care coordinators can easily match patients to the right physicians based on location, specialty, and network status, thereby streamlining the referral process.</div>
+                    <div class="pro-tip">Pro Tip: Emphasize "Provider Search" and "Network Status." Preventing out-of-network leakage is a huge ROI metric for payer and provider implementations.</div>
+                </div>
+            </div>
+        </div>
+
+        <div id="revenue" class="tab-content">
+            <div class="card">
+                <h2>Overview & Core Purpose</h2>
+                <p>Salesforce Revenue Cloud is the commercial platform that manages the entire revenue lifecycle — from product configuration and quoting through contract execution, billing, and revenue recognition. It combines CPQ (Configure, Price, Quote), Billing, and advanced subscription management to eliminate revenue leakage and accelerate deal cycles.</p>
+                
+                <h3>Key Features & Capabilities</h3>
+                <ul>
+                    <li><strong>CPQ (Configure, Price, Quote)</strong> — Rule-based product bundling, dynamic pricing, approval workflows, and one-click quote generation.</li>
+                    <li><strong>Advanced Approvals</strong> — Multi-tier discount approval chains triggered by deal attributes (margin, discount %, deal size).</li>
+                    <li><strong>Product Catalog Management</strong> — Centralized catalog with attributes, options, feature flags, and constraint rules.</li>
+                    <li><strong>Contract Lifecycle Management</strong> — Auto-generate contracts from approved quotes with amendment and renewal automation.</li>
+                    <li><strong>Subscription & Usage Billing</strong> — Recurring billing schedules, usage-based metering, and invoice automation.</li>
+                    <li><strong>Revenue Recognition</strong> — Compliant with ASC 606 / IFRS 15; automates recognition schedules for multi-element arrangements.</li>
+                    <li><strong>Guided Selling</strong> — Configurator UI that walks sales reps through compatible product selections.</li>
+                    <li><strong>Partner & Channel Commerce</strong> — Extends CPQ to partner portals for deal registration and channel quoting.</li>
+                </ul>
+
+                <h3>Industry Segments Served</h3>
+                <table>
+                    <tr><th>Segment</th><th>Focus Areas</th></tr>
+                    <tr><td>SaaS / Technology</td><td>Subscription pricing, usage metering, ramp deals, and ARR tracking</td></tr>
+                    <tr><td>Manufacturing</td><td>Complex product configurations, BOM rules, volume discounts, and rebates</td></tr>
+                    <tr><td>Telecom / Media</td><td>Bundle quoting, plan upgrades/downgrades, overage billing, and contract amendments</td></tr>
+                </table>
+            </div>
+
+            <div class="card">
+                <h2>Implementation Scenarios</h2>
+                
+                <div class="qa-box">
+                    <h4>SCENARIO: SaaS Company — CPQ Automation & Faster Deal Cycles</h4>
+                    <p><strong>Business Problem:</strong> A rapidly growing SaaS company had sales reps building quotes manually in Excel, leading to pricing errors, slow approvals, and revenue leakage from inconsistent discounting.</p>
+                    <p><strong>Salesforce Solution:</strong> Implemented Revenue Cloud CPQ with guided selling, product rules, and a three-tier approval workflow (rep > manager > finance) triggered by discount thresholds. Quote generation time dropped from 3 days to 4 hours. Pricing errors eliminated; win rate improved by 22%.</p>
+                </div>
+
+                <div class="qa-box">
+                    <h4>SCENARIO: Manufacturing Firm — Complex Product Configuration</h4>
+                    <p><strong>Business Problem:</strong> An industrial equipment manufacturer's product had 10,000+ possible configurations. Incorrect orders led to costly rework and customer dissatisfaction.</p>
+                    <p><strong>Salesforce Solution:</strong> Deployed CPQ with constraint-based configuration rules and a validation engine ensuring only valid product combinations were quotable. Integrated with SAP ERP for real-time inventory and lead-time data. Order error rate reduced by 79%; customer satisfaction scores improved markedly.</p>
+                </div>
+
+                <div class="qa-box">
+                    <h4>SCENARIO: Telecom Provider — Subscription Billing & Amendments</h4>
+                    <p><strong>Business Problem:</strong> A telecom company managing 200,000 enterprise subscribers struggled with mid-term contract changes (upgrades, seat additions), causing billing disputes and revenue leakage.</p>
+                    <p><strong>Salesforce Solution:</strong> Implemented Revenue Cloud Billing with proration logic, amendment APIs, and automated invoice generation. Co-termination rules aligned all subscription end dates. Billing dispute tickets reduced by 67%; Days Sales Outstanding (DSO) improved by 12 days.</p>
+                </div>
+            </div>
+
+            <div class="card">
+                <h2>Interview Preparation (Revenue Cloud)</h2>
+
+                <div class="qa-box">
+                    <h4>Q1: Walk me through how you would set up a multi-tier approval process for discounts in Revenue Cloud CPQ.</h4>
+                    <div class="model-answer"><strong>Model Answer:</strong> In CPQ, I'd configure Advanced Approvals. First, I'd define Approval Rules based on discount percentage thresholds — e.g., 0-10% auto-approved, 10-20% requires Sales Manager, 20-30% requires VP of Sales, >30% requires CFO. Each Approval Step includes the approver (user, group, or queue), notification template, and SLA deadline. I'd use Approver Groups for role-based routing and configure Delegate Approvers for out-of-office coverage. The Quote object would reflect Approval Status, locking editing until fully approved. Escalation rules would auto-escalate stalled approvals after 24 hours.</div>
+                    <div class="pro-tip">Pro Tip: Describe the threshold logic clearly and mention Delegate Approvers and escalation — these show production-readiness thinking. Interviewers want to know you've handled edge cases.</div>
+                </div>
+
+                <div class="qa-box">
+                    <h4>Q2: How would you manage subscription amendments and proration in Revenue Cloud?</h4>
+                    <div class="model-answer"><strong>Model Answer:</strong> In Revenue Cloud, contract amendments are handled via the Amendment flow. When a customer upgrades seats mid-term, I'd trigger an Amendment Order from the active contract. The system calculates prorated credits for the remaining period of the original quantity and charges for the new quantity. I'd configure the proration method (Daily or Monthly) based on business requirements. For co-termination, all products would be aligned to the same contract end date. Automated invoices would be generated immediately for mid-term changes, and the subscription schedule would update to reflect the new recurring amount from the next billing cycle.</div>
+                    <div class="pro-tip">Pro Tip: Proration is a real pain point — demonstrating you understand daily vs. monthly proration and co-termination sets you apart. Relate it to reducing billing disputes if possible.</div>
+                </div>
+
+                <div class="qa-box">
+                    <h4>Q3: A company is transitioning from manual Excel-based quoting to Revenue Cloud CPQ. What are the key implementation risks and how would you mitigate them?</h4>
+                    <div class="model-answer"><strong>Model Answer:</strong> Key risks include: (1) Data migration — historical quote and product data quality is often poor; I'd run a data quality assessment early and build migration scripts with validation rules. (2) Change management — sales reps resist new tools; I'd involve champion users early, run hands-on training sessions, and build a simple quick-start guide. (3) Product catalog complexity — translating Excel pricing logic to CPQ rules often reveals undocumented exceptions; I'd run discovery workshops with Finance and Product teams. (4) Integration gaps — CPQ may need to connect with ERP for inventory or pricing; I'd design API integrations using MuleSoft or REST APIs with fallback logic. I'd always recommend a phased rollout, starting with one product line or region.</div>
+                    <div class="pro-tip">Pro Tip: This question tests consulting maturity. Showing awareness of change management alongside technical risks makes you stand out. Mention phased rollout — it's always the right answer for complex CPQ implementations.</div>
+                </div>
+
+                <div class="qa-box">
+                    <h4>Q4: Can you explain the difference between Product Rules and Price Rules in Salesforce CPQ? <span class="new-badge">New</span></h4>
+                    <div class="model-answer"><strong>Model Answer:</strong> Product Rules primarily control *what* can be sold together to prevent invalid product combinations (e.g., validation rules to stop a user from selecting a software add-on without the base license, or selection rules to auto-add required hardware). Price Rules, on the other hand, control *how much* a product costs by injecting specific logic into the quote calculation sequence (e.g., automatically applying a 10% volume discount if the quantity exceeds 50, or updating list price based on the selected customer tier).</div>
+                    <div class="pro-tip">Pro Tip: Using the phrasing "Product Rules control WHAT, Price Rules control HOW MUCH" gives interviewers a clear, concise framework that shows you deeply understand the CPQ calculation engine.</div>
+                </div>
+            </div>
+        </div>
+
+        <div id="comparison" class="tab-content">
+            <div class="card">
+                <h2>QUICK REFERENCE: CLOUD COMPARISON</h2>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Attribute</th>
+                            <th>Financial Services Cloud</th>
+                            <th>Health Cloud</th>
+                            <th>Revenue Cloud</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>Primary Users</strong></td>
+                            <td>Advisors, Bankers, Agents</td>
+                            <td>Care Coordinators, Clinicians</td>
+                            <td>Sales Reps, Finance, RevOps</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Data Model Focus</strong></td>
+                            <td>Financial Accounts, Households</td>
+                            <td>Patients, Care Plans, Members</td>
+                            <td>Products, Quotes, Orders, Invoices</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Key Integration</strong></td>
+                            <td>Core Banking, DMS, Compliance</td>
+                            <td>EHR/EMR via FHIR, Labs</td>
+                            <td>ERP, Payment Gateways, Tax</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Compliance Focus</strong></td>
+                            <td>FINRA, GDPR, AML, KYC</td>
+                            <td>HIPAA, 21st Century Cures</td>
+                            <td>ASC 606, IFRS 15</td>
+                        </tr>
+                        <tr>
+                            <td><strong>License Type</strong></td>
+                            <td>FSC Add-on per User</td>
+                            <td>Health Cloud per User</td>
+                            <td>CPQ / Billing Add-on</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Key Differentiator</strong></td>
+                            <td>ARC, Referral Mgmt, Goals</td>
+                            <td>Care Plans, Gap Detection</td>
+                            <td>CPQ Rules, Subscriptions, Billing</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const tabs = document.querySelectorAll('.tab-btn');
+            const contents = document.querySelectorAll('.tab-content');
+
+            tabs.forEach(tab => {
+                tab.addEventListener('click', () => {
+                    // Remove active class from all tabs and contents
+                    tabs.forEach(t => t.classList.remove('active'));
+                    contents.forEach(c => c.classList.remove('active'));
+
+                    // Add active class to clicked tab and corresponding content
+                    tab.classList.add('active');
+                    const targetId = tab.getAttribute('data-target');
+                    document.getElementById(targetId).classList.add('active');
+                });
+            });
+        });
+    </script>
+</body>
+</html>
